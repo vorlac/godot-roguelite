@@ -17,3 +17,4 @@ mono_crash.*.json
 demo/
 
 .sconsign.dblite
+*.obj
