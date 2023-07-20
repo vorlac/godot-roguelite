@@ -1,0 +1,5 @@
+[submodule "libs/godot-cpp"]
+	path = libs/godot-cpp
+	url = https://github.com/godotengine/godot-cpp
+	branch = 4.1
+	ignore = dirty
