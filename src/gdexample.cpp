@@ -1,7 +1,15 @@
 #include "gdexample.h"
 
+#include <cstdio>
+#include <godot_cpp/classes/display_server.hpp>
 #include <godot_cpp/classes/input.hpp>
+#include <godot_cpp/classes/os.hpp>
+#include <godot_cpp/core/binder_common.hpp>
 #include <godot_cpp/core/class_db.hpp>
+#include <godot_cpp/core/defs.hpp>
+#include <godot_cpp/core/method_bind.hpp>
+#include <godot_cpp/godot.hpp>
+#include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 
 namespace godot
@@ -32,30 +40,32 @@ namespace godot
         , m_velocity{ 0, 0 }
         , m_speed{ 500 }
     {
-        //Transform2D transform(real_t{45.0}, Size2{1.0, 1.0}, real_t{0.0}, Vector2{512, 256});
-        //this->set_transform(transform);
     }
 
     GDExample::~GDExample()
     {
-        // Add your cleanup here.
     }
 
     void GDExample::process_movement(double_t delta)
     {
-        m_velocity = Vector2(0.0f, 0.0f);
-        Input& intutSingleton = *Input::get_singleton();
+        Input* input = Input::get_singleton();
+        Vector2 dir{ input->get("DirectionalAxis") };
+        // gdextension_interface_print_error
+        // godot::OS::get_singleton();
+        printf("dir={%2.2lf,%2.2lf}", dir.x, dir.y);
 
-        if (intutSingleton.is_action_pressed("ui_right"))
+        m_velocity = Vector2(0.0f, 0.0f);
+
+        if (input->is_action_pressed("ui_right"))
             m_velocity.x += 1.0f;
 
-        if (intutSingleton.is_action_pressed("ui_left"))
+        if (input->is_action_pressed("ui_left"))
             m_velocity.x -= 1.0f;
 
-        if (intutSingleton.is_action_pressed("ui_up"))
+        if (input->is_action_pressed("ui_up"))
             m_velocity.y -= 1.0f;
 
-        if (intutSingleton.is_action_pressed("ui_down"))
+        if (input->is_action_pressed("ui_down"))
             m_velocity.y += 1.0f;
 
         set_position(get_position() + (m_velocity * m_speed * delta));
@@ -63,12 +73,6 @@ namespace godot
 
     void GDExample::_process(double delta)
     {
-        // time_passed += delta;
-
-        // Vector2 new_position = Vector2(10.0 + (10.0 * sin(time_passed * 2.0)),
-        //                                10.0 + (10.0 * cos(time_passed * 1.5)));
-
-        // set_position(new_position);
         Node::_process(delta);
         process_movement(delta);
     }
