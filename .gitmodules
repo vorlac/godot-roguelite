@@ -1,0 +1,5 @@
+[submodule "engine"]
+	path = engine
+	url = https://github.com/godotengine/godot.git
+	branch = 4.1
+	ignore = dirty

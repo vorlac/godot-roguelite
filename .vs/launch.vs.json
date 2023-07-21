@@ -8,11 +8,21 @@
       "args": [
         "--editor",
         "--path",
-        "C:\\Users\\sal\\development\\vorlac\\godot-roguelite\\roguelite"
+        "${workspaceRoot}\\roguelite"
       ],
       "project": "CMakeLists.txt",
-      "projectTarget": "roguelited.dll (C:\\Users\\sal\\development\\vorlac\\godot-roguelite\\roguelite\\bin\\roguelited.dll)",
-      "name": "roguelited"
+      "name": "roguelite lib"
+    },
+    {
+      "type": "dll",
+      "exe": "${workspaceRoot}\\engine\\bin\\godot.windows.editor.x86_64.exe",
+      "args": [
+        "--editor",
+        "--path",
+        "${workspaceRoot}\\roguelite"
+      ],
+      "project": "CMakeLists.txt",
+      "name": "roguelite lib (debug engine)"
     }
   ]
 }

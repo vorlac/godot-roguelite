@@ -32,6 +32,8 @@ namespace godot
         , m_velocity{ 0, 0 }
         , m_speed{ 500 }
     {
+        //Transform2D transform(real_t{45.0}, Size2{1.0, 1.0}, real_t{0.0}, Vector2{512, 256});
+        //this->set_transform(transform);
     }
 
     GDExample::~GDExample()
