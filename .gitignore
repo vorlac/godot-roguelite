@@ -21,5 +21,6 @@ roguelite/bin/*.manifest
 roguelite/bin/*.pdb
 roguelite/bin/*.exp
 roguelite/bin/*.lib
+roguelite/bin/*.ilk
 .sconsign.dblite
 *.obj
