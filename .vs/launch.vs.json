@@ -1,0 +1,18 @@
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+      "type": "dll",
+      "exe": "C:\\tools\\godot\\Godot_v4.1-stable_win64.exe",
+      "args": [
+        "--editor",
+        "--path",
+        "C:\\Users\\sal\\development\\vorlac\\godot-roguelite\\roguelite"
+      ],
+      "project": "CMakeLists.txt",
+      "projectTarget": "roguelited.dll (C:\\Users\\sal\\development\\vorlac\\godot-roguelite\\roguelite\\bin\\roguelited.dll)",
+      "name": "roguelited"
+    }
+  ]
+}

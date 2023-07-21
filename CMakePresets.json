@@ -81,36 +81,5 @@
         "CMAKE_BUILD_TYPE": "RelWithDebInfo"
       }
     }
-  ],
-  "buildPresets": [
-    {
-      "name": "base",
-      "inheritConfigureEnvironment": true,
-      "jobs": 12
-    },
-    {
-      "name": "MSVC Debug x64",
-      "configurePreset": "msvc-debug"
-    },
-    {
-      "name": "MSVC Release x64",
-      "configurePreset": "msvc-release"
-    },
-    {
-      "name": "MSVC RelWithDebInfo x64",
-      "configurePreset": "msvc-relwithdebinfo"
-    },
-    {
-      "name": "Clang Debug x64",
-      "configurePreset": "clang-debug"
-    },
-    {
-      "name": "Clang Release x64",
-      "configurePreset": "clang-release"
-    },
-    {
-      "name": "Clang RelWithDebInfo x64",
-      "configurePreset": "clang-relwithdebinfo"
-    }
   ]
 }
