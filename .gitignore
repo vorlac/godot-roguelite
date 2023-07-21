@@ -14,7 +14,12 @@ export_presets.cfg
 data_*/
 mono_crash.*.json
 
-demo/
-
+.vs/
+out/
+roguelite/bin/*.dll
+roguelite/bin/*.manifest
+roguelite/bin/*.pdb
+roguelite/bin/*.exp
+roguelite/bin/*.lib
 .sconsign.dblite
 *.obj

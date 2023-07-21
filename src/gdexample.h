@@ -12,7 +12,7 @@ namespace godot
         GDExample();
         ~GDExample();
 
-        void _process(double delta);
+        void _process(double delta) override;
 
     protected:
         static void _bind_methods();

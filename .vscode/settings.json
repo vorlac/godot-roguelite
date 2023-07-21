@@ -2,5 +2,5 @@
     "[cpp]": {
         "diffEditor.diffAlgorithm": "advanced"
     },
-    "C_Cpp.default.cppStandard": "c++23"
+    "cmake.configureOnOpen": true
 }
