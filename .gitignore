@@ -15,12 +15,12 @@ data_*/
 mono_crash.*.json
 
 out/
-roguelite/bin/*.dll
-roguelite/bin/*.manifest
-roguelite/bin/*.pdb
-roguelite/bin/*.exp
-roguelite/bin/*.lib
-roguelite/bin/*.ilk
+project/bin/*.dll
+project/bin/*.manifest
+project/bin/*.pdb
+project/bin/*.exp
+project/bin/*.lib
+project/bin/*.ilk
 .sconsign.dblite
 *.obj
 

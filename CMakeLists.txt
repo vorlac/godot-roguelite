@@ -18,13 +18,10 @@ FetchContent_MakeAvailable(GDExtension)
 
 # Automatically pick up files added to src
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
-	"${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
 )
-
-	
-#include(CMAKE_VS_INCLUDE_INSTALL_TO_DEFAULT_BUILD "${CMAKE_CURRENT_SOURCE_DIR}/cpp.hint")
 
 # https://bytefreaks.net/programming-2/manually-set-the-cmake-output-folder
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/bin)
