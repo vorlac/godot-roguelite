@@ -1,4 +1,4 @@
-#include "gdexample.h"
+#include "gdexample.hpp"
 
 #include <cstdio>
 #include <godot_cpp/classes/display_server.hpp>
@@ -22,15 +22,16 @@ namespace godot
         ClassDB::bind_method(D_METHOD("set_speed", "speed"), &GDExample::set_speed);
 
         ADD_GROUP("Movement", "movement_");
-        ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "movement_speed"), "set_speed", "get_speed");
+        ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "movement_speed", PropertyHint::PROPERTY_HINT_RANGE, "0,20,0.01"),
+                     "set_speed", "get_speed");
     }
 
-    void GDExample::set_speed(float_t speed)
+    void GDExample::set_speed(float speed)
     {
         m_speed = speed;
     }
 
-    [[nodiscard]] float_t GDExample::get_speed() const
+    float GDExample::get_speed() const
     {
         return m_speed;
     }
@@ -40,6 +41,7 @@ namespace godot
         , m_velocity{ 0, 0 }
         , m_speed{ 500 }
     {
+        this->set_process_input(true);
     }
 
     GDExample::~GDExample()
@@ -49,12 +51,12 @@ namespace godot
     void GDExample::process_movement(double_t delta)
     {
         Input* input = Input::get_singleton();
-        Vector2 dir{ input->get("DirectionalAxis") };
-        // gdextension_interface_print_error
-        // godot::OS::get_singleton();
-        printf("dir={%2.2lf,%2.2lf}", dir.x, dir.y);
+        // Vector2 rotation{ input->get_vector("rotation_left", "rotation_right", "rotation_up", "rotation_down") };
+        // Vector2 movement{ input->get_vector("movement_left", "movement_right", "movement_up", "movement_down") };
 
-        m_velocity = Vector2(0.0f, 0.0f);
+        //        printf("dir={%2.2lf,%2.2lf}", rotation.x, rotation.y);
+
+        m_velocity = { 0.0f, 0.0f };
 
         if (input->is_action_pressed("ui_right"))
             m_velocity.x += 1.0f;

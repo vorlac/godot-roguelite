@@ -1,6 +1,6 @@
-#include "register_types.h"
+#include "register_types.hpp"
 
-#include "gdexample.h"
+#include "gdexample.hpp"
 
 #include <gdextension_interface.h>
 #include <godot_cpp/core/class_db.hpp>
@@ -26,12 +26,11 @@ namespace godot
     extern "C"
     {
         // Initialization.
-        GDExtensionBool GDE_EXPORT roguelite_library_init(
-            GDExtensionInterfaceGetProcAddress p_get_proc_address,
-            GDExtensionClassLibraryPtr p_library, GDExtensionInitialization* r_initialization)
+        GDExtensionBool GDE_EXPORT roguelite_library_init(GDExtensionInterfaceGetProcAddress p_get_proc_address,
+                                                          GDExtensionClassLibraryPtr p_library,
+                                                          GDExtensionInitialization* r_initialization)
         {
-            godot::GDExtensionBinding::InitObject init_obj(p_get_proc_address, p_library,
-                                                           r_initialization);
+            godot::GDExtensionBinding::InitObject init_obj(p_get_proc_address, p_library, r_initialization);
 
             init_obj.register_initializer(initialize_example_module);
             init_obj.register_terminator(uninitialize_example_module);

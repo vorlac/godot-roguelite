@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://ojjsnhkjoc82"]
+
+[ext_resource type="Texture2D" uid="uid://duwvljqtagiwd" path="res://icon.svg" id="1_ajphq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_etsou"]
+
+[node name="CharacterBody2D" type="CharacterBody2D" groups=["player_group"]]
+show_behind_parent = true
+light_mask = 31
+visibility_layer = 31
+z_as_relative = false
+floor_constant_speed = true
+platform_on_leave = 2
+
+[node name="Player" type="GDExample" parent="." groups=["player_group"]]
+show_behind_parent = true
+clip_children = 2
+use_parent_material = true
+texture = ExtResource("1_ajphq")
+
+[node name="ShapeCast2D" type="ShapeCast2D" parent="."]
+z_index = 2
+shape = SubResource("RectangleShape2D_etsou")
+target_position = Vector2(0, 0)
+collide_with_areas = true

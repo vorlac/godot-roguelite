@@ -13,17 +13,17 @@ namespace godot
         ~GDExample();
 
         void _process(double delta) override;
-        void set_speed(float_t speed);
-
-        [[nodiscard]] float_t get_speed() const;
+        
+        void set_speed(float speed);
+        float get_speed() const;
 
     protected:
         static void _bind_methods();
         void process_movement(double_t delta);
 
     private:
-        double_t m_elapsed_time{ 0 };
+        float m_speed{ 500 };
+        double m_elapsed_time{ 0 };
         Vector2 m_velocity{ 0, 0 };
-        float_t m_speed{ 500 };
     };
 }
