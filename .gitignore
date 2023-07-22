@@ -21,6 +21,14 @@ project/bin/*.pdb
 project/bin/*.exp
 project/bin/*.lib
 project/bin/*.ilk
+
+roguelite/bin/*.dll
+roguelite/bin/*.manifest
+roguelite/bin/*.pdb
+roguelite/bin/*.exp
+roguelite/bin/*.lib
+roguelite/bin/*.ilk
+
 .sconsign.dblite
 *.obj
 
