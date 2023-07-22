@@ -1,6 +1,6 @@
 #include "register_types.hpp"
 
-#include "gdexample.hpp"
+#include "character_controller_2d.hpp"
 
 #include <gdextension_interface.h>
 #include <godot_cpp/core/class_db.hpp>
@@ -9,17 +9,17 @@
 
 namespace godot
 {
-    void initialize_example_module(ModuleInitializationLevel p_level)
+    void initialize_roguelite_module(ModuleInitializationLevel p_level)
     {
         if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE)
             return;
 
-        ClassDB::register_class<GDExample>();
+        ClassDB::register_class<CharacterController2D>();
     }
 
-    void uninitialize_example_module(ModuleInitializationLevel p_level)
+    void uninitialize_roguelite_module(ModuleInitializationLevel p_level)
     {
-        if (p_level != ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE)
+        if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE)
             return;
     }
 
@@ -32,10 +32,9 @@ namespace godot
         {
             godot::GDExtensionBinding::InitObject init_obj(p_get_proc_address, p_library, r_initialization);
 
-            init_obj.register_initializer(initialize_example_module);
-            init_obj.register_terminator(uninitialize_example_module);
-            init_obj.set_minimum_library_initialization_level(
-                ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE);
+            init_obj.register_initializer(initialize_roguelite_module);
+            init_obj.register_terminator(uninitialize_roguelite_module);
+            init_obj.set_minimum_library_initialization_level(MODULE_INITIALIZATION_LEVEL_SCENE);
 
             return init_obj.init();
         }

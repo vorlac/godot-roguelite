@@ -4,25 +4,15 @@
   "configurations": [
     {
       "type": "dll",
-      "exe": "C:\\tools\\godot\\Godot_v4.1-stable_win64.exe",
-      "args": [
-        "--editor",
-        "--path",
-        "${workspaceRoot}\\roguelite"
-      ],
-      "project": "CMakeLists.txt",
-      "name": "roguelite lib"
-    },
-    {
-      "type": "dll",
+      "isDefaultConfiguration": true,
       "exe": "${workspaceRoot}\\engine\\bin\\godot.windows.editor.x86_64.exe",
       "args": [
         "--editor",
         "--path",
-        "${workspaceRoot}\\roguelite"
+        "${workspaceRoot}\\project"
       ],
       "project": "CMakeLists.txt",
-      "name": "roguelite lib (debug engine)"
+      "name": "roguelite gdextension"
     }
   ]
 }

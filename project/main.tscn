@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://eqi3va4l6g8t"]
+
+[ext_resource type="Texture2D" uid="uid://duwvljqtagiwd" path="res://icon.svg" id="1_f8s7t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_85cpp"]
+size = Vector2(128, 128)
+
+[node name="Main" type="Node2D"]
+
+[node name="GDExample" type="GDExample" parent="."]
+texture = ExtResource("1_f8s7t")
+
+[node name="Area2D" type="Area2D" parent="GDExample"]
+modulate = Color(0, 1, 0, 1)
+self_modulate = Color(1, 0, 0, 1)
+show_behind_parent = true
+z_index = 2
+y_sort_enabled = true
+texture_filter = 2
+use_parent_material = true
+disable_mode = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GDExample/Area2D"]
+use_parent_material = true
+position = Vector2(-0.5, 0.5)
+shape = SubResource("RectangleShape2D_85cpp")
