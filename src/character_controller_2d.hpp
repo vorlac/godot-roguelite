@@ -59,5 +59,8 @@ namespace godot
         // The current movement distance/direction that
         // was just applied to character position (units)
         Vector2 m_velocity{ 0.0, 0.0 };
+        // previous rotation input value
+        Vector2 m_prev_rotation{ 0.0, 0.0 };
+        Vector2 m_target_rotation{ 0.0, 0.0 };
     };
 }

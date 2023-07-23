@@ -2,10 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://bxwl5i7jdlemj" path="res://icon.svg" id="1_7ms8v"]
 
-[node name="Node2D" type="Node2D"]
+[node name="Level" type="Node2D"]
 
-[node name="CharacterController2D" type="CharacterController2D" parent="."]
+[node name="Character" type="CharacterController2D" parent="."]
 position = Vector2(512, 256)
 
-[node name="Icon" type="Sprite2D" parent="CharacterController2D"]
+[node name="Icon" type="Sprite2D" parent="Character"]
 texture = ExtResource("1_7ms8v")
