@@ -31,7 +31,6 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(GDExtension)
 
-set(VERBOSE)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${gdextension_lib_name}/bin)
 set(CMAKE_PDB_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/bin)
 
@@ -67,7 +66,7 @@ if(MSVC)
 endif()
 
 
-# Add a dynamic library named ${gdextension_lib_name}
+# Add the gdextension dynamic library 
 add_library(${gdextension_lib_name} SHARED ${SOURCES})
 
 # set compiler definitions that match up with the buid used for the editor:

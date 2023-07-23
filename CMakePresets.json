@@ -32,20 +32,20 @@
       }
     },
     {
-      "displayName": "MSVC Release",
       "name": "msvc-release",
+      "displayName": "MSVC Release",
       "inherits": "msvc-debug",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       }
     },
     {
-      "displayName": "MSVC RelWithDebInfo",
       "name": "msvc-relwithdebinfo",
+      "displayName": "MSVC RelWithDebInfo",
       "inherits": "msvc-debug",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo"
       }
-    }
+    } 
   ]
 }

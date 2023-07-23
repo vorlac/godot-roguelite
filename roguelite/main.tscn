@@ -5,7 +5,6 @@
 [node name="Node2D" type="Node2D"]
 
 [node name="CharacterController2D" type="CharacterController2D" parent="."]
-friction = 0.1
 position = Vector2(512, 256)
 
 [node name="Icon" type="Sprite2D" parent="CharacterController2D"]
