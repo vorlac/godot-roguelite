@@ -30,7 +30,7 @@ namespace godot
                                                           GDExtensionClassLibraryPtr p_library,
                                                           GDExtensionInitialization* r_initialization)
         {
-            godot::GDExtensionBinding::InitObject init_obj(p_get_proc_address, p_library, r_initialization);
+            GDExtensionBinding::InitObject init_obj(p_get_proc_address, p_library, r_initialization);
 
             init_obj.register_initializer(initialize_roguelite_module);
             init_obj.register_terminator(uninitialize_roguelite_module);

@@ -1,28 +1,23 @@
 #pragma once
+// clang-format off
 
 #include <godot_cpp/classes/input_event.hpp>
 #include <godot_cpp/classes/node2d.hpp>
+#include <godot_cpp/classes/ref.hpp>
+#include <godot_cpp/core/class_db.hpp>
 
-// clang-format off
 namespace godot
 {
-    class InputEvent;
-
     class CharacterController2D : public Node2D
     {
         GDCLASS(CharacterController2D, Node2D)
 
     public:
-        CharacterController2D() { }
-        ~CharacterController2D() { }
-
         void _ready() override;
         void _process(double delta_time) override;
         void _physics_process(double delta_time) override;
-        void _unhandled_input(const Ref<InputEvent>& event) override;
+        virtual void _unhandled_input(const Ref<godot::InputEvent>& event) override;
 
-    protected:
-        static void _bind_methods();
         // virtual void _process(double delta);
         // virtual void _physics_process(double delta);
         // virtual void _enter_tree();
@@ -34,6 +29,7 @@ namespace godot
         // virtual void _unhandled_key_input(const Ref<InputEvent>& event);
         // virtual PackedStringArray _get_configuration_warnings() const;
 
+        static void _bind_methods();
         void process_movement(double delta_time);
 
         // movement property getters
@@ -52,7 +48,7 @@ namespace godot
         // Elapsed time in ms since last update
         double m_elapsed_time{ 0.0 };
         // Rate of decelleration when movement inputs aren't active (units/ms)
-        real_t m_friction{ 0.05 };
+        real_t m_friction{ 0.25 };
         // Rate of accelleration (units/ms)
         Vector2 m_acceleration{ 0.1, 0.1 };
         // Target character walk speed (units/ms)

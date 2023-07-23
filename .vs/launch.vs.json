@@ -3,9 +3,9 @@
   "defaults": {},
   "configurations": [
     {
-      "type": "dll",
+      "type": "default",
       "isDefaultConfiguration": true,
-      "exe": "${workspaceRoot}\\engine\\bin\\godot.windows.editor.x86_64.exe",
+      "exe": "${workspaceRoot}\\engine\\bin\\godot.windows.editor.dev.x86_64.exe",
       "args": [
         "--editor",
         "--path",

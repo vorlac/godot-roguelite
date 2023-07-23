@@ -2,10 +2,7 @@
 
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_event.hpp>
-#include <godot_cpp/core/class_db.hpp>
-#include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/core/math.hpp>
-#include <godot_cpp/core/method_bind.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 
 namespace godot
@@ -37,8 +34,23 @@ namespace godot
 
     void CharacterController2D::_unhandled_input(const Ref<InputEvent>& event)
     {
+        /*   Input* input = Input::get_singleton();
+           real_t vert_input = input->get_axis("ui_up", "ui_down");
+           real_t horiz_input = input->get_axis("ui_left", "ui_right");
+
+           Vector2 target_velocity{ Math::is_zero_approx(horiz_input) ? 0.0f : horiz_input,
+                                    Math::is_zero_approx(vert_input) ? 0.0f : vert_input };
+
+           Vector2 temp1{ m_velocity.lerp(target_velocity, m_friction) };
+           Vector2 temp2{ temp1.clamp({ -1.0, -1.0 }, { 1.0, 1.0 }) };
+           m_velocity = temp2;
+           UtilityFunctions::print(m_velocity);*/
+    }
+
+    void CharacterController2D::_physics_process(double delta_time)
+    {
         Input* input = Input::get_singleton();
-        real_t vert_input = input->get_axis("ui_down", "ui_up");
+        real_t vert_input = input->get_axis("ui_up", "ui_down");
         real_t horiz_input = input->get_axis("ui_left", "ui_right");
 
         Vector2 target_velocity{ Math::is_zero_approx(horiz_input) ? 0.0f : horiz_input,
@@ -47,10 +59,6 @@ namespace godot
         Vector2 temp1{ m_velocity.lerp(target_velocity, m_friction) };
         Vector2 temp2{ temp1.clamp({ -1.0, -1.0 }, { 1.0, 1.0 }) };
         m_velocity = temp2;
-    }
-
-    void CharacterController2D::_physics_process(double delta_time)
-    {
         auto movement_offst{ m_velocity * m_target_speed * delta_time };
         this->set_position(this->get_position() + movement_offst);
 
