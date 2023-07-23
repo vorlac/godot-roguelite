@@ -3,3 +3,6 @@
 	url = https://github.com/godotengine/godot.git
 	branch = 4.1
 	ignore = dirty
+[submodule "resources/examples"]
+	path = resources/examples
+	url = https://github.com/godotengine/godot-demo-projects.git
