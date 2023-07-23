@@ -8,6 +8,9 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 include(${CMAKE_SOURCE_DIR}/scripts/cmake/utils.cmake)
 include(FetchContent)
 
+set(CMAKE_DEBUG_POSTFIX "d")
+
+
 FetchContent_Declare(
     GDExtension
     GIT_REPOSITORY https://github.com/godotengine/godot-cpp.git
@@ -16,15 +19,14 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(GDExtension)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/roguelite/bin)
+
 # Automatically pick up files added to src
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
 )
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/project/bin)
-set(CMAKE_DEBUG_POSTFIX "d")
 
 # Add a dynamic library named ${PROJECT_NAME}
 add_library(${PROJECT_NAME} SHARED ${SOURCES})

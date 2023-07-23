@@ -45,41 +45,6 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo"
       }
-    },
-    {
-      "displayName": "GCC Debug",
-      "name": "gcc-debug",
-      "hidden": false,
-      "inherits": "base",
-      "cacheVariables": {
-        "CMAKE_C_COMPILER": "gcc",
-        "CMAKE_CXX_COMPILER": "g++",
-        "CMAKE_BUILD_TYPE": "Debug"
-      },
-      "architecture": {
-        "value": "x64",
-        "strategy": "external"
-      },
-      "toolset": {
-        "value": "host=x64",
-        "strategy": "external"
-      }
-    },
-    {
-      "displayName": "GCC Release",
-      "name": "gcc-release",
-      "inherits": "gcc-debug",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
-      }
-    },
-    {
-      "displayName": "GCC RelWithDebInfo",
-      "name": "gcc-relwithdebinfo",
-      "inherits": "gcc-debug",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
-      }
     }
   ]
 }

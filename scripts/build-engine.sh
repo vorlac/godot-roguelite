@@ -4,5 +4,6 @@
 
 (
 	cd ./engine
-	scons platform=windows target=editor arch=x86_64 debug_symbols=yes optimize=debug
+	scons --clean platform=windows target=editor arch=x86_64 debug_symbols=yes optimize=none
+	scons --no-cache platform=windows target=editor arch=x86_64 debug_symbols=yes optimize=none
 )

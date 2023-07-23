@@ -1,29 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://eqi3va4l6g8t"]
+[gd_scene load_steps=2 format=3 uid="uid://iln4uhamvxm3"]
 
-[ext_resource type="Texture2D" uid="uid://duwvljqtagiwd" path="res://icon.svg" id="1_f8s7t"]
+[ext_resource type="Texture2D" uid="uid://bxwl5i7jdlemj" path="res://icon.svg" id="1_7ms8v"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_85cpp"]
-size = Vector2(128, 128)
-
-[node name="Main" type="Node2D"]
+[node name="Node2D" type="Node2D"]
 
 [node name="CharacterController2D" type="CharacterController2D" parent="."]
-current_speed = Vector2(1000, 1000)
-acceleration = Vector2(500, 500)
-friction = Vector2(50, 50)
-texture = ExtResource("1_f8s7t")
+position = Vector2(512, 256)
 
-[node name="Area2D" type="Area2D" parent="CharacterController2D"]
-modulate = Color(0, 1, 0, 1)
-self_modulate = Color(1, 0, 0, 1)
-show_behind_parent = true
-z_index = 2
-y_sort_enabled = true
-texture_filter = 2
-use_parent_material = true
-disable_mode = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterController2D/Area2D"]
-use_parent_material = true
-position = Vector2(-0.5, 0.5)
-shape = SubResource("RectangleShape2D_85cpp")
+[node name="Icon" type="Sprite2D" parent="CharacterController2D"]
+texture = ExtResource("1_7ms8v")
