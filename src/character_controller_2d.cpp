@@ -18,14 +18,19 @@ namespace godot
         ClassDB::bind_method(D_METHOD("set_acceleration", "acceleration"), &CharacterController2D::set_acceleration);
         ClassDB::bind_method(D_METHOD("get_friction"), &CharacterController2D::get_friction);
         ClassDB::bind_method(D_METHOD("set_friction", "friction"), &CharacterController2D::set_friction);
+        ClassDB::bind_method(D_METHOD("get_rotation_speed"), &CharacterController2D::get_rotation_speed);
+        ClassDB::bind_method(D_METHOD("set_rotation_speed", "rotation_speed"),
+                             &CharacterController2D::set_rotation_speed);
 
         PropertyInfo speed_property_info{ Variant::VECTOR2, "speed", PROPERTY_HINT_RANGE, "0,2000,1" };
         PropertyInfo accel_property_info{ Variant::VECTOR2, "acceleration", PROPERTY_HINT_RANGE, "0,2000,1" };
         PropertyInfo friction_property_info{ Variant::FLOAT, "friction", PROPERTY_HINT_RANGE, "0,1,0.01" };
+        PropertyInfo rot_speed_property_info{ Variant::FLOAT, "rotation_speed", PROPERTY_HINT_RANGE, "0,50,0.01" };
 
         ADD_PROPERTY(speed_property_info, "set_speed", "get_speed");
         ADD_PROPERTY(accel_property_info, "set_acceleration", "get_acceleration");
         ADD_PROPERTY(friction_property_info, "set_friction", "get_friction");
+        ADD_PROPERTY(rot_speed_property_info, "set_rotation_speed", "get_rotation_speed");
     }
 
     void CharacterController2D::_ready()
@@ -69,16 +74,11 @@ namespace godot
                 y_axis = Math::abs(y_axis) < deadzone ? 0.0 : y_axis;
 
                 if (!Math::is_zero_approx(x_axis) || !Math::is_zero_approx(y_axis))
-                    m_target_rotation = { -y_axis, x_axis };
-
-                if (!m_target_rotation.is_equal_approx(m_prev_rotation))
                 {
-                    const auto smoothed_rot{ m_prev_rotation.lerp(m_target_rotation, m_friction) };
-                    const auto angle{ Vector2{ 0, 0 }.angle_to_point(smoothed_rot) };
-                    this->set_rotation(angle);
-
-                    UtilityFunctions::print("raw input:{" + m_target_rotation + "}");
-                    m_prev_rotation = m_target_rotation;
+                    m_target_rotation = Vector2{ -y_axis, x_axis };
+                    double raw_angle{ Vector2{ 0, 0 }.angle_to_point(m_target_rotation) };
+                    double rotation{ Math::lerp_angle(this->get_rotation(), raw_angle, m_rotation_speed * delta_time) };
+                    this->set_rotation(rotation);
                 }
             }
         }

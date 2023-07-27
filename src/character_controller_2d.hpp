@@ -35,11 +35,13 @@ namespace godot
         inline Vector2 get_max_speed() const { return m_max_speed; }
         inline Vector2 get_acceleration() const { return m_acceleration; }
         inline real_t get_friction() const { return m_friction; }
+        inline real_t get_rotation_speed() const { return m_rotation_speed; }
 
         inline void set_speed(const Vector2& speed) { m_target_speed = speed; }
         inline void set_max_speed(const Vector2& max_speed) { m_max_speed = max_speed; }
         inline void set_acceleration(const Vector2& accel) { m_acceleration = accel; }
         inline void set_friction(const real_t friction) { m_friction = friction; }
+        inline void set_rotation_speed(const real_t rot_speed) { m_rotation_speed = rot_speed; }
 
         // clang-format on
 
@@ -59,8 +61,7 @@ namespace godot
         // The current movement distance/direction that
         // was just applied to character position (units)
         Vector2 m_velocity{ 0.0, 0.0 };
-        // previous rotation input value
-        Vector2 m_prev_rotation{ 0.0, 0.0 };
         Vector2 m_target_rotation{ 0.0, 0.0 };
+        real_t m_rotation_speed{ 5.0 };
     };
 }
