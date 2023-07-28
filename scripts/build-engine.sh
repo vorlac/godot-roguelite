@@ -4,7 +4,7 @@
 
 (
 	cd ./engine
-	scons --clean
-	# use_lto=yes
-	scons platform=windows arch=x86_64 target=editor dev_build=yes debug_symbols=yes verbose=yes optimization=none use_lto=no
+	scons --clean platform=windows arch=x86_64 target=editor use_static_cpp=no dev_build=yes debug_symbols=yes verbose=yes optimize=none use_lto=no
+	# --tree=linedraw 
+	scons platform=windows arch=x86_64 target=editor use_static_cpp=no dev_build=yes debug_symbols=yes verbose=yes optimize=none use_lto=no
 )
