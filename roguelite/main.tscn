@@ -278,7 +278,7 @@ sources/0 = SubResource("TileSetAtlasSource_rtwdi")
 
 [node name="Main" type="Node2D"]
 
-[node name="Character" type="CharacterController2D" parent="."]
+[node name="Character" type="Character" parent="."]
 light_mask = 1048575
 visibility_layer = 1048575
 z_index = 1

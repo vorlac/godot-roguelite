@@ -29,8 +29,10 @@ endfunction(run_active_cmake_diagnostics)
 # values using a case insentive regex match
 #
 # examples:
-# 1. print all cmake variables: dump_cmake_variables(".*")
-# 2. print all boolt cmake variables: dump_cmake_variables("^boost.*")
+# 1. print all cmake variables: 
+#    > dump_cmake_variables(".*")
+# 2. print all boolt cmake variables: 
+#    > dump_cmake_variables("^boost.*")
 function(dump_cmake_variables)
     get_cmake_property(_vars VARIABLES)
     list(SORT _vars)

@@ -15,12 +15,6 @@ data_*/
 mono_crash.*.json
 
 out/
-project/bin/*.dll
-project/bin/*.manifest
-project/bin/*.pdb
-project/bin/*.exp
-project/bin/*.lib
-project/bin/*.ilk
 
 roguelite/bin/*.dll
 roguelite/bin/*.manifest
@@ -34,3 +28,6 @@ roguelite/bin/*.ilk
 
 .vs/
 !.vs/launch.vs.json
+
+roguelite/bin/
+!roguelite/bin/*.gdextension

@@ -1,6 +1,6 @@
 #include "register_types.hpp"
 
-#include "character_controller_2d.hpp"
+#include "character.hpp"
 
 #include <gdextension_interface.h>
 #include <godot_cpp/core/class_db.hpp>
@@ -14,7 +14,7 @@ namespace godot
         if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE)
             return;
 
-        ClassDB::register_class<CharacterController2D>();
+        ClassDB::register_class<Character>();
     }
 
     void uninitialize_roguelite_module(ModuleInitializationLevel p_level)
@@ -25,7 +25,7 @@ namespace godot
 
     extern "C"
     {
-        // Initialization.
+        // GDExtension init
         GDExtensionBool GDE_EXPORT roguelite_library_init(GDExtensionInterfaceGetProcAddress p_get_proc_address,
                                                           GDExtensionClassLibraryPtr p_library,
                                                           GDExtensionInitialization* r_initialization)

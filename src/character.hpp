@@ -10,9 +10,9 @@ namespace godot
 {
     class Input;
 
-    class CharacterController2D : public Node2D
+    class Character : public Node2D
     {
-        GDCLASS(CharacterController2D, Node2D)
+        GDCLASS(Character, Node2D)
     private:
         enum class InputMode
         {

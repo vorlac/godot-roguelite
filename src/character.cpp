@@ -1,4 +1,4 @@
-#include "character_controller_2d.hpp"
+#include "character.hpp"
 
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_event.hpp>
@@ -8,19 +8,18 @@
 
 namespace godot
 {
-    void CharacterController2D::_bind_methods()
+    void Character::_bind_methods()
     {
-        UtilityFunctions::print("Binding methods");
+        UtilityFunctions::print(FUNCTION_STR);
 
-        ClassDB::bind_method(D_METHOD("get_speed"), &CharacterController2D::get_speed);
-        ClassDB::bind_method(D_METHOD("set_speed", "speed"), &CharacterController2D::set_speed);
-        ClassDB::bind_method(D_METHOD("get_acceleration"), &CharacterController2D::get_acceleration);
-        ClassDB::bind_method(D_METHOD("set_acceleration", "acceleration"), &CharacterController2D::set_acceleration);
-        ClassDB::bind_method(D_METHOD("get_friction"), &CharacterController2D::get_friction);
-        ClassDB::bind_method(D_METHOD("set_friction", "friction"), &CharacterController2D::set_friction);
-        ClassDB::bind_method(D_METHOD("get_rotation_speed"), &CharacterController2D::get_rotation_speed);
-        ClassDB::bind_method(D_METHOD("set_rotation_speed", "rotation_speed"),
-                             &CharacterController2D::set_rotation_speed);
+        ClassDB::bind_method(D_METHOD("get_speed"), &Character::get_speed);
+        ClassDB::bind_method(D_METHOD("set_speed", "speed"), &Character::set_speed);
+        ClassDB::bind_method(D_METHOD("get_acceleration"), &Character::get_acceleration);
+        ClassDB::bind_method(D_METHOD("set_acceleration", "acceleration"), &Character::set_acceleration);
+        ClassDB::bind_method(D_METHOD("get_friction"), &Character::get_friction);
+        ClassDB::bind_method(D_METHOD("set_friction", "friction"), &Character::set_friction);
+        ClassDB::bind_method(D_METHOD("get_rotation_speed"), &Character::get_rotation_speed);
+        ClassDB::bind_method(D_METHOD("set_rotation_speed", "rotation_speed"), &Character::set_rotation_speed);
 
         PropertyInfo speed_property_info{ Variant::VECTOR2, "speed", PROPERTY_HINT_RANGE, "0,2000,1" };
         PropertyInfo accel_property_info{ Variant::VECTOR2, "acceleration", PROPERTY_HINT_RANGE, "0,2000,1" };
@@ -33,22 +32,22 @@ namespace godot
         ADD_PROPERTY(rot_speed_property_info, "set_rotation_speed", "get_rotation_speed");
     }
 
-    void CharacterController2D::_ready()
+    void Character::_ready()
     {
+        UtilityFunctions::print(FUNCTION_STR);
         m_velocity = { 0.0, 0.0 };
     }
 
-    void CharacterController2D::_enter_tree()
+    void Character::_enter_tree()
     {
-        //
+        UtilityFunctions::print(FUNCTION_STR);
     }
 
-    void CharacterController2D::_exit_tree()
+    void Character::_exit_tree()
     {
-        //
     }
 
-    void CharacterController2D::_unhandled_input(const Ref<InputEvent>& event)
+    void Character::_unhandled_input(const Ref<InputEvent>& event)
     {
         // TODO: fix... doesn't handle deadzones properly
         const String event_type{ event->get_class() };
@@ -58,28 +57,25 @@ namespace godot
                 [[fallthrough]];
             case InputMode::MouseAndKeyboard:
             {
-                // InputEventJoypadMotion
-                // InputEventJoypadButton
+                // InputEventJoypadMotion, InputEventJoypadButton
                 if (event_type.begins_with("InputEventJoypad"))
                     m_input_mode = InputMode::Controller;
             }
             case InputMode::Controller:
             {
-                // InputEventMouseMotion
-                // InputEventMouseButtom
-                // InputEventKey
+                // InputEventMouseMotion, InputEventMouseButton, InputEventKey
                 if (event_type.begins_with("InputEventMouse") || event_type.begins_with("InputEventKey"))
                     m_input_mode = InputMode::MouseAndKeyboard;
             }
         }
     }
 
-    void CharacterController2D::_physics_process(double delta_time)
+    void Character::_physics_process(double delta_time)
     {
         // called in a fixed time step interval
     }
 
-    void CharacterController2D::_process(double delta_time)
+    void Character::_process(double delta_time)
     {
         // called every frame
         Input* const input{ Input::get_singleton() };
@@ -87,7 +83,7 @@ namespace godot
         this->process_rotation_input(input, delta_time);
     }
 
-    void CharacterController2D::process_movement_input(Input* const input, double delta_time)
+    void Character::process_movement_input(Input* const input, double delta_time)
     {
         Vector2 raw_movement_input{ input->get_vector("ui_left", "ui_right", "ui_up", "ui_down") };
         Vector2 target_velocity = raw_movement_input.is_zero_approx() ? Vector2{ 0, 0 } : raw_movement_input;
@@ -99,10 +95,8 @@ namespace godot
         this->set_position(this->get_position() + movement_offset);
     }
 
-    CharacterController2D::InputMode CharacterController2D::get_input_mode(Input* const input)
+    Character::InputMode Character::get_input_mode(Input* const input)
     {
-        auto mouse_velocity = input->get_last_mouse_velocity();
-
         switch (m_input_mode)
         {
             default:
@@ -142,7 +136,7 @@ namespace godot
         return m_input_mode;
     }
 
-    void CharacterController2D::process_rotation_input(Input* const input, const double delta_time)
+    void Character::process_rotation_input(Input* const input, const double delta_time)
     {
         switch (this->get_input_mode(input))
         {
