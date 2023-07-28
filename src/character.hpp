@@ -26,18 +26,10 @@ namespace godot
         void _exit_tree() override;
         void _process(double delta_time) override;
         void _physics_process(double delta_time) override;
-        void _unhandled_input(const Ref<InputEvent>& event);
-
-        // void _process(double delta);
-        // void _physics_process(double delta);
-        // void _enter_tree();
-        // void _exit_tree();
-        // void _ready();
-        // void _input(const Ref<InputEvent>& event);
-        // void _shortcut_input(const Ref<InputEvent>& event);
-        // void _unhandled_input(const Ref<InputEvent>& event);
-        // void _unhandled_key_input(const Ref<InputEvent>& event);
-        // PackedStringArray _get_configuration_warnings() const;
+        void _input(const Ref<InputEvent>& event) override;
+        void _unhandled_input(const Ref<InputEvent>& event) override;
+        void _unhandled_key_input(const Ref<InputEvent>& event) override;
+        void _shortcut_input(const Ref<InputEvent>& event) override;
 
         static void _bind_methods();
 

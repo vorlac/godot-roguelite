@@ -45,6 +45,22 @@ namespace godot
 
     void Character::_exit_tree()
     {
+        // can't use UtilityFunctions::print here, crashes
+    }
+
+    void Character::_input(const Ref<InputEvent>& event)
+    {
+        //
+    }
+
+    void Character::_shortcut_input(const Ref<InputEvent>& event)
+    {
+        //
+    }
+
+    void Character::_unhandled_key_input(const Ref<InputEvent>& event)
+    {
+        //
     }
 
     void Character::_unhandled_input(const Ref<InputEvent>& event)
@@ -60,12 +76,14 @@ namespace godot
                 // InputEventJoypadMotion, InputEventJoypadButton
                 if (event_type.begins_with("InputEventJoypad"))
                     m_input_mode = InputMode::Controller;
+                break;
             }
             case InputMode::Controller:
             {
                 // InputEventMouseMotion, InputEventMouseButton, InputEventKey
                 if (event_type.begins_with("InputEventMouse") || event_type.begins_with("InputEventKey"))
                     m_input_mode = InputMode::MouseAndKeyboard;
+                break;
             }
         }
     }
