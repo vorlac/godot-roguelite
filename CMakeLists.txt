@@ -47,9 +47,39 @@ target_include_directories(engine PUBLIC
 	"${CMAKE_CURRENT_SOURCE_DIR}/engine"
 )
 
-
 if(MSVC)
 	# using Visual Studio C++
+
+	# set compiler definitions that match up with the buid used for the editor:
+	# scons platform=windows arch=x86_64 target=editor dev_build=yes
+	# debug_symbols=yes verbose=yes warnings=extra werror=yes
+	add_compile_definitions(
+		NOMINMAX
+		TOOLS_ENABLED
+		DEBUG_ENABLED
+		DEV_ENABLED
+		NO_EDITOR_SPLASH
+		WINDOWS_ENABLED
+		WASAPI_ENABLED
+		WINMIDI_ENABLED
+		TYPED_METHOD_BIND
+		WIN32
+		MSVC
+		WINVER=0x0601
+		_WIN32_WINNT=0x0601
+		NOMINMAX
+		_WIN64
+		VULKAN_ENABLED
+		GLES3_ENABLED
+		MINIZIP_ENABLED
+		BROTLI_ENABLED
+		ZSTD_STATIC_LINKING_ONLY
+		USE_VOLK
+		VK_USE_PLATFORM_WIN32_KHR
+		GLAD_ENABLED
+		GLES_OVER_GL
+	)
+
 	set(roguelite_compile_flags "/EHsc") # /GF /MP
 
 	if(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -60,45 +90,18 @@ if(MSVC)
 		string(REPLACE "/RTC1" "" CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG})
 	endif(CMAKE_BUILD_TYPE MATCHES Debug)
 
-	# fixes C macro __ARGS__ expansion for MSVC so it's
-	# consistent with other major C++ compilers (gcc/clang)
 	if(CMAKE_CXX_COMPILER MATCHES "/cl$")
-		target_compile_options(${PROJECT_NAME} PRIVATE
-			/Zc:preprocessor
-			${roguelite_compile_flags}
-		)
+		# fixes C macro __ARGS__ expansion for MSVC so it's
+		# consistent with other major C++ compilers (gcc/clang)
+		set(roguelite_compile_flags "${roguelite_compile_flags} /Zc:preprocessor")
 	endif()
+
+	target_compile_options(${PROJECT_NAME} PRIVATE
+		${roguelite_compile_flags}
+	)
 endif()
 
-# set compiler definitions that match up with the buid used for the editor:
-# scons platform=windows arch=x86_64 target=editor dev_build=yes
-# debug_symbols=yes verbose=yes warnings=extra werror=yes
-target_compile_definitions(${PROJECT_NAME} PUBLIC 
-	NOMINMAX
-	TOOLS_ENABLED
-	DEBUG_ENABLED
-	DEV_ENABLED
-	NO_EDITOR_SPLASH
-	WINDOWS_ENABLED
-	WASAPI_ENABLED
-	WINMIDI_ENABLED
-	TYPED_METHOD_BIND
-	WIN32
-	MSVC
-	WINVER=0x0601
-	_WIN32_WINNT=0x0601
-	NOMINMAX
-	_WIN64
-	VULKAN_ENABLED
-	GLES3_ENABLED
-	MINIZIP_ENABLED
-	BROTLI_ENABLED
-	ZSTD_STATIC_LINKING_ONLY
-	USE_VOLK
-	VK_USE_PLATFORM_WIN32_KHR
-	GLAD_ENABLED
-	GLES_OVER_GL
-)
+
 
 # link gdextension to the cpp bindings library
 target_link_libraries(${PROJECT_NAME} PUBLIC godot::cpp)

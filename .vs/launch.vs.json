@@ -1,9 +1,8 @@
 {
   "version": "0.2.1",
-  "defaults": {},
   "configurations": [
     {
-      "type": "default",
+      "type": "dll",
       "isDefaultConfiguration": true,
       "exe": "${workspaceRoot}\\engine\\bin\\godot.windows.editor.dev.x86_64.exe",
       "args": [

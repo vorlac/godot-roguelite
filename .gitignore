@@ -27,7 +27,7 @@ roguelite/bin/*.ilk
 *.obj
 
 .vs/
-!.vs/launch.vs.json
+roguelite/bin/*
 
-roguelite/bin/
+!.vs/launch.vs.json
 !roguelite/bin/*.gdextension

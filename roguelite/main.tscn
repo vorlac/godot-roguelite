@@ -282,7 +282,6 @@ sources/0 = SubResource("TileSetAtlasSource_rtwdi")
 light_mask = 1048575
 visibility_layer = 1048575
 z_index = 1
-position = Vector2(735.361, 502.496)
 
 [node name="Icon" type="Sprite2D" parent="Character"]
 light_mask = 1048575
