@@ -1,5 +1,7 @@
 #include "character.hpp"
 
+#include <godot_cpp/classes/collision_shape2d.hpp>
+#include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_event.hpp>
 #include <godot_cpp/classes/viewport.hpp>
@@ -36,6 +38,9 @@ namespace godot
     {
         UtilityFunctions::print(FUNCTION_STR);
         m_velocity = { 0.0, 0.0 };
+        CollisionObject2D* collision_obj = memnew(CollisionObject2D);
+        collision_obj->set_transform(this->get_transform());
+        this->add_child(collision_obj);
     }
 
     void Character::_enter_tree()

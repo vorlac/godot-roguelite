@@ -6,5 +6,5 @@
 	cd ./engine
 	scons --clean
 	# use_lto=yes
-	scons platform=windows arch=x86_64 target=editor dev_build=yes debug_symbols=yes verbose=yes warnings=extra werror=yes
+	scons platform=windows arch=x86_64 target=editor dev_build=yes debug_symbols=yes verbose=yes optimization=none use_lto=no
 )

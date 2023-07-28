@@ -7,6 +7,9 @@
       "exe": "${workspaceRoot}\\engine\\bin\\godot.windows.editor.dev.x86_64.exe",
       "args": [
         "--editor",
+        "--windowed",
+        "--resolution 1920x1080",
+        "--single-window",
         "--path",
         "${workspaceRoot}\\roguelite"
       ],

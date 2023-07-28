@@ -1,16 +1,14 @@
 #pragma once
 
+#include <godot_cpp/classes/character_body2d.hpp>
 #include <godot_cpp/classes/input_event.hpp>
-#include <godot_cpp/classes/node2d.hpp>
-#include <godot_cpp/classes/ref.hpp>
 #include <godot_cpp/core/class_db.hpp>
-#include <godot_cpp/variant/utility_functions.hpp>
 
 namespace godot
 {
     class Input;
 
-    class Character : public Node2D
+    class Character : public CharacterBody2D
     {
         GDCLASS(Character, Node2D)
     private:
