@@ -8,14 +8,25 @@
 
 namespace godot
 {
+    class Input;
+
     class CharacterController2D : public Node2D
     {
         GDCLASS(CharacterController2D, Node2D)
+    private:
+        enum class InputMode
+        {
+            MouseAndKeyboard,
+            Controller
+        };
 
     public:
         void _ready() override;
+        void _enter_tree() override;
+        void _exit_tree() override;
         void _process(double delta_time) override;
         void _physics_process(double delta_time) override;
+        void _unhandled_input(const Ref<InputEvent>& event);
 
         // void _process(double delta);
         // void _physics_process(double delta);
@@ -44,6 +55,10 @@ namespace godot
         inline void set_rotation_speed(const real_t rot_speed) { m_rotation_speed = rot_speed; }
 
         // clang-format on
+    protected:
+        InputMode get_input_mode(Input* const input);
+        void process_movement_input(Input* input, double delta_time);
+        void process_rotation_input(Input* input, double delta_time);
 
     private:
         // Elapsed time in ms since last update
@@ -61,7 +76,9 @@ namespace godot
         // The current movement distance/direction that
         // was just applied to character position (units)
         Vector2 m_velocity{ 0.0, 0.0 };
-        Vector2 m_target_rotation{ 0.0, 0.0 };
+        // Vector2 m_target_rotation{ 0.0, 0.0 };
         real_t m_rotation_speed{ 5.0 };
+        double m_rotation_angle{ 0.0 };
+        InputMode m_input_mode{ InputMode::MouseAndKeyboard };
     };
 }

@@ -38,55 +38,151 @@ namespace godot
         m_velocity = { 0.0, 0.0 };
     }
 
-    void CharacterController2D::_physics_process(double delta_time)
+    void CharacterController2D::_enter_tree()
     {
-        Input* input = Input::get_singleton();
+        //
+    }
 
+    void CharacterController2D::_exit_tree()
+    {
+        //
+    }
+
+    void CharacterController2D::_unhandled_input(const Ref<InputEvent>& event)
+    {
+        // TODO: fix... doesn't handle deadzones properly
+        const String event_type{ event->get_class() };
+        switch (m_input_mode)
         {
-            // movement
-            Vector2 test{ std::move(input->get_vector("ui_left", "ui_right", "ui_up", "ui_down")) };
-            Vector2 target_velocity = test.is_zero_approx() ? Vector2{ 0, 0 } : test;
-
-            m_velocity = { m_velocity.lerp(target_velocity, m_friction) };
-            m_velocity = { m_velocity.clamp({ -1.0, -1.0 }, { 1.0, 1.0 }) };
-
-            auto movement_offset{ m_velocity * m_target_speed * delta_time };
-            this->set_position(this->get_position() + movement_offset);
-        }
-
-        {
-            // rotation
-            TypedArray<int32_t> controllers{ input->get_connected_joypads() };
-            if (controllers.is_empty())
+            default:
+                [[fallthrough]];
+            case InputMode::MouseAndKeyboard:
             {
-                Point2 mouse_position{ this->get_viewport()->get_mouse_position() };
-                Vector2 mouse_velocity{ input->get_last_mouse_velocity() };
+                // InputEventJoypadMotion
+                // InputEventJoypadButton
+                if (event_type.begins_with("InputEventJoypad"))
+                    m_input_mode = InputMode::Controller;
             }
-            else
+            case InputMode::Controller:
             {
-                uint32_t controller_id = controllers.front();
-
-                float x_axis = input->get_joy_axis(controller_id, JoyAxis::JOY_AXIS_RIGHT_X);
-                float y_axis = input->get_joy_axis(controller_id, JoyAxis::JOY_AXIS_RIGHT_Y);
-
-                auto deadzone = 0.15;
-                x_axis = Math::abs(x_axis) < deadzone ? 0.0 : x_axis;
-                y_axis = Math::abs(y_axis) < deadzone ? 0.0 : y_axis;
-
-                if (!Math::is_zero_approx(x_axis) || !Math::is_zero_approx(y_axis))
-                {
-                    m_target_rotation = Vector2{ -y_axis, x_axis };
-                    double raw_angle{ Vector2{ 0, 0 }.angle_to_point(m_target_rotation) };
-                    double rotation{ Math::lerp_angle(this->get_rotation(), raw_angle, m_rotation_speed * delta_time) };
-                    this->set_rotation(rotation);
-                }
+                // InputEventMouseMotion
+                // InputEventMouseButtom
+                // InputEventKey
+                if (event_type.begins_with("InputEventMouse") || event_type.begins_with("InputEventKey"))
+                    m_input_mode = InputMode::MouseAndKeyboard;
             }
         }
     }
 
+    void CharacterController2D::_physics_process(double delta_time)
+    {
+        // called in a fixed time step interval
+    }
+
     void CharacterController2D::_process(double delta_time)
     {
-        Node::_process(delta_time);
-        // process_movement(delta_time);
+        // called every frame
+        Input* const input{ Input::get_singleton() };
+        this->process_movement_input(input, delta_time);
+        this->process_rotation_input(input, delta_time);
+    }
+
+    void CharacterController2D::process_movement_input(Input* const input, double delta_time)
+    {
+        Vector2 raw_movement_input{ input->get_vector("ui_left", "ui_right", "ui_up", "ui_down") };
+        Vector2 target_velocity = raw_movement_input.is_zero_approx() ? Vector2{ 0, 0 } : raw_movement_input;
+
+        m_velocity = m_velocity.lerp(target_velocity, m_friction);
+        m_velocity = m_velocity.clamp({ -1.0, -1.0 }, { 1.0, 1.0 });
+
+        auto movement_offset{ m_velocity * m_target_speed * delta_time };
+        this->set_position(this->get_position() + movement_offset);
+    }
+
+    CharacterController2D::InputMode CharacterController2D::get_input_mode(Input* const input)
+    {
+        auto mouse_velocity = input->get_last_mouse_velocity();
+
+        switch (m_input_mode)
+        {
+            default:
+                [[fallthrough]];
+            case InputMode::MouseAndKeyboard:
+            {
+                TypedArray<int32_t> controllers{ input->get_connected_joypads() };
+                if (!controllers.is_empty())
+                {
+                    uint32_t controller_id = controllers.front();
+
+                    float rotation_x_axis = input->get_joy_axis(controller_id, JoyAxis::JOY_AXIS_RIGHT_X);
+                    float rotation_y_axis = input->get_joy_axis(controller_id, JoyAxis::JOY_AXIS_RIGHT_Y);
+                    float movement_x_axis = input->get_joy_axis(controller_id, JoyAxis::JOY_AXIS_LEFT_X);
+                    float movement_y_axis = input->get_joy_axis(controller_id, JoyAxis::JOY_AXIS_LEFT_Y);
+
+                    auto deadzone = 0.15;
+                    rotation_x_axis = Math::abs(rotation_x_axis) < deadzone ? 0.0 : rotation_x_axis;
+                    rotation_y_axis = Math::abs(rotation_y_axis) < deadzone ? 0.0 : rotation_y_axis;
+                    movement_x_axis = Math::abs(rotation_x_axis) < deadzone ? 0.0 : rotation_x_axis;
+                    movement_y_axis = Math::abs(rotation_y_axis) < deadzone ? 0.0 : rotation_y_axis;
+
+                    if (!Math::is_zero_approx(rotation_x_axis) || !Math::is_zero_approx(rotation_y_axis) ||
+                        !Math::is_zero_approx(movement_x_axis) || !Math::is_zero_approx(movement_y_axis))
+                        m_input_mode = InputMode::Controller;
+                }
+                break;
+            }
+            case InputMode::Controller:
+            {
+                if (!input->get_last_mouse_velocity().is_zero_approx())
+                    m_input_mode = InputMode::MouseAndKeyboard;
+                break;
+            }
+        }
+
+        return m_input_mode;
+    }
+
+    void CharacterController2D::process_rotation_input(Input* const input, const double delta_time)
+    {
+        switch (this->get_input_mode(input))
+        {
+            default:
+                [[fallthrough]];
+            case InputMode::MouseAndKeyboard:
+            {
+                Point2 mouse_position{ this->get_viewport()->get_mouse_position() };
+                m_rotation_angle = this->get_position().angle_to_point(this->get_global_mouse_position()) +
+                                   Math::deg_to_rad(90.0);
+                break;
+            }
+            case InputMode::Controller:
+            {
+                TypedArray<int32_t> controllers{ input->get_connected_joypads() };
+                if (controllers.is_empty())
+                    UtilityFunctions::printerr("Input Mode = Controller, but no controllers detected");
+                else
+                {
+                    uint32_t controller_id = controllers.front();
+
+                    float x_axis = input->get_joy_axis(controller_id, JoyAxis::JOY_AXIS_RIGHT_X);
+                    float y_axis = input->get_joy_axis(controller_id, JoyAxis::JOY_AXIS_RIGHT_Y);
+
+                    auto deadzone = 0.15;
+                    x_axis = Math::abs(x_axis) < deadzone ? 0.0 : x_axis;
+                    y_axis = Math::abs(y_axis) < deadzone ? 0.0 : y_axis;
+
+                    if (!Math::is_zero_approx(x_axis) || !Math::is_zero_approx(y_axis))
+                    {
+                        const Vector2 target_rotation{ -y_axis, x_axis };
+                        m_rotation_angle = Vector2{ 0, 0 }.angle_to_point(target_rotation);
+                    }
+                }
+
+                break;
+            }
+        }
+
+        double rotation{ Math::lerp_angle(this->get_rotation(), m_rotation_angle, m_rotation_speed * delta_time) };
+        this->set_rotation(rotation);
     }
 }
