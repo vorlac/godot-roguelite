@@ -41,13 +41,38 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
 	"${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
 )
 
+set(ROGUELITE_COMPILE_FLAGS)
+
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+	# using Visual Studio C++
+	set(ROGUELITE_COMPILE_FLAGS "/EHsc") # /GF /MP
+
+	if(CMAKE_BUILD_TYPE MATCHES Debug)
+		set(ROGUELITE_COMPILE_FLAGS "${ROGUELITE_COMPILE_FLAGS} /MDd") # /Od /RTC1 /Zi
+	else()
+		set(ROGUELITE_COMPILE_FLAGS "${ROGUELITE_COMPILE_FLAGS} /MD /O2") # /Oy /GL /Gy
+		STRING(REGEX REPLACE "/RTC(su|[1su])" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+		string(REPLACE "/RTC1" "" CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG})
+	endif(CMAKE_BUILD_TYPE MATCHES Debug)
+
+	add_definitions(-DNOMINMAX)
+else() # GCC/Clang
+	set(ROGUELITE_COMPILE_FLAGS "${ROGUELITE_COMPILE_FLAGS} -g")
+
+	if(CMAKE_BUILD_TYPE MATCHES Debug)
+		set(ROGUELITE_COMPILE_FLAGS "${ROGUELITE_COMPILE_FLAGS} -fno-omit-frame-pointer -O0")
+	else()
+		set(ROGUELITE_COMPILE_FLAGS "${ROGUELITE_COMPILE_FLAGS} -O3")
+	endif(CMAKE_BUILD_TYPE MATCHES Debug)
+endif()
+
 if(MSVC)
 	# fixes C macro __ARGS__ expansion for MSVC so it's
 	# consistent with other major C++ compilers (gcc/clang)
 	if(CMAKE_CXX_COMPILER MATCHES "/cl$")
 		target_compile_options(${PROJECT_NAME} PRIVATE
 			/Zc:preprocessor
-			/MT
+			${ROGUELITE_COMPILE_FLAGS}
 		)
 	elseif(CMAKE_CXX_COMPILER MATCHES "/clang-cl$")
 		# adjusts the number of errors output by clang
@@ -65,14 +90,14 @@ if(MSVC)
 	endif()
 endif()
 
-
-# Add the gdextension dynamic library 
+# Add the gdextension dynamic library
 add_library(${gdextension_lib_name} SHARED ${SOURCES})
 
 # set compiler definitions that match up with the buid used for the editor:
 # scons platform=windows arch=x86_64 target=editor dev_build=yes
 # debug_symbols=yes verbose=yes warnings=extra werror=yes
-target_compile_definitions(${PROJECT_NAME} PRIVATE ${extra_compile_defs}
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+	${extra_compile_defs}
 	NOMINMAX
 	TOOLS_ENABLED
 	DEBUG_ENABLED
@@ -98,7 +123,6 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE ${extra_compile_defs}
 	GLAD_ENABLED
 	GLES_OVER_GL
 )
-
 
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
 target_link_libraries(${PROJECT_NAME} PUBLIC godot::cpp)
