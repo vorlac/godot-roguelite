@@ -18,6 +18,12 @@
       "environment": {
         "NINJA_STATUS": "%p [%f/%t] - ",
         "VERBOSE": "true"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "enableClangTidyCodeAnalysis": true,
+          "enableMicrosoftCodeAnalysis": false
+        }
       }
     },
     {

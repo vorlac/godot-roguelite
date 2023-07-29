@@ -3,11 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bxwl5i7jdlemj" path="res://icon.svg" id="1_7ms8v"]
 [ext_resource type="Texture2D" uid="uid://crkxnydij27ql" path="res://art/TX Tileset Grass.png" id="2_devc1"]
 
-[sub_resource type="GDScript" id="GDScript_cj71i"]
-script/source = "@tool
-extends Character
-
-"
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kqvdo"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rtwdi"]
 texture = ExtResource("2_devc1")
@@ -288,25 +284,31 @@ sources/0 = SubResource("TileSetAtlasSource_rtwdi")
 light_mask = 1048575
 visibility_layer = 1048575
 z_index = 1
-position = Vector2(297.959, 188.403)
-rotation = -70.0474
-script = SubResource("GDScript_cj71i")
-metadata/_edit_lock_ = true
+scale = Vector2(0.75, 0.75)
 
-[node name="Icon" type="Sprite2D" parent="Character"]
-light_mask = 1048575
-visibility_layer = 1048575
-texture = ExtResource("1_7ms8v")
-
-[node name="Camera2D" type="Camera2D" parent="Character"]
+[node name="Camera" type="Camera2D" parent="Character"]
 light_mask = 31
 visibility_layer = 31
+z_index = 100
 limit_smoothed = true
 position_smoothing_enabled = true
 drag_horizontal_enabled = true
 drag_vertical_enabled = true
 editor_draw_limits = true
 editor_draw_drag_margin = true
+
+[node name="Icon" type="Sprite2D" parent="Character"]
+light_mask = 1048575
+visibility_layer = 1048575
+scale = Vector2(0.999798, 1.00543)
+texture = ExtResource("1_7ms8v")
+
+[node name="CollisionShape" type="CollisionShape2D" parent="Character"]
+modulate = Color(1, 0, 0, 1)
+self_modulate = Color(0, 1, 0, 1)
+use_parent_material = true
+shape = SubResource("RectangleShape2D_kqvdo")
+debug_color = Color(0.843137, 0.298039, 0.615686, 0.419608)
 
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2(489, 292)

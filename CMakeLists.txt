@@ -6,7 +6,7 @@ set(gdextension_lib_name ${PROJECT_NAME})
 include(${CMAKE_SOURCE_DIR}/scripts/cmake/utils.cmake)
 include(FetchContent)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -63,12 +63,6 @@ if(MSVC)
 		WASAPI_ENABLED
 		WINMIDI_ENABLED
 		TYPED_METHOD_BIND
-		WIN32
-		MSVC
-		WINVER=0x0601
-		_WIN32_WINNT=0x0601
-		NOMINMAX
-		_WIN64
 		VULKAN_ENABLED
 		GLES3_ENABLED
 		MINIZIP_ENABLED
@@ -97,7 +91,7 @@ if(MSVC)
 	endif()
 
 	target_compile_options(${PROJECT_NAME} PRIVATE
-		${roguelite_compile_flags}
+		"${roguelite_compile_flags}"
 	)
 endif()
 
