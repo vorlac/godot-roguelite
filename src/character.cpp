@@ -50,9 +50,11 @@ namespace godot
             auto&& [getter_method_name, getter_callable] = std::move(getter_info);
             auto&& [setter_method_name, setter_callable] = std::move(setter_info);
             auto&& [property_name, property_type] = std::move(properties);
-            PropertyInfo binding_prop_info{ property_type, property_name };
+
             ClassDB::bind_method(D_METHOD(getter_method_name), getter_callable);
             ClassDB::bind_method(D_METHOD(setter_method_name, property_name), setter_callable);
+
+            PropertyInfo binding_prop_info{ property_type, property_name };
             ADD_PROPERTY(binding_prop_info, setter_method_name, getter_method_name);
         }
     }
