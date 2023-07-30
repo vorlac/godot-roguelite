@@ -1,30 +1,25 @@
 #include "character.hpp"
 
-#include "gdextension_interface.h"
+#include "utils/utils.hpp"
 
 #include <array>
-#include <functional>
-#include <ranges>
+#include <gdextension_interface.h>
 #include <tuple>
-#include <utility>
 #include <godot_cpp/classes/collision_shape2d.hpp>
-#include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/input.hpp>
-#include <godot_cpp/classes/input_event.hpp>
 #include <godot_cpp/classes/input_map.hpp>
-#include <godot_cpp/classes/ref.hpp>
-#include <godot_cpp/classes/shape2d.hpp>
-#include <godot_cpp/classes/viewport.hpp>
-#include <godot_cpp/core/class_db.hpp>
-#include <godot_cpp/core/math.hpp>
-#include <godot_cpp/core/property_info.hpp>
-#include <godot_cpp/variant/utility_functions.hpp>
 
 namespace godot
 {
     void Character::_bind_methods()
     {
-        utils::print(FUNCTION_STR);
+        rl::utils::print(FUNCTION_STR);
+
+        // {
+        //     { getter function name, getter function pointer }
+        //     { setter function name, setter function pointer }
+        //     { property name / setter param, property type }
+        // }
 
         constexpr std::array METHOD_BINDINGS = {
             std::tuple(
@@ -68,7 +63,7 @@ namespace godot
 
     void Character::_enter_tree()
     {
-        utils::print(FUNCTION_STR);
+        rl::utils::print(FUNCTION_STR);
     }
 
     void Character::_exit_tree()
@@ -204,7 +199,7 @@ namespace godot
             {
                 TypedArray<int32_t> controllers{ std::move(input->get_connected_joypads()) };
                 if (controllers.is_empty())
-                    utils::printerr("InputMode = Controller, but no controllers detected");
+                    rl::utils::printerr("InputMode = Controller, but no controllers detected");
                 else
                 {
                     const uint32_t controller_id = controllers.front();

@@ -3,21 +3,17 @@
 #include <godot_cpp/classes/character_body2d.hpp>
 #include <godot_cpp/classes/input_event.hpp>
 #include <godot_cpp/core/class_db.hpp>
-#include <godot_cpp/core/math.hpp>
 
 namespace godot
 {
     class Input;
     class InputMap;
-    class UtilityFunctions;
 
     class Character : public CharacterBody2D
     {
         GDCLASS(Character, CharacterBody2D);
 
     private:
-        using utils = godot::UtilityFunctions;
-
         enum class InputMode
         {
             MouseAndKeyboard,
