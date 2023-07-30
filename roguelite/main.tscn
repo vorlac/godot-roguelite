@@ -279,13 +279,12 @@ navigation_layer_0/layers = 1
 navigation_layer_1/layers = 3
 sources/0 = SubResource("TileSetAtlasSource_rtwdi")
 
-[node name="Main" type="Node2D"]
+[node name="Level" type="Level"]
 
 [node name="Character" type="Character" parent="."]
 light_mask = 1048575
 visibility_layer = 1048575
 z_index = 1
-position = Vector2(200.0, 200.0)
 scale = Vector2(0.75, 0.75)
 motion_mode = 1
 

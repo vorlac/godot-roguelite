@@ -3,7 +3,6 @@
 #include <godot_cpp/classes/character_body2d.hpp>
 #include <godot_cpp/classes/input_event.hpp>
 #include <godot_cpp/core/class_db.hpp>
-#include <godot_cpp/core/property_info.hpp>
 
 namespace godot
 {
@@ -23,7 +22,7 @@ namespace godot
 
         struct Signals
         {
-            static constexpr inline const char* PositionChanged{ "position_changed" };
+            inline static constexpr auto PositionChanged{ "position_changed" };
         };
 
     public:
@@ -41,6 +40,7 @@ namespace godot
         static void bind_signals();
         static void bind_properties();
 
+    protected:
         [[nodiscard]] double get_movement_speed() const;
         [[nodiscard]] double get_movement_friction() const;
         [[nodiscard]] double get_rotation_speed() const;
@@ -48,7 +48,6 @@ namespace godot
         void set_movement_friction(const double move_friction);
         void set_rotation_speed(const double rotation_speed);
 
-    protected:
         InputMode get_input_mode(Input* const input);
         void process_movement_input(Input* input, double delta_time);
         void process_rotation_input(Input* input, double delta_time);
@@ -66,7 +65,5 @@ namespace godot
         double m_rotation_angle{ 0.0 };
         // elapsed runtime (seconds)
         double m_elapsed_time{ 0.0 };
-        // TODO: break this out into an editor tool
-        constexpr static inline bool RL_DEBUG{ true };
     };
 }
