@@ -1,13 +1,60 @@
 #pragma once
 
+#include <array>
+#include <concepts>
+#include <functional>
+#include <optional>
+#include <tuple>
+#include <type_traits>
+#include <utility>
 #include <godot_cpp/classes/character_body2d.hpp>
 #include <godot_cpp/classes/input_event.hpp>
 #include <godot_cpp/core/class_db.hpp>
+#include <godot_cpp/core/property_info.hpp>
 
 namespace godot
 {
     class Input;
     class InputMap;
+
+    template <typename TGet, typename TSet>
+    struct PropertyBinding
+    {
+        PropertyBinding(
+            std::tuple<String, String> func_names, std::tuple<TGet, TSet> func_callables,
+            std::tuple<String, Variant::Type> prop_desc,
+            std::optional<std::tuple<String, PropertyInfo, PropertyInfo>> signal_info = std::nullopt
+        )
+            : getter_name{ std::move(std::get<0>(func_names)) }
+            , setter_name{ std::move(std::get<1>(func_names)) }
+            , getter_func{ std::get<0>(func_callables) }
+            , setter_func{ std::get<1>(func_callables) }
+            , property_name{ std::move(std::get<0>(prop_desc)) }
+            , property_type{ std::move(std::get<1>(prop_desc)) }
+        {
+        }
+
+        String getter_name{};
+        String setter_name{};
+        String property_name{};
+        TGet getter_func{ nullptr };
+        TSet setter_func{ nullptr };
+        Variant::Type property_type{};
+    };
+
+    struct SignalBinding
+    {
+        SignalBinding(String&& name, PropertyInfo&& recv_info, PropertyInfo&& send_info)
+            : name{ std::move(name) }
+            , sender_info{ std::move(send_info) }
+            , receiver_info{ std::move(recv_info) }
+        {
+        }
+
+        String name{};
+        PropertyInfo sender_info{};
+        PropertyInfo receiver_info{};
+    };
 
     class Character : public CharacterBody2D
     {
@@ -32,9 +79,9 @@ namespace godot
         void _shortcut_input(const Ref<InputEvent>& event) override;
         static void _bind_methods();
 
-        [[nodiscard]] double get_movement_speed() const;
-        [[nodiscard]] double get_movement_friction() const;
-        [[nodiscard]] double get_rotation_speed() const;
+        double get_movement_speed() const;
+        double get_movement_friction() const;
+        double get_rotation_speed() const;
         void set_movement_speed(const double move_speed);
         void set_movement_friction(const double move_friction);
         void set_rotation_speed(const double rotation_speed);

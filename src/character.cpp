@@ -3,11 +3,19 @@
 #include "utils/utils.hpp"
 
 #include <array>
+#include <concepts>
+#include <functional>
 #include <gdextension_interface.h>
 #include <tuple>
+#include <type_traits>
+#include <utility>
+#include <vector>
+#include <xutility>
 #include <godot_cpp/classes/collision_shape2d.hpp>
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_map.hpp>
+#include <godot_cpp/variant/string.hpp>
+#include <godot_cpp/variant/variant.hpp>
 
 namespace godot
 {
@@ -15,42 +23,46 @@ namespace godot
     {
         rl::utils::print(FUNCTION_STR);
 
-        // {
-        //     { getter function name, getter function pointer }
-        //     { setter function name, setter function pointer }
-        //     { property name / setter param, property type }
-        // }
-
-        constexpr std::array METHOD_BINDINGS = {
-            std::tuple(
-                std::pair("get_movement_speed", &Character::get_movement_speed),
-                std::pair("set_movement_speed", &Character::set_movement_speed),
-                std::pair("move_speed", Variant::FLOAT)
-            ),
-            std::tuple(
-                std::pair("get_movement_friction", &Character::get_movement_friction),
-                std::pair("set_movement_friction", &Character::set_movement_friction),
-                std::pair("move_friction", Variant::FLOAT)
-            ),
-            std::tuple(
-                std::pair("get_rotation_speed", &Character::get_rotation_speed),
-                std::pair("set_rotation_speed", &Character::set_rotation_speed),
-                std::pair("rotation_speed", Variant::FLOAT)
-            )
+        const static std::array signal_bindings = {
+            SignalBinding{
+                "move_speed_changed",
+                PropertyInfo{ Variant::OBJECT, "node" },
+                PropertyInfo{ Variant::FLOAT, "new_speed" },
+            },
         };
 
-        for (auto&& binding : METHOD_BINDINGS)
+        for (const auto& signal : signal_bindings)
         {
-            auto&& [getter_info, setter_info, properties] = std::move(binding);
-            auto&& [getter_method_name, getter_callable] = std::move(getter_info);
-            auto&& [setter_method_name, setter_callable] = std::move(setter_info);
-            auto&& [property_name, property_type] = std::move(properties);
+            godot::ClassDB::add_signal(
+                Character::get_class_static(),
+                MethodInfo(signal.name, signal.receiver_info, signal.sender_info));
+        }
 
-            ClassDB::bind_method(D_METHOD(getter_method_name), getter_callable);
-            ClassDB::bind_method(D_METHOD(setter_method_name, property_name), setter_callable);
+        const static std::array property_bindings = {
+            PropertyBinding{
+                std::tuple{ "get_movement_speed", "set_movement_speed" },
+                std::tuple{ &Character::get_movement_speed, &Character::set_movement_speed },
+                std::tuple{ "movement_speed", Variant::FLOAT },
+            },
+            PropertyBinding{
+                std::tuple{ "get_movement_friction", "set_movement_friction" },
+                std::tuple{ &Character::get_movement_friction, &Character::set_movement_friction },
+                std::tuple{ "movement_friction", Variant::FLOAT },
+            },
+            PropertyBinding{
+                std::tuple{ "get_rotation_speed", "set_rotation_speed" },
+                std::tuple{ &Character::get_rotation_speed, &Character::set_rotation_speed },
+                std::tuple{ "rotation_speed", Variant::FLOAT },
+            }
+        };
 
-            PropertyInfo binding_prop_info{ property_type, property_name };
-            ADD_PROPERTY(binding_prop_info, setter_method_name, getter_method_name);
+        for (const auto& bind : property_bindings)
+        {
+            ClassDB::bind_method(D_METHOD(bind.getter_name), bind.getter_func);
+            ClassDB::bind_method(D_METHOD(bind.setter_name, bind.property_name), bind.setter_func);
+            PropertyInfo binding_prop_info{ bind.property_type, bind.property_name };
+            godot::ClassDB::add_property(Character::get_class_static(), binding_prop_info,
+                                         bind.setter_name, bind.getter_name);
         }
     }
 
@@ -131,7 +143,6 @@ namespace godot
         Input* const input{ Input::get_singleton() };
         if (input != nullptr)
         {
-            m_elapsed_time += delta_time;
             if constexpr (RL_DEBUG)
                 input->set_block_signals(false);
 
@@ -141,6 +152,13 @@ namespace godot
             Point2 mouse_pos{ this->get_global_mouse_position() };
             if (this->get_viewport_rect().has_point(mouse_pos))
                 input->flush_buffered_events();
+
+            m_elapsed_time += delta_time;
+            if (m_elapsed_time > 1.0)
+            {
+                this->emit_signal("move_speed_changed", this, this->get_movement_speed());
+                m_elapsed_time = 0.0;
+            }
 
             if constexpr (RL_DEBUG)
                 input->set_block_signals(true);
@@ -203,9 +221,8 @@ namespace godot
                 else
                 {
                     const uint32_t controller_id = controllers.front();
-                    const Vector2 target_rotation = input->get_vector(
-                        "rotate_left", "rotate_right", "rotate_up", "rotate_down"
-                    );
+                    const Vector2 target_rotation = input->get_vector("rotate_left", "rotate_right",
+                                                                      "rotate_up", "rotate_down");
                     if (!target_rotation.is_zero_approx())
                         m_rotation_angle = Vector2{ 0, 0 }.angle_to_point(target_rotation) +
                                            Math::deg_to_rad(90.0);
@@ -214,8 +231,8 @@ namespace godot
             }
         }
 
-        const double smoothed_rotation_angle =
-            Math::lerp_angle(this->get_rotation(), m_rotation_angle, m_rotation_speed * delta_time);
+        const double smoothed_rotation_angle = Math::lerp_angle(
+            this->get_rotation(), m_rotation_angle, m_rotation_speed * delta_time);
 
         this->set_rotation(smoothed_rotation_angle);
     }
