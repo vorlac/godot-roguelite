@@ -12,16 +12,80 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_DEBUG_POSTFIX "d")
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/bin)
-set(CMAKE_PDB_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/roguelite/bin)
+set(CMAKE_PDB_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/roguelite/bin)
 
-FetchContent_Declare(
-	GDExtension
-	GIT_REPOSITORY https://github.com/godotengine/godot-cpp.git
-	GIT_TAG godot-4.1-stable
-)
+# =======================================================================
 
-FetchContent_MakeAvailable(GDExtension)
+# confirm we found the godot engine source files.
+# if the sources list is empty, the submodule probably
+# hasn't been initialized or updated yet. 
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/godot/godot-cpp/src")
+    message(STATUS "godot-cpp bingings source not found") 
+	message(STATUS "initializing/updating the godot-cpp submodule...")
+    
+	# update the c++ bingings submodule to populate it with 
+	# the necessary source for the gdextension library
+    execute_process(
+		COMMAND git submodule update --init godot/godot-cpp
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+		COMMAND_ERROR_IS_FATAL ANY
+	)
+endif()
+
+
+# confirm we found the godot engine source files.
+# if the sources list is empty, the submodule probably
+# hasn't been initialized or updated yet. 
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/godot/engine/core")
+    message("Godot engine sources not found") 
+	message("initializing/updating the engine submodule...")
+    
+	# update the engine submodule to populate it with the
+	# code necessary to build a debug version of the editor that
+	# can be easily debugged along with the gdextension library
+    execute_process(
+		COMMAND git submodule update --init godot/engine
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+		COMMAND_ERROR_IS_FATAL ANY
+	)
+endif()
+
+# =======================================================================
+
+
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/godot/engine/bin/godot.windows.editor.dev.x86_64.exe")
+	message("Godot engine debug binaries not found, invoking debug build of engine...")
+
+	# this build should only ever need to be run once (unless the
+	# enging debug binaries are deleted or you want to change the 
+	# build configuration/command invoked below).
+	execute_process(
+		COMMAND scons --quiet                          \\
+					  --debug=count,memory,includes    \\
+		              platform=windows                 \\
+				      arch=x86_64                      \\
+				      target=editor                    \\
+				      use_static_cpp=no                \\
+				      dev_build=yes                    \\
+				      debug_symbols=yes                \\
+				      optimize=none                    \\
+				      use_lto=no
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/godot/engine"
+		COMMAND_ERROR_IS_FATAL ANY
+	)
+
+	# next check to see if the # editor debug binaries exist
+	find_file(GODOT_ENGINE_DEBUG_EXECUTABLE 
+		"${CMAKE_SOURCE_DIR}/godot/engine/bin/godot.windows.editor.dev.x86_64.exe"
+	)
+endif()
+
+# =======================================================================
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/godot/godot-cpp)
+
+# =======================================================================
 
 # create gdextension dynamic lib from the project src
 file(GLOB_RECURSE roguelite_sources CONFIGURE_DEPENDS
@@ -35,19 +99,23 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 	"${CMAKE_CURRENT_SOURCE_DIR}/src"
 )
 
-# do the same for the engine source files 
-file(GLOB_RECURSE engine_sources CONFIGURE_DEPENDS
-	"${CMAKE_CURRENT_SOURCE_DIR}/engine/*.[hc]"
-	"${CMAKE_CURRENT_SOURCE_DIR}/engine/*.[hc]pp"
+# =======================================================================
+
+# populate source file list for the godot engine submodule
+file(GLOB_RECURSE godot_engine_sources CONFIGURE_DEPENDS
+	"${CMAKE_CURRENT_SOURCE_DIR}/godot/engine/*.[hc]"
+	"${CMAKE_CURRENT_SOURCE_DIR}/godot/engine/*.[hc]pp"
 )
 
 # add the engine sources as a library so intellisense actually works
-add_library(engine EXCLUDE_FROM_ALL ${engine_sources})
-target_include_directories(engine PUBLIC 
-	"${CMAKE_CURRENT_SOURCE_DIR}/engine"
+add_library(godot_engine EXCLUDE_FROM_ALL ${godot_engine_sources})
+target_include_directories(godot_engine PUBLIC 
+	"${CMAKE_CURRENT_SOURCE_DIR}/godot/engine"
 )
 
-if(MSVC)
+# =======================================================================
+
+if(MSVC) 
 	# using Visual Studio C++
 
 	# set compiler definitions that match up with the buid used for the editor:
@@ -74,7 +142,7 @@ if(MSVC)
 		GLES_OVER_GL
 	)
 
-	set(roguelite_compile_flags "/EHsc") # /GF /MP
+	set(roguelite_compile_flags "/EHsc /utf-8") # /GF /MP
 
 	if(CMAKE_BUILD_TYPE MATCHES Debug)
 		set(roguelite_compile_flags "${roguelite_compile_flags} /MDd") # /Od /RTC1 /Zi
@@ -90,15 +158,18 @@ if(MSVC)
 		set(roguelite_compile_flags "${roguelite_compile_flags} /Zc:preprocessor")
 	endif()
 
-	target_compile_options(${PROJECT_NAME} PRIVATE
-		"${roguelite_compile_flags}"
+	target_compile_options(${PROJECT_NAME} PUBLIC
+		${roguelite_compile_flags}
 	)
 endif()
 
-
+# =======================================================================
 
 # link gdextension to the cpp bindings library
-target_link_libraries(${PROJECT_NAME} PUBLIC godot::cpp)
+target_link_libraries(${PROJECT_NAME} 
+	PUBLIC godot::cpp 
+	PUBLIC INTERFACE godot_engine
+)
 
 # print cmake configuration variables
 print_project_variables()

@@ -170,37 +170,15 @@ namespace godot
                 [[fallthrough]];
             case InputMode::MouseAndKeyboard:
             {
-                TypedArray<int32_t> controllers{ input->get_connected_joypads() };
-                if (!controllers.is_empty())
-                {
-                    uint32_t controller_id = controllers.front();
-
-                    float rotation_x_axis =
-                        input->get_joy_axis(controller_id, JoyAxis::JOY_AXIS_RIGHT_X);
-                    float rotation_y_axis =
-                        input->get_joy_axis(controller_id, JoyAxis::JOY_AXIS_RIGHT_Y);
-                    float movement_x_axis =
-                        input->get_joy_axis(controller_id, JoyAxis::JOY_AXIS_LEFT_X);
-                    float movement_y_axis =
-                        input->get_joy_axis(controller_id, JoyAxis::JOY_AXIS_LEFT_Y);
-
-                    auto deadzone = 0.15;
-                    rotation_x_axis = Math::abs(rotation_x_axis) < deadzone ? 0.0 : rotation_x_axis;
-                    rotation_y_axis = Math::abs(rotation_y_axis) < deadzone ? 0.0 : rotation_y_axis;
-                    movement_x_axis = Math::abs(rotation_x_axis) < deadzone ? 0.0 : rotation_x_axis;
-                    movement_y_axis = Math::abs(rotation_y_axis) < deadzone ? 0.0 : rotation_y_axis;
-
-                    if (!Math::is_zero_approx(rotation_x_axis) ||
-                        !Math::is_zero_approx(rotation_y_axis) ||
-                        !Math::is_zero_approx(movement_x_axis) ||
-                        !Math::is_zero_approx(movement_y_axis))
-                        m_input_mode = InputMode::Controller;
-                }
+                const bool controller_input_detected{ input->is_action_pressed("controller_any") };
+                if (controller_input_detected)
+                    m_input_mode = InputMode::Controller;
                 break;
             }
             case InputMode::Controller:
             {
-                if (!input->get_last_mouse_velocity().is_zero_approx())
+                const auto&& mouse_velocity{ input->get_last_mouse_velocity() };
+                if (!mouse_velocity.is_zero_approx())
                     m_input_mode = InputMode::MouseAndKeyboard;
                 break;
             }
@@ -211,7 +189,6 @@ namespace godot
 
     void Character::process_rotation_input(Input* const input, const double delta_time)
     {
-        // double rotation_angle{ this->get_rotation() };
         switch (this->get_input_mode(input))
         {
             default:
