@@ -14,7 +14,7 @@ export_presets.cfg
 data_*/
 mono_crash.*.json
 
-out/
+.out/
 
 roguelite/bin/*.dll
 roguelite/bin/*.manifest
@@ -30,4 +30,5 @@ roguelite/bin/*.ilk
 roguelite/bin/*
 
 !.vs/launch.vs.json
+!.vs/VSWorkspaceSettings.json
 !roguelite/bin/*.gdextension

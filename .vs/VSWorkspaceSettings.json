@@ -1,0 +1,26 @@
+{
+  "BuildIncremental": {
+    "Enabled": false
+  },
+  "ExcludedItems": [
+    ".git*",
+    ".clang*",
+    ".vs",
+    ".vscode",
+    "cpp.hint",
+    "scripts/",
+    "extension_api.json",
+    "README.md",
+    "!.out*",
+    "!.out/*",
+    "!.out/build/*",
+    "!.godot"
+  ],
+  "Indexing": {
+    "Enabled": true
+  },
+  "Logger": {
+    "EnableVsLogging": false,
+    "LoggingLevel": "Info"
+  }
+}

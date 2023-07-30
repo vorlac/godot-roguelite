@@ -2,5 +2,6 @@
     "[cpp]": {
         "diffEditor.diffAlgorithm": "advanced"
     },
-    "cmake.configureOnOpen": true
+    "cmake.configureOnOpen": false,
+    "dotnet.defaultSolution": "disable"
 }

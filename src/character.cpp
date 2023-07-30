@@ -1,16 +1,11 @@
 #include "character.hpp"
 
+#include "utils/bindings.hpp"
 #include "utils/utils.hpp"
 
 #include <array>
-#include <concepts>
-#include <functional>
 #include <gdextension_interface.h>
 #include <tuple>
-#include <type_traits>
-#include <utility>
-#include <vector>
-#include <xutility>
 #include <godot_cpp/classes/collision_shape2d.hpp>
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_map.hpp>
@@ -21,13 +16,17 @@ namespace godot
 {
     void Character::_bind_methods()
     {
-        rl::utils::print(FUNCTION_STR);
+        Character::bind_properties();
+        Character::bind_signals();
+    }
 
+    void Character::bind_signals()
+    {
         const static std::array signal_bindings = {
-            SignalBinding{
-                "move_speed_changed",
+            rl::SignalBinding{
+                Signals::PositionChanged,
                 PropertyInfo{ Variant::OBJECT, "node" },
-                PropertyInfo{ Variant::FLOAT, "new_speed" },
+                PropertyInfo{ Variant::VECTOR2, "new_position" },
             },
         };
 
@@ -37,19 +36,22 @@ namespace godot
                 Character::get_class_static(),
                 MethodInfo(signal.name, signal.receiver_info, signal.sender_info));
         }
+    }
 
+    void Character::bind_properties()
+    {
         const static std::array property_bindings = {
-            PropertyBinding{
+            rl::PropertyBinding{
                 std::tuple{ "get_movement_speed", "set_movement_speed" },
                 std::tuple{ &Character::get_movement_speed, &Character::set_movement_speed },
                 std::tuple{ "movement_speed", Variant::FLOAT },
             },
-            PropertyBinding{
+            rl::PropertyBinding{
                 std::tuple{ "get_movement_friction", "set_movement_friction" },
                 std::tuple{ &Character::get_movement_friction, &Character::set_movement_friction },
                 std::tuple{ "movement_friction", Variant::FLOAT },
             },
-            PropertyBinding{
+            rl::PropertyBinding{
                 std::tuple{ "get_rotation_speed", "set_rotation_speed" },
                 std::tuple{ &Character::get_rotation_speed, &Character::set_rotation_speed },
                 std::tuple{ "rotation_speed", Variant::FLOAT },
@@ -103,49 +105,11 @@ namespace godot
         //
     }
 
-    double Character::get_movement_speed() const
-    {
-        return m_movement_speed;
-    }
-
-    double Character::get_movement_friction() const
-    {
-        return m_movement_friction;
-    }
-
-    double Character::get_rotation_speed() const
-    {
-        return m_rotation_speed;
-    }
-
-    void Character::set_movement_speed(const double move_speed)
-    {
-        m_movement_speed = move_speed;
-    }
-
-    void Character::set_movement_friction(const double move_friction)
-    {
-        m_movement_friction = move_friction;
-    }
-
-    void Character::set_rotation_speed(const double rotation_speed)
-    {
-        m_rotation_speed = rotation_speed;
-    }
-
-    void Character::_physics_process(double delta_time)
-    {
-        // called in a fixed time step interval
-    }
-
     void Character::_process(double delta_time)
     {
         Input* const input{ Input::get_singleton() };
         if (input != nullptr)
         {
-            if constexpr (RL_DEBUG)
-                input->set_block_signals(false);
-
             this->process_movement_input(input, delta_time);
             this->process_rotation_input(input, delta_time);
 
@@ -156,12 +120,9 @@ namespace godot
             m_elapsed_time += delta_time;
             if (m_elapsed_time > 1.0)
             {
-                this->emit_signal("move_speed_changed", this, this->get_movement_speed());
+                this->emit_signal(Signals::PositionChanged, this, this->get_global_position());
                 m_elapsed_time = 0.0;
             }
-
-            if constexpr (RL_DEBUG)
-                input->set_block_signals(true);
         }
     }
 
@@ -235,5 +196,40 @@ namespace godot
             this->get_rotation(), m_rotation_angle, m_rotation_speed * delta_time);
 
         this->set_rotation(smoothed_rotation_angle);
+    }
+
+    double Character::get_movement_speed() const
+    {
+        return m_movement_speed;
+    }
+
+    double Character::get_movement_friction() const
+    {
+        return m_movement_friction;
+    }
+
+    double Character::get_rotation_speed() const
+    {
+        return m_rotation_speed;
+    }
+
+    void Character::set_movement_speed(const double move_speed)
+    {
+        m_movement_speed = move_speed;
+    }
+
+    void Character::set_movement_friction(const double move_friction)
+    {
+        m_movement_friction = move_friction;
+    }
+
+    void Character::set_rotation_speed(const double rotation_speed)
+    {
+        m_rotation_speed = rotation_speed;
+    }
+
+    void Character::_physics_process(double delta_time)
+    {
+        // called in a fixed time step interval
     }
 }

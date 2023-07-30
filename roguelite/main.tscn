@@ -285,9 +285,8 @@ sources/0 = SubResource("TileSetAtlasSource_rtwdi")
 light_mask = 1048575
 visibility_layer = 1048575
 z_index = 1
-position = Vector2(178, 122)
-rotation = 1.46968
-scale = Vector2(0.750035, 0.750035)
+position = Vector2(200.0, 200.0)
+scale = Vector2(0.75, 0.75)
 motion_mode = 1
 
 [node name="Camera" type="Camera2D" parent="Character"]
@@ -323,4 +322,4 @@ layer_0/tile_data = PackedInt32Array(-1245216, 0, 5, -1179680, 0, 6, -1114144, 0
 [node name="SignalReceiver" type="Node2D" parent="."]
 script = ExtResource("3_dyhcp")
 
-[connection signal="move_speed_changed" from="Character" to="SignalReceiver" method="_on_character_move_speed_changed"]
+[connection signal="position_changed" from="Character" to="SignalReceiver" method="_on_character_position_changed"]

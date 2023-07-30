@@ -3,18 +3,16 @@ project(roguelite LANGUAGES C CXX)
 
 set(gdextension_lib_name ${PROJECT_NAME})
 
-include(${CMAKE_SOURCE_DIR}/scripts/cmake/utils.cmake)
-include(FetchContent)
-
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_DEBUG_POSTFIX "d")
-
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/roguelite/bin)
 set(CMAKE_PDB_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/roguelite/bin)
 
+# =======================================================================
+# Godot Engine and C++ bindings submodule management 
 # =======================================================================
 
 # confirm we found the godot engine source files.
@@ -52,7 +50,8 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/godot/engine/core")
 endif()
 
 # =======================================================================
-
+# Godot editor/engine debug build 
+# =======================================================================
 
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/godot/engine/bin/godot.windows.editor.dev.x86_64.exe")
 	message("Godot engine debug binaries not found, invoking debug build of engine...")
@@ -82,9 +81,13 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/godot/engine/bin/godot.windows.editor
 endif()
 
 # =======================================================================
+# Godot C++ bindings library setup/configuration
+# =======================================================================
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/godot/godot-cpp)
 
+# =======================================================================
+# GDExtension dynamic library setup/configuration
 # =======================================================================
 
 # create gdextension dynamic lib from the project src
@@ -100,6 +103,10 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 )
 
 # =======================================================================
+# Godot engine library setup/configuration.
+# Not necessary, just provides better support in Visual Studio
+# for engine source code browsing, intellisense, and debugging
+# =======================================================================
 
 # populate source file list for the godot engine submodule
 file(GLOB_RECURSE godot_engine_sources CONFIGURE_DEPENDS
@@ -109,10 +116,10 @@ file(GLOB_RECURSE godot_engine_sources CONFIGURE_DEPENDS
 
 # add the engine sources as a library so intellisense actually works
 add_library(godot_engine EXCLUDE_FROM_ALL ${godot_engine_sources})
-target_include_directories(godot_engine PUBLIC 
-	"${CMAKE_CURRENT_SOURCE_DIR}/godot/engine"
-)
 
+# =======================================================================
+# Compiler and linker configuration.
+# Build flags/definitions match what the engine and bindings use.
 # =======================================================================
 
 if(MSVC) 
@@ -142,12 +149,23 @@ if(MSVC)
 		GLES_OVER_GL
 	)
 
-	set(roguelite_compile_flags "/EHsc /utf-8") # /GF /MP
+	set(roguelite_compile_flags 
+		/EHsc 
+		/utf-8
+	) # /GF /MP
 
 	if(CMAKE_BUILD_TYPE MATCHES Debug)
-		set(roguelite_compile_flags "${roguelite_compile_flags} /MDd") # /Od /RTC1 /Zi
+		set(roguelite_compile_flags 
+			${roguelite_compile_flags} 
+			/MDd
+		)
 	else()
-		set(roguelite_compile_flags "${roguelite_compile_flags} /MD /O2") # /Oy /GL /Gy
+		set(roguelite_compile_flags 
+			${roguelite_compile_flags} 
+			/MD 
+			/O2
+		)
+		
 		STRING(REGEX REPLACE "/RTC(su|[1su])" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 		string(REPLACE "/RTC1" "" CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG})
 	endif(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -155,7 +173,10 @@ if(MSVC)
 	if(CMAKE_CXX_COMPILER MATCHES "/cl$")
 		# fixes C macro __ARGS__ expansion for MSVC so it's
 		# consistent with other major C++ compilers (gcc/clang)
-		set(roguelite_compile_flags "${roguelite_compile_flags} /Zc:preprocessor")
+		set(roguelite_compile_flags 
+			${roguelite_compile_flags} 
+			/Zc:preprocessor
+		)
 	endif()
 
 	target_compile_options(${PROJECT_NAME} PUBLIC
@@ -164,12 +185,17 @@ if(MSVC)
 endif()
 
 # =======================================================================
+# Dependancy linkage
+# =======================================================================
 
 # link gdextension to the cpp bindings library
 target_link_libraries(${PROJECT_NAME} 
 	PUBLIC godot::cpp 
-	PUBLIC INTERFACE godot_engine
 )
 
-# print cmake configuration variables
+# =======================================================================
+# Print useful configuration report
+# =======================================================================
+
+include(${CMAKE_SOURCE_DIR}/scripts/cmake/utils.cmake)
 print_project_variables()
