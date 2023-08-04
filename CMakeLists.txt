@@ -8,99 +8,80 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_DEBUG_POSTFIX "d")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/roguelite/bin)
-set(CMAKE_PDB_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/roguelite/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/roguelite/bin)
+set(CMAKE_PDB_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/roguelite/bin)
 
 # =======================================================================
-# Godot Engine and C++ bindings submodule management 
+# Godot Engine and C++ bindings submodule management
 # =======================================================================
 
 # confirm we found the godot engine source files.
 # if the sources list is empty, the submodule probably
-# hasn't been initialized or updated yet. 
-if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/godot/godot-cpp/src")
-    message(STATUS "godot-cpp bingings source not found") 
-	message(STATUS "initializing/updating the godot-cpp submodule...")
-    
-	# update the c++ bingings submodule to populate it with 
-	# the necessary source for the gdextension library
-    execute_process(
-		COMMAND git submodule update --init godot/godot-cpp
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-		COMMAND_ERROR_IS_FATAL ANY
-	)
-endif()
+# hasn't been initialized or updated yet.
+if(NOT EXISTS "${CMAKE_SOURCE_DIR}/godot/godot-cpp/src")
+    message(STATUS "godot-cpp bingings source not found")
+    message(STATUS "initializing/updating the godot-cpp submodule...")
 
+    # update the c++ bingings submodule to populate it with
+    # the necessary source for the gdextension library
+    execute_process(
+        COMMAND git submodule update --init godot/godot-cpp
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMAND_ERROR_IS_FATAL ANY
+    )
+endif()
 
 # confirm we found the godot engine source files.
 # if the sources list is empty, the submodule probably
-# hasn't been initialized or updated yet. 
-if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/godot/engine/core")
-    message("Godot engine sources not found") 
-	message("initializing/updating the engine submodule...")
-    
-	# update the engine submodule to populate it with the
-	# code necessary to build a debug version of the editor that
-	# can be easily debugged along with the gdextension library
+# hasn't been initialized or updated yet.
+if(NOT EXISTS "${CMAKE_SOURCE_DIR}/godot/engine/core")
+    message("Godot engine sources not found")
+    message("initializing/updating the engine submodule...")
+
+    # update the engine submodule to populate it with the
+    # code necessary to build a debug version of the editor that
+    # can be easily debugged along with the gdextension library
     execute_process(
-		COMMAND git submodule update --init godot/engine
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-		COMMAND_ERROR_IS_FATAL ANY
-	)
+        COMMAND git submodule update --init godot/engine
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMAND_ERROR_IS_FATAL ANY
+    )
 endif()
 
 # =======================================================================
-# Godot editor/engine debug build 
+# Godot editor/engine debug build
 # =======================================================================
+if(NOT EXISTS "${CMAKE_SOURCE_DIR}/godot/engine/bin/godot.windows.editor.dev.x86_64.exe")
+    message("Godot engine debug binaries not found, invoking debug build of engine...")
 
-if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/godot/engine/bin/godot.windows.editor.dev.x86_64.exe")
-	message("Godot engine debug binaries not found, invoking debug build of engine...")
+    # this build should only ever need to be run once (unless the
+    # enging debug binaries are deleted or you want to change the
+    # build configuration/command invoked below).
+    execute_process(
+        COMMAND scons --quiet                       \\
+                      --debug=count,memory,includes \\
+                      platform=windows              \\
+                      arch=x86_64                   \\
+                      target=editor                 \\
+                      use_static_cpp=no             \\
+                      dev_build=yes                 \\
+                      debug_symbols=yes             \\
+                      optimize=none                 \\
+                      use_lto=no
+        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/godot/engine"
+        COMMAND_ERROR_IS_FATAL ANY
+    )
 
-	# this build should only ever need to be run once (unless the
-	# enging debug binaries are deleted or you want to change the 
-	# build configuration/command invoked below).
-	execute_process(
-		COMMAND scons --quiet                          \\
-					  --debug=count,memory,includes    \\
-		              platform=windows                 \\
-				      arch=x86_64                      \\
-				      target=editor                    \\
-				      use_static_cpp=no                \\
-				      dev_build=yes                    \\
-				      debug_symbols=yes                \\
-				      optimize=none                    \\
-				      use_lto=no
-        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/godot/engine"
-		COMMAND_ERROR_IS_FATAL ANY
-	)
-
-	# next check to see if the # editor debug binaries exist
-	find_file(GODOT_ENGINE_DEBUG_EXECUTABLE 
-		"${CMAKE_SOURCE_DIR}/godot/engine/bin/godot.windows.editor.dev.x86_64.exe"
-	)
+    # next check to see if the # editor debug binaries exist
+    find_file(GODOT_ENGINE_DEBUG_EXECUTABLE
+        "${CMAKE_SOURCE_DIR}/godot/engine/bin/godot.windows.editor.dev.x86_64.exe"
+    )
 endif()
 
 # =======================================================================
 # Godot C++ bindings library setup/configuration
 # =======================================================================
-
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/godot/godot-cpp)
-
-# =======================================================================
-# GDExtension dynamic library setup/configuration
-# =======================================================================
-
-# create gdextension dynamic lib from the project src
-file(GLOB_RECURSE roguelite_sources CONFIGURE_DEPENDS
-	"${CMAKE_CURRENT_SOURCE_DIR}/src/*.[hc]"
-	"${CMAKE_CURRENT_SOURCE_DIR}/src/*.[hc]pp"
-)
-
-# add the gdextension dynamic library
-add_library(${PROJECT_NAME} SHARED ${roguelite_sources})
-target_include_directories(${PROJECT_NAME} PUBLIC 
-	"${CMAKE_CURRENT_SOURCE_DIR}/src"
-)
+add_subdirectory(${CMAKE_SOURCE_DIR}/godot/godot-cpp)
 
 # =======================================================================
 # Godot engine library setup/configuration.
@@ -109,88 +90,121 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 # =======================================================================
 
 # populate source file list for the godot engine submodule
-file(GLOB_RECURSE godot_engine_sources CONFIGURE_DEPENDS
-	"${CMAKE_CURRENT_SOURCE_DIR}/godot/engine/*.[hc]"
-	"${CMAKE_CURRENT_SOURCE_DIR}/godot/engine/*.[hc]pp"
+file(GLOB_RECURSE godot_engine_sources SYSTEM CONFIGURE_DEPENDS
+    "${CMAKE_SOURCE_DIR}/godot/engine/*.[hc]"
+    "${CMAKE_SOURCE_DIR}/godot/engine/*.[hc]pp"
 )
 
 # add the engine sources as a library so intellisense actually works
 add_library(godot_engine EXCLUDE_FROM_ALL ${godot_engine_sources})
+target_include_directories(godot_engine PUBLIC
+    "${CMAKE_SOURCE_DIR}/godot/engine"
+    "${CMAKE_SOURCE_DIR}/godot/engine/platform/windows"
+    "${CMAKE_SOURCE_DIR}/godot/engine/thirdparty/zlib"
+    SYSTEM "${CMAKE_SOURCE_DIR}/godot/engine/thirdparty/zstd"
+    SYSTEM "${CMAKE_SOURCE_DIR}/godot/engine/thirdparty/mbedtls/include"
+)
+
+# =======================================================================
+# GDExtension dynamic library setup/configuration
+# =======================================================================
+
+# create gdextension dynamic lib from the project src
+file(GLOB_RECURSE roguelite_sources CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.[hc]"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.[hc]pp"
+)
+
+# add the gdextension dynamic library
+add_library(${PROJECT_NAME} SHARED ${roguelite_sources})
+target_include_directories(${PROJECT_NAME} PUBLIC
+    "${CMAKE_CURRENT_SOURCE_DIR}/src"
+)
 
 # =======================================================================
 # Compiler and linker configuration.
 # Build flags/definitions match what the engine and bindings use.
 # =======================================================================
 
-if(MSVC) 
-	# using Visual Studio C++
+if(MSVC)
+    # using Visual Studio C++
 
-	# set compiler definitions that match up with the buid used for the editor:
-	# scons platform=windows arch=x86_64 target=editor dev_build=yes
-	# debug_symbols=yes verbose=yes warnings=extra werror=yes
-	add_compile_definitions(
-		NOMINMAX
-		TOOLS_ENABLED
-		DEBUG_ENABLED
-		DEV_ENABLED
-		NO_EDITOR_SPLASH
-		WINDOWS_ENABLED
-		WASAPI_ENABLED
-		WINMIDI_ENABLED
-		TYPED_METHOD_BIND
-		VULKAN_ENABLED
-		GLES3_ENABLED
-		MINIZIP_ENABLED
-		BROTLI_ENABLED
-		ZSTD_STATIC_LINKING_ONLY
-		USE_VOLK
-		VK_USE_PLATFORM_WIN32_KHR
-		GLAD_ENABLED
-		GLES_OVER_GL
-	)
+    # set compiler definitions that match up with the buid used for the editor:
+    # scons platform=windows arch=x86_64 target=editor dev_build=yes
+    # debug_symbols=yes verbose=yes warnings=extra werror=yes
+    add_compile_definitions(
+        NOMINMAX
+        TOOLS_ENABLED
+        DEBUG_ENABLED
+        DEV_ENABLED
+        NO_EDITOR_SPLASH
+        WINDOWS_ENABLED
+        WASAPI_ENABLED
+        WINMIDI_ENABLED
+        TYPED_METHOD_BIND
+        VULKAN_ENABLED
+        GLES3_ENABLED
+        MINIZIP_ENABLED
+        BROTLI_ENABLED
+        ZSTD_STATIC_LINKING_ONLY
+        USE_VOLK
+        VK_USE_PLATFORM_WIN32_KHR
+        GLAD_ENABLED
+        GLES_OVER_GL
+    )
 
-	set(roguelite_compile_flags 
-		/EHsc 
-		/utf-8
-	) # /GF /MP
+    set(roguelite_compile_flags
+        /EHsc
+        /utf-8
+    ) # /GF /MP
 
-	if(CMAKE_BUILD_TYPE MATCHES Debug)
-		set(roguelite_compile_flags 
-			${roguelite_compile_flags} 
-			/MDd
-		)
-	else()
-		set(roguelite_compile_flags 
-			${roguelite_compile_flags} 
-			/MD 
-			/O2
-		)
-		
-		STRING(REGEX REPLACE "/RTC(su|[1su])" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-		string(REPLACE "/RTC1" "" CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG})
-	endif(CMAKE_BUILD_TYPE MATCHES Debug)
+    if(CMAKE_BUILD_TYPE MATCHES Debug)
+        set(roguelite_compile_flags
+            ${roguelite_compile_flags}
+            /MDd
+        )
+    else()
+        set(roguelite_compile_flags
+            ${roguelite_compile_flags}
+            /MD
+            /O2
+        )
 
-	if(CMAKE_CXX_COMPILER MATCHES "/cl$")
-		# fixes C macro __ARGS__ expansion for MSVC so it's
-		# consistent with other major C++ compilers (gcc/clang)
-		set(roguelite_compile_flags 
-			${roguelite_compile_flags} 
-			/Zc:preprocessor
-		)
-	endif()
+        string(
+            REGEX REPLACE
+            "/RTC(su|[1su])" ""
+            CMAKE_CXX_FLAGS
+            "${CMAKE_CXX_FLAGS}"
+        )
 
-	target_compile_options(${PROJECT_NAME} PUBLIC
-		${roguelite_compile_flags}
-	)
+        string(
+            REPLACE "/RTC1" ""
+            CMAKE_CXX_FLAGS_DEBUG
+            ${CMAKE_CXX_FLAGS_DEBUG}
+        )
+    endif()
+
+    if(CMAKE_CXX_COMPILER MATCHES "/cl$")
+        # fixes C macro __ARGS__ expansion for MSVC so it's
+        # consistent with other major C++ compilers (gcc/clang)
+        set(roguelite_compile_flags
+            ${roguelite_compile_flags}
+            /Zc:preprocessor
+        )
+    endif()
+
+    target_compile_options(${gdextension_lib_name} PUBLIC
+        ${roguelite_compile_flags}
+    )
 endif()
 
 # =======================================================================
-# Dependancy linkage
+# Dependency linkage
 # =======================================================================
 
 # link gdextension to the cpp bindings library
-target_link_libraries(${PROJECT_NAME} 
-	PUBLIC godot::cpp 
+target_link_libraries(${gdextension_lib_name}
+    PUBLIC godot::cpp
 )
 
 # =======================================================================

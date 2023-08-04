@@ -1,7 +1,7 @@
 #include "character.hpp"
 
-#include "utils/bindings.hpp"
-#include "utils/utils.hpp"
+#include "util/bindings.hpp"
+#include "util/utils.hpp"
 
 #include <array>
 #include <gdextension_interface.h>
