@@ -8,6 +8,7 @@ namespace godot
 {
     class Input;
     class InputMap;
+    class Vector2;
 
     class Game : public Node2D
     {
@@ -22,5 +23,7 @@ namespace godot
         static void _bind_methods();
         static void bind_signals();
         static void bind_properties();
+
+        void print_character_position(const Object* node, Vector2 location) const;
     };
 }

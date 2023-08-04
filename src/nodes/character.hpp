@@ -13,7 +13,7 @@ namespace godot
     {
         GDCLASS(Character, CharacterBody2D);
 
-    private:
+    public:
         enum class InputMode
         {
             MouseAndKeyboard,
