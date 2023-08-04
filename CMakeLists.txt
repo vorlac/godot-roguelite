@@ -76,6 +76,10 @@ if(NOT EXISTS "${CMAKE_SOURCE_DIR}/godot/engine/bin/godot.windows.editor.dev.x86
     find_file(GODOT_ENGINE_DEBUG_EXECUTABLE
         "${CMAKE_SOURCE_DIR}/godot/engine/bin/godot.windows.editor.dev.x86_64.exe"
     )
+
+    if(NOT GODOT_ENGINE_DEBUG_EXECUTABLE)
+        message(FATAL_ERROR "Couldn't find godot debug executable after scons build")
+    endif()
 endif()
 
 # =======================================================================
