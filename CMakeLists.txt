@@ -77,7 +77,6 @@ if(NOT EXISTS "${godot_debug_editor_executable}")
     # build configuration/command invoked below).
     execute_process(
         COMMAND scons --quiet                       \\
-                      --debug=count,memory,includes \\
                       platform=windows              \\
                       arch=x86_64                   \\
                       target=editor                 \\
