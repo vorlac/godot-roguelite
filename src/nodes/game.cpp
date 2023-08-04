@@ -10,7 +10,6 @@ namespace godot
 {
     void Game::_bind_methods()
     {
-        // ClassDB::bind_method(D_METHOD("_ready"), &Game::_ready);
         ClassDB::bind_method(D_METHOD("print_character_position"), &Game::print_character_position);
     }
 

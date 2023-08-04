@@ -7,9 +7,11 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# define output paths for gdextension shared lib and debug symbols
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/bin)
+set(CMAKE_PDB_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/bin)
 set(CMAKE_DEBUG_POSTFIX "d")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/roguelite/bin)
-set(CMAKE_PDB_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/roguelite/bin)
 
 # =======================================================================
 # Godot Engine and C++ bindings submodule management
@@ -51,8 +53,24 @@ endif()
 # =======================================================================
 # Godot editor/engine debug build
 # =======================================================================
-if(NOT EXISTS "${CMAKE_SOURCE_DIR}/godot/engine/bin/godot.windows.editor.dev.x86_64.exe")
+
+set(godot_debug_editor_executable "${CMAKE_SOURCE_DIR}/godot/engine/bin/godot.windows.editor.dev.x86_64.exe")
+if(NOT EXISTS "${godot_debug_editor_executable}")
     message("Godot engine debug binaries not found, invoking debug build of engine...")
+
+    execute_process(
+        COMMAND scons --clean                       \\
+                      platform=windows              \\
+                      arch=x86_64                   \\
+                      target=editor                 \\
+                      use_static_cpp=no             \\
+                      dev_build=yes                 \\
+                      debug_symbols=yes             \\
+                      optimize=none                 \\
+                      use_lto=no
+        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/godot/engine"
+        COMMAND_ERROR_IS_FATAL ANY
+    )
 
     # this build should only ever need to be run once (unless the
     # enging debug binaries are deleted or you want to change the
@@ -72,12 +90,9 @@ if(NOT EXISTS "${CMAKE_SOURCE_DIR}/godot/engine/bin/godot.windows.editor.dev.x86
         COMMAND_ERROR_IS_FATAL ANY
     )
 
-    # next check to see if the # editor debug binaries exist
-    find_file(GODOT_ENGINE_DEBUG_EXECUTABLE
-        "${CMAKE_SOURCE_DIR}/godot/engine/bin/godot.windows.editor.dev.x86_64.exe"
-    )
+    file(REMOVE_RECURSE "${CMAKE_SOURCE_DIR}/godot/engine/.sconf_temp")
 
-    if(NOT GODOT_ENGINE_DEBUG_EXECUTABLE)
+    if(NOT EXISTS "${godot_debug_editor_executable}")
         message(FATAL_ERROR "Couldn't find godot debug executable after scons build")
     endif()
 endif()
@@ -85,6 +100,7 @@ endif()
 # =======================================================================
 # Godot C++ bindings library setup/configuration
 # =======================================================================
+
 add_subdirectory(${CMAKE_SOURCE_DIR}/godot/godot-cpp)
 
 # =======================================================================
@@ -94,7 +110,7 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/godot/godot-cpp)
 # =======================================================================
 
 # populate source file list for the godot engine submodule
-file(GLOB_RECURSE godot_engine_sources SYSTEM CONFIGURE_DEPENDS
+file(GLOB_RECURSE godot_engine_sources CONFIGURE_DEPENDS
     "${CMAKE_SOURCE_DIR}/godot/engine/*.[hc]"
     "${CMAKE_SOURCE_DIR}/godot/engine/*.[hc]pp"
 )
