@@ -1,5 +1,6 @@
-#include "character.hpp"
+#include "nodes/character.hpp"
 
+#include "nodes/camera.hpp"
 #include "util/bindings.hpp"
 #include "util/utils.hpp"
 
@@ -12,8 +13,11 @@
 #include <godot_cpp/classes/editor_interface.hpp>
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_map.hpp>
+#include <godot_cpp/classes/node.hpp>
+#include <godot_cpp/classes/node2d.hpp>
 #include <godot_cpp/classes/ref.hpp>
 #include <godot_cpp/variant/string.hpp>
+#include <godot_cpp/variant/typed_array.hpp>
 #include <godot_cpp/variant/variant.hpp>
 
 /**
@@ -26,38 +30,37 @@ namespace godot
         gdutils::print(FUNCTION_STR);
         this->set_motion_mode(MotionMode::MOTION_MODE_FLOATING);
         this->set_scale({ 0.70, 0.70 });
-
-        // InputMap* const input_map{ InputMap::get_singleton() };
-        // input_map->load_from_project_settings();
     }
 
     void Character::_enter_tree()
     {
         gdutils::print(FUNCTION_STR);
-        Camera2D* player_camera{ memnew(Camera2D) };
+        Camera* player_camera{ memnew(Camera) };
         if (player_camera != nullptr)
         {
-            // player_camera->set_owner(this);
-            //  player_camera->reparent(this);
-            player_camera->set_name("PlayerCamera");
-            player_camera->set_anchor_mode(Camera2D::ANCHOR_MODE_DRAG_CENTER);
-            player_camera->set_editor_description("PlayerCamera");
-            player_camera->set_margin_drawing_enabled(true);
-            player_camera->set_enabled(true);
-
-            // player_camera->align();
             this->add_child(player_camera);
-            // this->get_tree()
+            player_camera->set_owner(this);
         }
     }
 
     void Character::_exit_tree()
     {
+        // TODO: revisit, delete all children? or does something else do that?
+        const auto& children{ this->get_children() };
+        if (not children.is_empty())
+        {
+            for (auto idx = 0; idx < children.size(); ++idx)
+            {
+                auto camera = Object::cast_to<Camera>(children[idx]);
+                if (camera != nullptr)
+                    this->remove_child(camera);
+            }
+        }
     }
 
     void Character::_physics_process(double delta_time)
     {
-        auto camera{ this->get_node<Camera2D>("PlayerCamera") };
+        auto camera{ this->get_node<Camera>("PlayerCamera") };
         if (camera != nullptr)
             camera->align();
 

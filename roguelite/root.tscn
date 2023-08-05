@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://nw4lxblcdxgc"]
+[gd_scene load_steps=3 format=3 uid="uid://c4civ8tge0vb4"]
 
 [ext_resource type="PackedScene" uid="uid://iln4uhamvxm3" path="res://main.tscn" id="1_odm5v"]
 
@@ -13,7 +13,7 @@ physics_object_picking = true
 gui_embed_subwindows = true
 positional_shadow_atlas_size = 4096
 title = "Roguelite"
-position = Vector2i(1283, 38)
+position = Vector2i(0, 36)
 size = Vector2i(1276, 1341)
 min_size = Vector2i(64, 64)
 content_scale_size = Vector2i(1920, 1080)

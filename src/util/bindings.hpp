@@ -3,12 +3,17 @@
 #include <optional>
 #include <tuple>
 #include <type_traits>
+
 #include <godot_cpp/core/property_info.hpp>
 #include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/variant.hpp>
 
-namespace godot::rl
+namespace rl
 {
+    using godot::PropertyInfo;
+    using godot::String;
+    using godot::Variant;
+
     template <typename TGetter, typename TSetter>
     struct PropertyBinding
     {

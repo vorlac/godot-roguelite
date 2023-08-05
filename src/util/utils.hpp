@@ -1,65 +1,109 @@
 #pragma once
 
 #include <godot_cpp/classes/engine.hpp>
+#include <godot_cpp/classes/input_map.hpp>
+#include <godot_cpp/classes/main_loop.hpp>
+#include <godot_cpp/classes/node.hpp>
+#include <godot_cpp/classes/node2d.hpp>
+#include <godot_cpp/classes/object.hpp>
+#include <godot_cpp/classes/scene_tree.hpp>
+#include <godot_cpp/classes/viewport.hpp>
+#include <godot_cpp/classes/window.hpp>
+#include <godot_cpp/godot.hpp>
 #include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 
-namespace godot
+using gdutils = godot::UtilityFunctions;
+
+namespace rl
 {
-    using gdutils = godot::UtilityFunctions;
+    using godot::Engine;
+    using godot::InputMap;
+    using godot::MainLoop;
+    using godot::Node;
+    using godot::Object;
+    using godot::SceneTree;
+    using godot::String;
+    using godot::Window;
 
-    namespace rl
+    namespace project
     {
-        enum class DebugLevel : uint_fast8_t
+        constexpr static inline auto project_path(const String& rel_path) -> String&&
         {
-            None,
-            Error,
-            Warning,
-            Info,
-            Debug,
-            Trace
-        };
-
-        namespace detail
-        {
-            static inline rl::DebugLevel debug_level{ rl::DebugLevel::Debug };
+            return std::move("res://" + rel_path);
         }
 
-        namespace util
+        constexpr static inline auto user_data_path(const String& rel_path) -> String&&
         {
-            constexpr static inline bool debug_active(const rl::DebugLevel level)
-            {
-                return rl::detail::debug_level <= level;
-            }
+            return std::move("user://" + rel_path);
+        }
+    }
+
+    namespace input
+    {
+        const static inline void load_project_inputs()
+        {
+            InputMap* const input_map{ InputMap::get_singleton() };
+            input_map->load_from_project_settings();
         }
 
-        namespace project
-        {
-            constexpr static inline auto project_path(const String& rel_path) -> String&&
-            {
-                return std::move("res://" + rel_path);
-            }
+    }
 
-            constexpr static inline auto user_data_path(const String& rel_path) -> String&&
-            {
-                return std::move("user://" + rel_path);
-            }
+    namespace editor
+    {
+        const static inline bool active()
+        {
+            return Engine::get_singleton()->is_editor_hint();
+        }
+    }
+
+    namespace game
+    {
+        const static inline bool active()
+        {
+            return !editor::active();
+        }
+    }
+
+    namespace engine
+    {
+        static inline MainLoop* main_loop()
+        {
+            static Engine* loop{ Engine::get_singleton() };
+            if (loop != nullptr) [[likely]]
+                return loop->get_main_loop();
+            return nullptr;
         }
 
-        namespace editor
+        static inline SceneTree* scene_tree()
         {
-            const static inline bool active()
-            {
-                return godot::Engine::get_singleton()->is_editor_hint();
-            }
+            static MainLoop* loop{ engine::main_loop() };
+            if (loop != nullptr) [[likely]]
+                return Object::cast_to<SceneTree>(loop);
+            return nullptr;
         }
 
-        namespace game
+        static inline Window* root_window()
         {
-            const static inline bool active()
-            {
-                return !editor::active();
-            }
+            static SceneTree* tree{ engine::scene_tree() };
+            if (tree != nullptr) [[likely]]
+                return tree->get_root();
+            return nullptr;
+        }
+
+        static inline Node* root_node()
+        {
+            return Object::cast_to<Node>(engine::root_window());
+        }
+
+        const static inline int32_t max_fps()
+        {
+            return Engine::get_singleton()->get_max_fps();
+        }
+
+        static inline void set_fps(const uint32_t fps)
+        {
+            return Engine::get_singleton()->set_max_fps(fps);
         }
     }
 }

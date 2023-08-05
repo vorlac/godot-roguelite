@@ -1,5 +1,6 @@
 #include "register_types.hpp"
 
+#include "nodes/camera.hpp"
 #include "nodes/character.hpp"
 #include "nodes/game.hpp"
 #include "nodes/level.hpp"
@@ -13,17 +14,18 @@ namespace godot
 {
     void initialize_roguelite_module(ModuleInitializationLevel p_level)
     {
-        if (p_level != ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE)
+        if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE)
             return;
 
+        ClassDB::register_class<Camera>();
+        ClassDB::register_class<Character>();
         ClassDB::register_class<Game>();
         ClassDB::register_class<Level>();
-        ClassDB::register_class<Character>();
     }
 
     void uninitialize_roguelite_module(ModuleInitializationLevel p_level)
     {
-        if (p_level != ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE)
+        if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE)
             return;
     }
 
@@ -34,11 +36,12 @@ namespace godot
                                                           GDExtensionClassLibraryPtr lib,
                                                           GDExtensionInitialization* init)
         {
+            auto init_level = MODULE_INITIALIZATION_LEVEL_SCENE;
             GDExtensionBinding::InitObject init_obj(addr, lib, init);
+
             init_obj.register_initializer(initialize_roguelite_module);
             init_obj.register_terminator(uninitialize_roguelite_module);
-            init_obj.set_minimum_library_initialization_level(
-                ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE);
+            init_obj.set_minimum_library_initialization_level(init_level);
 
             return init_obj.init();
         }

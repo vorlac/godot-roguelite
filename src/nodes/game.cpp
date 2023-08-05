@@ -1,6 +1,7 @@
 #include "nodes/game.hpp"
 
 #include "nodes/character.hpp"
+#include "nodes/level.hpp"
 #include "util/utils.hpp"
 
 #include <godot_cpp/classes/object.hpp>
@@ -15,6 +16,7 @@ namespace godot
 
     void Game::_ready()
     {
+        rl::engine::set_fps(60);
         Object* node = this->get_node<Object>("Level/" + godot::String(Character::Name));
         if (node != nullptr)
         {
