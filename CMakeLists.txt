@@ -1,6 +1,7 @@
 ﻿cmake_minimum_required(VERSION 3.19)
-project(roguelite LANGUAGES C CXX)
+# set(VCPKG_TARGET_TRIPLET "x64-windows-static")
 
+project(roguelite LANGUAGES C CXX)
 set(gdextension_lib_name ${PROJECT_NAME})
 
 set(CMAKE_CXX_STANDARD 23)
@@ -49,6 +50,46 @@ if(NOT EXISTS "${CMAKE_SOURCE_DIR}/godot/engine/core")
         COMMAND_ERROR_IS_FATAL ANY
     )
 endif()
+
+
+# # confirm we found the vcpkg submodule ports dir.
+# # if the sources list is empty, the submodule probably
+# # hasn't been initialized or updated yet.
+# if(NOT EXISTS "${CMAKE_SOURCE_DIR}/tools/vcpkg/ports")
+#     message("VCPKG package manager sources not found")
+#     message("initializing/updating the vcpkg submodule...")
+# 
+#     # update the vcpkg submodule to populate it with the code necessary
+#     # to grab all dependencies needed for the gdextension library build
+#     execute_process(
+#         COMMAND git submodule update --init tools/vcpkg
+#         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+#         COMMAND_ERROR_IS_FATAL ANY
+#     )
+# endif()
+#
+# # =======================================================================
+# # VCPKG bootstrap / initialization. 
+# # Only happens once, when vcpkg.exe is missing.
+# # =======================================================================
+#
+# set(vcpkg_executable "${CMAKE_SOURCE_DIR}/tools/vcpkg/vcpkg.exe")
+# 
+# if(NOT EXISTS "${vcpkg_executable}")
+#     # bootstrap vcpkg so vcpkg.exe 
+#     # is configured and installed
+#     execute_process(
+#         COMMAND ps -c "./tools/vcpkg/boostrap-vcpkg.bat"
+#         WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+#         COMMAND_ERROR_IS_FATAL ANY
+#     )
+# 
+#     # fail out if vcpkg isn't found after setup
+#     if(NOT EXISTS "${vcpkg_executable}")
+#         message(FATAL_ERROR "ERROR: tools/vcpkg/vcpkg.exe not found!")
+#     endif()
+# endif()
+
 
 # =======================================================================
 # Godot editor/engine debug build

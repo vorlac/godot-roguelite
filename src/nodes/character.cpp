@@ -4,109 +4,80 @@
 #include "util/utils.hpp"
 
 #include <array>
-#include <gdextension_interface.h>
 #include <tuple>
+
+#include <gdextension_interface.h>
+#include <godot_cpp/classes/camera2d.hpp>
 #include <godot_cpp/classes/collision_shape2d.hpp>
+#include <godot_cpp/classes/editor_interface.hpp>
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_map.hpp>
+#include <godot_cpp/classes/ref.hpp>
 #include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/variant.hpp>
 
+/**
+ * @brief behavior
+ * */
 namespace godot
 {
-    void Character::_bind_methods()
-    {
-        Character::bind_properties();
-        Character::bind_signals();
-    }
-
-    void Character::bind_signals()
-    {
-        const static std::array signal_bindings = {
-            rl::SignalBinding{
-                Signals::PositionChanged,
-                PropertyInfo{ Variant::OBJECT, "node" },
-                PropertyInfo{ Variant::VECTOR2, "new_position" },
-            },
-        };
-
-        for (const auto& signal : signal_bindings)
-        {
-            godot::ClassDB::add_signal(
-                Character::get_class_static(),
-                MethodInfo(signal.name, signal.receiver_info, signal.sender_info));
-        }
-    }
-
-    void Character::bind_properties()
-    {
-        const static std::array property_bindings = {
-            rl::PropertyBinding{
-                std::tuple{ "get_movement_speed", "set_movement_speed" },
-                std::tuple{ &Character::get_movement_speed, &Character::set_movement_speed },
-                std::tuple{ "movement_speed", Variant::FLOAT },
-            },
-            rl::PropertyBinding{
-                std::tuple{ "get_movement_friction", "set_movement_friction" },
-                std::tuple{ &Character::get_movement_friction, &Character::set_movement_friction },
-                std::tuple{ "movement_friction", Variant::FLOAT },
-            },
-            rl::PropertyBinding{
-                std::tuple{ "get_rotation_speed", "set_rotation_speed" },
-                std::tuple{ &Character::get_rotation_speed, &Character::set_rotation_speed },
-                std::tuple{ "rotation_speed", Variant::FLOAT },
-            }
-        };
-
-        for (const auto& bind : property_bindings)
-        {
-            ClassDB::bind_method(D_METHOD(bind.getter_name), bind.getter_func);
-            ClassDB::bind_method(D_METHOD(bind.setter_name, bind.property_name), bind.setter_func);
-            PropertyInfo binding_prop_info{ bind.property_type, bind.property_name };
-            godot::ClassDB::add_property(Character::get_class_static(), binding_prop_info,
-                                         bind.setter_name, bind.getter_name);
-        }
-    }
-
     void Character::_ready()
     {
+        gdutils::print(FUNCTION_STR);
         this->set_motion_mode(MotionMode::MOTION_MODE_FLOATING);
-        InputMap* const input_map{ InputMap::get_singleton() };
-        input_map->load_from_project_settings();
+        this->set_scale({ 0.70, 0.70 });
+
+        // InputMap* const input_map{ InputMap::get_singleton() };
+        // input_map->load_from_project_settings();
     }
 
     void Character::_enter_tree()
     {
-        rl::utils::print(FUNCTION_STR);
+        gdutils::print(FUNCTION_STR);
+        Camera2D* player_camera{ memnew(Camera2D) };
+        if (player_camera != nullptr)
+        {
+            // player_camera->set_owner(this);
+            //  player_camera->reparent(this);
+            player_camera->set_name("PlayerCamera");
+            player_camera->set_anchor_mode(Camera2D::ANCHOR_MODE_DRAG_CENTER);
+            player_camera->set_editor_description("PlayerCamera");
+            player_camera->set_margin_drawing_enabled(true);
+            player_camera->set_enabled(true);
+
+            // player_camera->align();
+            this->add_child(player_camera);
+            // this->get_tree()
+        }
     }
 
     void Character::_exit_tree()
     {
-        //
+    }
+
+    void Character::_physics_process(double delta_time)
+    {
+        auto camera{ this->get_node<Camera2D>("PlayerCamera") };
+        if (camera != nullptr)
+            camera->align();
+
+        // called every 1/60th sec
+        if (rl::editor::active())
+            return;
     }
 
     void Character::_input(const Ref<InputEvent>& event)
     {
-        //
-    }
-
-    void Character::_shortcut_input(const Ref<InputEvent>& event)
-    {
-        //
-    }
-
-    void Character::_unhandled_key_input(const Ref<InputEvent>& event)
-    {
-        //
-    }
-
-    void Character::_unhandled_input(const Ref<InputEvent>& event)
-    {
-        //
+        // called when input is detected
+        if (rl::editor::active())
+            return;
     }
 
     void Character::_process(double delta_time)
     {
+        if (rl::editor::active())
+            return;
+
         Input* const input{ Input::get_singleton() };
         if (input != nullptr)
         {
@@ -178,7 +149,7 @@ namespace godot
             {
                 TypedArray<int32_t> controllers{ std::move(input->get_connected_joypads()) };
                 if (controllers.is_empty())
-                    rl::utils::printerr("InputMode = Controller, but no controllers detected");
+                    gdutils::printerr("InputMode = Controller, but no controllers detected");
                 else
                 {
                     const uint32_t controller_id = controllers.front();
@@ -197,20 +168,16 @@ namespace godot
 
         this->set_rotation(smoothed_rotation_angle);
     }
+}
 
-    double Character::get_movement_speed() const
+/**
+ * @brief properties
+ * */
+namespace godot
+{
+    [[nodiscard]] double Character::get_movement_speed() const
     {
         return m_movement_speed;
-    }
-
-    double Character::get_movement_friction() const
-    {
-        return m_movement_friction;
-    }
-
-    double Character::get_rotation_speed() const
-    {
-        return m_rotation_speed;
     }
 
     void Character::set_movement_speed(const double move_speed)
@@ -218,18 +185,83 @@ namespace godot
         m_movement_speed = move_speed;
     }
 
+    [[nodiscard]] double Character::get_movement_friction() const
+    {
+        return m_movement_friction;
+    }
+
     void Character::set_movement_friction(const double move_friction)
     {
         m_movement_friction = move_friction;
+    }
+
+    [[nodiscard]] double Character::get_rotation_speed() const
+    {
+        return m_rotation_speed;
     }
 
     void Character::set_rotation_speed(const double rotation_speed)
     {
         m_rotation_speed = rotation_speed;
     }
+}
 
-    void Character::_physics_process(double delta_time)
+/**
+ * @brief property/signal bindings
+ * */
+namespace godot
+{
+    void Character::bind_signals()
     {
-        // called in a fixed time step interval
+        const static std::array signal_bindings = {
+            rl::SignalBinding{
+                Signals::PositionChanged,
+                PropertyInfo{ Variant::OBJECT, "node" },
+                PropertyInfo{ Variant::VECTOR2, "new_position" },
+            },
+        };
+
+        for (const auto& signal : signal_bindings)
+        {
+            godot::ClassDB::add_signal(
+                Character::get_class_static(),
+                MethodInfo(signal.name, signal.receiver_info, signal.sender_info));
+        }
+    }
+
+    void Character::bind_properties()
+    {
+        const static std::array property_bindings = {
+            rl::PropertyBinding{
+                std::tuple{ "get_movement_speed", "set_movement_speed" },
+                std::tuple{ &Character::get_movement_speed, &Character::set_movement_speed },
+                std::tuple{ "movement_speed", Variant::FLOAT },
+            },
+            rl::PropertyBinding{
+                std::tuple{ "get_movement_friction", "set_movement_friction" },
+                std::tuple{ &Character::get_movement_friction, &Character::set_movement_friction },
+                std::tuple{ "movement_friction", Variant::FLOAT },
+            },
+            rl::PropertyBinding{
+                std::tuple{ "get_rotation_speed", "set_rotation_speed" },
+                std::tuple{ &Character::get_rotation_speed, &Character::set_rotation_speed },
+                std::tuple{ "rotation_speed", Variant::FLOAT },
+            }
+        };
+
+        for (const auto& bind : property_bindings)
+        {
+            ClassDB::bind_method(D_METHOD(bind.getter_name), bind.getter_func);
+            ClassDB::bind_method(D_METHOD(bind.setter_name, bind.property_name), bind.setter_func);
+            PropertyInfo binding_prop_info{ bind.property_type, bind.property_name };
+            godot::ClassDB::add_property(Character::get_class_static(), binding_prop_info,
+                                         bind.setter_name, bind.getter_name);
+        }
+    }
+
+    void Character::_bind_methods()
+    {
+        Character::bind_properties();
+        Character::bind_signals();
     }
 }

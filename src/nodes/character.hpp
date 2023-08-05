@@ -3,6 +3,7 @@
 #include <godot_cpp/classes/character_body2d.hpp>
 #include <godot_cpp/classes/input_event.hpp>
 #include <godot_cpp/core/class_db.hpp>
+#include <godot_cpp/variant/string.hpp>
 
 namespace godot
 {
@@ -25,6 +26,8 @@ namespace godot
             inline static constexpr auto PositionChanged{ "position_changed" };
         };
 
+        constexpr inline static auto Name{ "Player" };
+
     public:
         void _ready() override;
         void _enter_tree() override;
@@ -32,9 +35,6 @@ namespace godot
         void _process(double delta_time) override;
         void _physics_process(double delta_time) override;
         void _input(const Ref<InputEvent>& event) override;
-        void _unhandled_input(const Ref<InputEvent>& event) override;
-        void _unhandled_key_input(const Ref<InputEvent>& event) override;
-        void _shortcut_input(const Ref<InputEvent>& event) override;
 
         static void _bind_methods();
         static void bind_signals();

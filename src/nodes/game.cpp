@@ -15,7 +15,7 @@ namespace godot
 
     void Game::_ready()
     {
-        Object* node = this->get_node<Object>("Level/Character");
+        Object* node = this->get_node<Object>("Level/" + godot::String(Character::Name));
         if (node != nullptr)
         {
             node->connect(Character::Signals::PositionChanged,
@@ -25,7 +25,7 @@ namespace godot
 
     void Game::print_character_position(const Object* node, Vector2 location) const
     {
-        rl::utils::print(node->get_class() + " new location: " + location);
+        gdutils::print(node->get_class() + " new location: " + location);
     }
 
     void Game::_enter_tree()

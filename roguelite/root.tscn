@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://nw4lxblcdxgc"]
+
+[ext_resource type="PackedScene" uid="uid://iln4uhamvxm3" path="res://main.tscn" id="1_odm5v"]
+
+[sub_resource type="World3D" id="World3D_geood"]
+
+[node name="root" type="Window"]
+process_mode = 1
+world_3d = SubResource("World3D_geood")
+audio_listener_enable_2d = true
+audio_listener_enable_3d = true
+physics_object_picking = true
+gui_embed_subwindows = true
+positional_shadow_atlas_size = 4096
+title = "Roguelite"
+position = Vector2i(1283, 38)
+size = Vector2i(1276, 1341)
+min_size = Vector2i(64, 64)
+content_scale_size = Vector2i(1920, 1080)
+content_scale_aspect = 1
+
+[node name="Game" parent="." instance=ExtResource("1_odm5v")]
