@@ -9,7 +9,7 @@
 #include <godot_cpp/classes/scene_tree.hpp>
 #include <godot_cpp/classes/viewport.hpp>
 #include <godot_cpp/classes/window.hpp>
-#include <godot_cpp/godot.hpp>
+#include <godot_cpp/core/error_macros.hpp>
 #include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 
@@ -26,6 +26,46 @@ namespace rl
     using godot::String;
     using godot::Window;
 
+    namespace debug::io
+    {
+        // [UtilityFunctions::print_verbose] print verbose messages
+        [[msvc::flatten]]
+        const static inline void verbose(const char* const msg)
+        {
+            godot::UtilityFunctions::print_verbose(msg);
+        }
+
+        // [UtilityFunctions::print] print info messages
+        [[msvc::flatten]]
+        const static inline void info(const char* const msg)
+        {
+            godot::UtilityFunctions::print(msg);
+        }
+
+        // [WARN_PRINT_ED]: print warning messages
+        [[msvc::flatten]]
+        const static inline void warning(const char* const msg)
+        {
+            WARN_PRINT_ED(msg);
+        }
+
+        // [ERR_PRINT_ED]: print error message
+        [[msvc::flatten]]
+        const static inline void error(const char* const msg)
+        {
+            ERR_PRINT_ED(msg);
+        }
+
+        // [DEV_ASSERT] print condition and break debugger when cond is false.
+        // calls to this function and the consitions are replaced with (void(0))
+        // when building in release mode.
+        [[msvc::flatten]]
+        const static inline void assert(const bool cond)
+        {
+            DEV_ASSERT(cond);
+        }
+    }
+
     namespace project
     {
         constexpr static inline auto project_path(const String& rel_path) -> String&&
@@ -36,6 +76,17 @@ namespace rl
         constexpr static inline auto user_data_path(const String& rel_path) -> String&&
         {
             return std::move("user://" + rel_path);
+        }
+    }
+
+    namespace scene
+    {
+        template <typename TNode = Node>
+        inline Node* edited_root(TNode* node)
+        {
+            Node* edited_root{ node->get_tree()->get_edited_scene_root() };
+            DEV_ASSERT(edited_root != nullptr);
+            return edited_root;
         }
     }
 

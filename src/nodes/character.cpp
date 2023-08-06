@@ -2,6 +2,7 @@
 
 #include "nodes/camera.hpp"
 #include "util/bindings.hpp"
+#include "util/signals.hpp"
 #include "util/utils.hpp"
 
 #include <array>
@@ -11,11 +12,17 @@
 #include <godot_cpp/classes/camera2d.hpp>
 #include <godot_cpp/classes/collision_shape2d.hpp>
 #include <godot_cpp/classes/editor_interface.hpp>
+#include <godot_cpp/classes/image.hpp>
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_map.hpp>
 #include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/classes/node2d.hpp>
 #include <godot_cpp/classes/ref.hpp>
+#include <godot_cpp/classes/resource.hpp>
+#include <godot_cpp/classes/resource_loader.hpp>
+#include <godot_cpp/classes/shape2d.hpp>
+#include <godot_cpp/classes/texture2d.hpp>
+#include <godot_cpp/variant/rect2.hpp>
 #include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/typed_array.hpp>
 #include <godot_cpp/variant/variant.hpp>
@@ -25,48 +32,50 @@
  * */
 namespace godot
 {
+    Character::Character()
+    {
+        this->set_name("Player");
+        m_camera->set_name("PlayerCamera");
+        m_sprite->set_name("PlayerSprite");
+        m_collision_shape->set_name("PlayerCollision");
+    }
+
     void Character::_ready()
     {
         gdutils::print(FUNCTION_STR);
+        ResourceLoader* resource_loader{ ResourceLoader::get_singleton() };
+
+        Ref<Resource> image_resource{ resource_loader->load("res://icon.svg") };
+        m_sprite->set_texture(image_resource);
+        this->add_child(m_sprite);
+
+        Ref<Shape2D> rect{ memnew(Rect2) };
+        m_collision_shape->set_shape(rect);
+        this->add_child(m_collision_shape);
+
+        this->add_child(m_camera);
+
         this->set_motion_mode(MotionMode::MOTION_MODE_FLOATING);
         this->set_scale({ 0.70, 0.70 });
+        //  m_camera->set_owner(this);
     }
 
     void Character::_enter_tree()
     {
         gdutils::print(FUNCTION_STR);
-        Camera* player_camera{ memnew(Camera) };
-        if (player_camera != nullptr)
-        {
-            this->add_child(player_camera);
-            player_camera->set_owner(this);
-        }
     }
 
     void Character::_exit_tree()
     {
-        // TODO: revisit, delete all children? or does something else do that?
-        const auto& children{ this->get_children() };
-        if (not children.is_empty())
-        {
-            for (auto idx = 0; idx < children.size(); ++idx)
-            {
-                auto camera = Object::cast_to<Camera>(children[idx]);
-                if (camera != nullptr)
-                    this->remove_child(camera);
-            }
-        }
+        this->queue_free();
     }
 
     void Character::_physics_process(double delta_time)
     {
-        auto camera{ this->get_node<Camera>("PlayerCamera") };
-        if (camera != nullptr)
-            camera->align();
-
-        // called every 1/60th sec
         if (rl::editor::active())
             return;
+
+        m_camera->align();
     }
 
     void Character::_input(const Ref<InputEvent>& event)
@@ -115,17 +124,16 @@ namespace godot
         switch (m_input_mode)
         {
             default:
-                [[fallthrough]];
             case InputMode::MouseAndKeyboard:
             {
-                const bool controller_input_detected{ input->is_action_pressed("controller_any") };
+                bool controller_input_detected{ input->is_action_pressed("controller_any") };
                 if (controller_input_detected)
                     m_input_mode = InputMode::Controller;
                 break;
             }
             case InputMode::Controller:
             {
-                const auto&& mouse_velocity{ input->get_last_mouse_velocity() };
+                Vector2 mouse_velocity{ input->get_last_mouse_velocity() };
                 if (!mouse_velocity.is_zero_approx())
                     m_input_mode = InputMode::MouseAndKeyboard;
                 break;
@@ -140,24 +148,23 @@ namespace godot
         switch (this->get_input_mode(input))
         {
             default:
-                [[fallthrough]];
             case InputMode::MouseAndKeyboard:
             {
-                Vector2 rotation_direction{ this->get_global_mouse_position() -
-                                            this->get_global_position() };
-                m_rotation_angle = rotation_direction.angle() + Math::deg_to_rad(90.0);
+                Vector2 rotation_dir{ this->get_global_mouse_position() -
+                                      this->get_global_position() };
+
+                m_rotation_angle = rotation_dir.angle() + Math::deg_to_rad(90.0);
                 break;
             }
             case InputMode::Controller:
             {
-                TypedArray<int32_t> controllers{ std::move(input->get_connected_joypads()) };
+                TypedArray<int32_t> controllers{ input->get_connected_joypads() };
                 if (controllers.is_empty())
-                    gdutils::printerr("InputMode = Controller, but no controllers detected");
+                    rl::debug::io::error("InputMode = Controller, but no controllers detected");
                 else
                 {
-                    const uint32_t controller_id = controllers.front();
-                    const Vector2 target_rotation = input->get_vector("rotate_left", "rotate_right",
-                                                                      "rotate_up", "rotate_down");
+                    Vector2 target_rotation{ input->get_vector("rotate_left", "rotate_right",
+                                                               "rotate_up", "rotate_down") };
                     if (!target_rotation.is_zero_approx())
                         m_rotation_angle = Vector2{ 0, 0 }.angle_to_point(target_rotation) +
                                            Math::deg_to_rad(90.0);
@@ -166,10 +173,9 @@ namespace godot
             }
         }
 
-        const double smoothed_rotation_angle = Math::lerp_angle(
-            this->get_rotation(), m_rotation_angle, m_rotation_speed * delta_time);
-
-        this->set_rotation(smoothed_rotation_angle);
+        double smoothed_angle = Math::lerp_angle(this->get_rotation(), m_rotation_angle,
+                                                 m_rotation_speed * delta_time);
+        this->set_rotation(smoothed_angle);
     }
 }
 
@@ -224,7 +230,7 @@ namespace godot
             },
         };
 
-        for (const auto& signal : signal_bindings)
+        for (auto&& signal : signal_bindings)
         {
             godot::ClassDB::add_signal(
                 Character::get_class_static(),
@@ -252,7 +258,7 @@ namespace godot
             }
         };
 
-        for (const auto& bind : property_bindings)
+        for (auto&& bind : property_bindings)
         {
             ClassDB::bind_method(D_METHOD(bind.getter_name), bind.getter_func);
             ClassDB::bind_method(D_METHOD(bind.setter_name, bind.property_name), bind.setter_func);

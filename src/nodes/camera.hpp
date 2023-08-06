@@ -13,19 +13,22 @@ namespace godot
     public:
         Camera()
         {
+            this->set_name("PlayerCamera");
         }
 
         void _ready() override
         {
+            this->set_anchor_mode(Camera2D::ANCHOR_MODE_DRAG_CENTER);
+            this->set_margin_drawing_enabled(true);
         }
 
         void _enter_tree() override
         {
-            this->set_name("PlayerCamera");
-            this->set_anchor_mode(Camera2D::ANCHOR_MODE_DRAG_CENTER);
-            this->set_editor_description("PlayerCamera");
-            this->set_margin_drawing_enabled(true);
-            this->set_enabled(true);
+        }
+
+        void _exit_tree() override
+        {
+            this->queue_free();
         }
 
         void _draw() override
@@ -34,10 +37,6 @@ namespace godot
             this->get_drag_margin(Side::SIDE_BOTTOM);
             this->get_drag_margin(Side::SIDE_LEFT);
             this->get_drag_margin(Side::SIDE_RIGHT);
-        }
-
-        void _exit_tree() override
-        {
         }
 
         static void _bind_methods()

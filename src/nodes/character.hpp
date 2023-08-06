@@ -1,8 +1,12 @@
 #pragma once
+#include "nodes/camera.hpp"
 
 #include <godot_cpp/classes/character_body2d.hpp>
+#include <godot_cpp/classes/collision_shape2d.hpp>
 #include <godot_cpp/classes/input_event.hpp>
+#include <godot_cpp/classes/sprite2d.hpp>
 #include <godot_cpp/core/class_db.hpp>
+#include <godot_cpp/core/error_macros.hpp>
 #include <godot_cpp/variant/string.hpp>
 
 namespace godot
@@ -29,6 +33,8 @@ namespace godot
         constexpr inline static auto Name{ "Player" };
 
     public:
+        Character();
+
         void _ready() override;
         void _enter_tree() override;
         void _exit_tree() override;
@@ -53,8 +59,6 @@ namespace godot
         void process_rotation_input(Input* input, double delta_time);
 
     private:
-        // active input mode for character controls
-        InputMode m_input_mode{ InputMode::MouseAndKeyboard };
         // Rate of acceleration/deceleration (unit/s/s)
         double m_movement_friction{ 5.0 };
         // Rate of acceleration/deceleration (unit/s/s)
@@ -65,5 +69,14 @@ namespace godot
         double m_rotation_angle{ 0.0 };
         // elapsed runtime (seconds)
         double m_elapsed_time{ 0.0 };
+
+        // the player character camera
+        Camera* m_camera{ memnew(Camera) };
+        // the player character's texture
+        Sprite2D* m_sprite{ memnew(Sprite2D) };
+        // the player character's collision area geometry
+        CollisionShape2D* m_collision_shape{ memnew(CollisionShape2D) };
+        // the active input mode for character controls
+        InputMode m_input_mode{ InputMode::MouseAndKeyboard };
     };
 }

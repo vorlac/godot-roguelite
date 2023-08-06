@@ -1,8 +1,8 @@
 #include "register_types.hpp"
 
+#include "main.hpp"
 #include "nodes/camera.hpp"
 #include "nodes/character.hpp"
-#include "nodes/game.hpp"
 #include "nodes/level.hpp"
 
 #include <gdextension_interface.h>
@@ -17,10 +17,10 @@ namespace godot
         if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE)
             return;
 
-        ClassDB::register_class<Camera>();
-        ClassDB::register_class<Character>();
-        ClassDB::register_class<Game>();
+        ClassDB::register_class<Main>();
         ClassDB::register_class<Level>();
+        ClassDB::register_class<Character>();
+        ClassDB::register_class<Camera>();
     }
 
     void uninitialize_roguelite_module(ModuleInitializationLevel p_level)

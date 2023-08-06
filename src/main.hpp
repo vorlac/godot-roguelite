@@ -1,7 +1,12 @@
 #pragma once
 
+#include "nodes/level.hpp"
+#include "util/signals.hpp"
+#include "util/utils.hpp"
+
 #include <godot_cpp/classes/input_event.hpp>
-#include <godot_cpp/classes/node2d.hpp>
+#include <godot_cpp/classes/scene_tree.hpp>
+#include <godot_cpp/classes/window.hpp>
 #include <godot_cpp/core/class_db.hpp>
 
 namespace godot
@@ -9,21 +14,22 @@ namespace godot
     class Input;
     class InputMap;
     class Vector2;
+    class EditorNode;
 
-    class Game : public Node2D
+    class Main : public Node2D
     {
-        GDCLASS(Game, Node2D);
+        GDCLASS(Main, Node2D);
+
+        Main();
 
     public:
         void _ready() override;
         void _enter_tree() override;
         void _exit_tree() override;
-        void _input(const Ref<InputEvent>& event) override;
 
         static void _bind_methods();
-        static void bind_signals();
-        static void bind_properties();
 
-        void print_character_position(const Object* node, Vector2 location) const;
+    private:
+        Level* m_level{ memnew(Level) };
     };
 }
