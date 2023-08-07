@@ -1,10 +1,12 @@
 #pragma once
+
 #include "nodes/camera.hpp"
 
 #include <godot_cpp/classes/character_body2d.hpp>
 #include <godot_cpp/classes/collision_shape2d.hpp>
 #include <godot_cpp/classes/input_event.hpp>
 #include <godot_cpp/classes/sprite2d.hpp>
+#include <godot_cpp/classes/wrapped.hpp>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/core/error_macros.hpp>
 #include <godot_cpp/variant/string.hpp>
@@ -41,6 +43,9 @@ namespace godot
         void _process(double delta_time) override;
         void _physics_process(double delta_time) override;
         void _input(const Ref<InputEvent>& event) override;
+        void _draw() override;
+
+        void _notification(int notify_reason);
 
         static void _bind_methods();
         static void bind_signals();

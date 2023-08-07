@@ -44,20 +44,18 @@ namespace godot
     {
         gdutils::print(FUNCTION_STR);
         ResourceLoader* resource_loader{ ResourceLoader::get_singleton() };
-
         Ref<Resource> image_resource{ resource_loader->load("res://icon.svg") };
-        m_sprite->set_texture(image_resource);
-        this->add_child(m_sprite);
-
         Ref<Shape2D> rect{ memnew(Rect2) };
-        m_collision_shape->set_shape(rect);
-        this->add_child(m_collision_shape);
 
+        m_sprite->set_texture(image_resource);
+        m_collision_shape->set_shape(rect);
+
+        this->add_child(m_sprite);
+        this->add_child(m_collision_shape);
         this->add_child(m_camera);
 
         this->set_motion_mode(MotionMode::MOTION_MODE_FLOATING);
         this->set_scale({ 0.70, 0.70 });
-        //  m_camera->set_owner(this);
     }
 
     void Character::_enter_tree()
@@ -75,12 +73,11 @@ namespace godot
         if (rl::editor::active())
             return;
 
-        m_camera->align();
+        // m_camera->align();
     }
 
     void Character::_input(const Ref<InputEvent>& event)
     {
-        // called when input is detected
         if (rl::editor::active())
             return;
     }
@@ -106,6 +103,26 @@ namespace godot
                 this->emit_signal(Signals::PositionChanged, this, this->get_global_position());
                 m_elapsed_time = 0.0;
             }
+        }
+    }
+
+    void Character::_draw()
+    {
+        Vector2 camera_pos{ m_camera->get_global_position() };
+        Rect2 camera_center_rect(camera_pos, { 50, 50 });
+        draw_texture_rect(m_sprite->get_texture(), m_sprite->get_rect(), false, Color(100, 25, 25));
+    }
+
+    void Character::_notification(int notify_reason)
+    {
+        switch (notify_reason)
+        {
+            case CanvasItem::NOTIFICATION_DRAW:
+                this->queue_redraw();
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -160,7 +177,7 @@ namespace godot
             {
                 TypedArray<int32_t> controllers{ input->get_connected_joypads() };
                 if (controllers.is_empty())
-                    rl::debug::io::error("InputMode = Controller, but no controllers detected");
+                    rl::log::warning("InputMode = Controller, but no controllers detected");
                 else
                 {
                     Vector2 target_rotation{ input->get_vector("rotate_left", "rotate_right",

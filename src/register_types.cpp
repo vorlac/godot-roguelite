@@ -36,7 +36,7 @@ namespace godot
                                                           GDExtensionClassLibraryPtr lib,
                                                           GDExtensionInitialization* init)
         {
-            auto init_level = MODULE_INITIALIZATION_LEVEL_SCENE;
+            auto init_level{ MODULE_INITIALIZATION_LEVEL_SCENE };
             GDExtensionBinding::InitObject init_obj(addr, lib, init);
 
             init_obj.register_initializer(initialize_roguelite_module);

@@ -95,38 +95,36 @@ endif()
 # Godot editor/engine debug build
 # =======================================================================
 
-set(godot_debug_editor_executable "${CMAKE_SOURCE_DIR}/godot/engine/bin/godot.windows.editor.x86_64.exe")
+set(godot_debug_editor_executable "${CMAKE_SOURCE_DIR}/godot/engine/bin/godot.windows.editor.dev.x86_64.exe")
 if(NOT EXISTS "${godot_debug_editor_executable}")
     message("Godot engine debug binaries not found, invoking debug build of engine...")
 
-    execute_process(
-        COMMAND scons arch=x64                      \\
-                      platform=windows              \\
-                      target=editor                 \\
-                      use_static_cpp=yes            \\
-                      dev_build=no                  \\
-                      debug_symbols=yes             \\
-                      optimize=debug                \\
-                      use_lto=yes                   \\
-                      scu_build=yes                 \\
-                      --clean                 
-        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/godot/engine"
-        COMMAND_ERROR_IS_FATAL ANY
-    )
+#    execute_process(
+#        COMMAND scons arch=x64            \\
+#                      platform=windows    \\
+#                      target=editor       \\
+#                      use_static_cpp=no   \\
+#                      dev_build=yes       \\
+#                      debug_symbols=yes   \\
+#                      optimize=none       \\
+#                      use_lto=no          \\
+#                      --clean                 
+#        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/godot/engine"
+#        COMMAND_ERROR_IS_FATAL ANY
+#    )
 
     # this build should only ever need to be run once (unless the
     # enging debug binaries are deleted or you want to change the
     # build configuration/command invoked below).
     execute_process(
-        COMMAND scons arch=x64                      \\
-                      platform=windows              \\
-                      target=editor                 \\
-                      use_static_cpp=yes            \\
-                      dev_build=no                  \\
-                      debug_symbols=yes             \\
-                      optimize=debug                \\
-                      use_lto=yes                   \\
-                      scu_build=yes                 \\
+        COMMAND scons arch=x64            \\
+                      platform=windows    \\
+                      target=editor       \\
+                      use_static_cpp=no   \\
+                      dev_build=yes       \\
+                      debug_symbols=yes   \\
+                      optimize=none       \\
+                      use_lto=no          \\
                       --quiet                 
         WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/godot/engine"
         COMMAND_ERROR_IS_FATAL ANY

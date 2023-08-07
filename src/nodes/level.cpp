@@ -1,6 +1,7 @@
 #include "nodes/level.hpp"
 
 #include "nodes/character.hpp"
+#include "util/utils.hpp"
 
 #include <godot_cpp/variant/callable.hpp>
 
@@ -13,6 +14,7 @@ namespace godot
 
     void Level::_ready()
     {
+        rl::log::info(FUNCTION_STR);
         this->add_child(m_player);
         m_player->connect(Character::Signals::PositionChanged,
                           Callable(this, "on_character_position_changed"));
@@ -20,11 +22,12 @@ namespace godot
 
     void Level::_enter_tree()
     {
+        rl::log::info(FUNCTION_STR);
     }
 
     void Level::_exit_tree()
     {
-        this->queue_free();
+        // this->queue_free();
     }
 
     void Level::_input(const Ref<InputEvent>& event)

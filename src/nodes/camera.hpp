@@ -11,36 +11,14 @@ namespace godot
         GDCLASS(Camera, Camera2D);
 
     public:
-        Camera()
-        {
-            this->set_name("PlayerCamera");
-        }
+        Camera();
 
-        void _ready() override
-        {
-            this->set_anchor_mode(Camera2D::ANCHOR_MODE_DRAG_CENTER);
-            this->set_margin_drawing_enabled(true);
-        }
+        void _ready() override;
+        void _enter_tree() override;
+        void _exit_tree() override;
+        void _draw() override;
 
-        void _enter_tree() override
-        {
-        }
-
-        void _exit_tree() override
-        {
-            this->queue_free();
-        }
-
-        void _draw() override
-        {
-            this->get_drag_margin(Side::SIDE_TOP);
-            this->get_drag_margin(Side::SIDE_BOTTOM);
-            this->get_drag_margin(Side::SIDE_LEFT);
-            this->get_drag_margin(Side::SIDE_RIGHT);
-        }
-
-        static void _bind_methods()
-        {
-        }
+    protected:
+        static void _bind_methods();
     };
 }

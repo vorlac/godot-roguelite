@@ -4,7 +4,7 @@
     {
       "type": "dll",
       "isDefaultConfiguration": true,
-      "exe": "${workspaceRoot}\\godot\\engine\\bin\\godot.windows.editor.x86_64.exe",
+      "exe": "${workspaceRoot}\\godot\\engine\\bin\\godot.windows.editor.dev.x86_64.exe",
       "args": [
         "--editor",
         "--windowed",
