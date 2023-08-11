@@ -8,13 +8,34 @@
       "args": [
         "--editor",
         "--windowed",
+        "--delta-smoothing enable",
         "--resolution 1920x1080",
+        "--debug",
         "--verbose",
         "--path",
-        "${workspaceRoot}\\roguelite"
+        "${workspaceRoot}\\roguelite",
+        "res://main.tscn"
       ],
       "project": "CMakeLists.txt",
-      "name": "roguelite gdextension"
+      "name": "roguelite (editor)"
+    },
+    {
+      "type": "dll",
+      "exe": "${workspaceRoot}\\godot\\engine\\bin\\godot.windows.editor.dev.x86_64.console.exe",
+      "args": [
+        "--remote-debug",
+        "tcp://127.0.0.1:6007",
+        "--windowed",
+        "--delta-smoothing enable",
+        "--resolution 1024x768",
+        "--debug",
+        "--verbose",
+        "--path",
+        "${workspaceRoot}\\roguelite",
+        "res://main.tscn"
+      ],
+      "project": "CMakeLists.txt",
+      "name": "roguelite (console)"
     }
   ]
 }

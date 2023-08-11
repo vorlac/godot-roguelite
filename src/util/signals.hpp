@@ -13,8 +13,7 @@ namespace rl
     // wrapper for simpler signal/slot connections
     #define SignalConnection(signal, func_name, ...) \
         std::pair<godot::String, godot::Callable> { \
-            signal, { this, #func_name __VA_OPT__(, ) __VA_ARGS__  } \
-        }
+            signal, godot::Callable(this, #func_name __VA_OPT__(,) __VA_ARGS__) }
 
     // clang-format on
 }

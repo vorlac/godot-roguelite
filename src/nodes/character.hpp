@@ -40,6 +40,7 @@ namespace rl
         void _physics_process(double delta_time) override;
         void _input(const godot::Ref<godot::InputEvent>& event) override;
 
+    protected:
         static void _bind_methods();
         static void bind_signals();
         static void bind_properties();

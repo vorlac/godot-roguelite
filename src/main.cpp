@@ -6,24 +6,25 @@
 
 #include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/classes/object.hpp>
+#include <godot_cpp/classes/os.hpp>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/node_path.hpp>
 #include <godot_cpp/variant/variant.hpp>
 
 namespace rl
 {
-    void Main::init()
+    Main::Main()
     {
         // engine settings
-        rl::engine::set_fps(60);
-        rl::input::use_accumulated_inputs(false);
+        engine::set_fps(60);
+        input::use_accumulated_inputs(false);
         // TODO: set resolution
 
         // Main node init
         this->set_name("Main");
     }
 
-    void Main::teardown()
+    Main::~Main()
     {
         if (!this->is_queued_for_deletion())
             this->queue_free();

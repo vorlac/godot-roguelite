@@ -65,8 +65,8 @@ namespace rl
 
     void Character::_ready()
     {
-        this->add_child(m_collision_shape);
         this->add_child(m_sprite);
+        this->add_child(m_collision_shape);
         this->add_child(m_camera);
     }
 
@@ -84,10 +84,14 @@ namespace rl
 
     void Character::_process(double delta_time)
     {
-        if (rl::editor::active())
-            return;
+        bool test = rl::editor::active();
+        bool test2 = godot::Engine::get_singleton()->is_editor_hint();
+        if (test != test2)
+            int asdf = 1234;
+        if (!test2)
+            int fdslj = 234;
 
-        Input* const input{ Input::get_singleton() };
+        godot::Input* const input{ godot::Input::get_singleton() };
         if (input != nullptr)
         {
             this->process_movement_input(input, delta_time);
@@ -106,7 +110,7 @@ namespace rl
         }
     }
 
-    void Character::process_movement_input(Input* const input, double delta_time)
+    void Character::process_movement_input(godot::Input* const input, double delta_time)
     {
         godot::Vector2 velocity{ input->get_vector("move_left", "move_right", "move_up",
                                                    "move_down") };
@@ -117,7 +121,7 @@ namespace rl
         this->move_and_slide();
     }
 
-    Character::InputMode Character::get_input_mode(Input* const input)
+    Character::InputMode Character::get_input_mode(godot::Input* const input)
     {
         switch (m_input_mode)
         {

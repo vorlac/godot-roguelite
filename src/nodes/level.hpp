@@ -4,9 +4,8 @@
 #include "util/signals.hpp"
 #include "util/utils.hpp"
 
-#include <array>
-#include <tuple>
 #include <utility>
+#include <vector>
 
 #include <godot_cpp/classes/input_event.hpp>
 #include <godot_cpp/classes/node2d.hpp>
@@ -45,6 +44,8 @@ namespace rl
         }
 
     private:
+        using callback_connection = std::pair<godot::String, godot::Callable>;
+        std::vector<callback_connection> m_signal_connections{};
         rl::Character* m_player{ memnew(rl::Character) };
     };
 }
