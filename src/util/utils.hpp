@@ -1,6 +1,5 @@
 #pragma once
 
-#include "util/debug.hpp"
 #include "util/io.hpp"
 
 #include <godot_cpp/classes/engine.hpp>
@@ -60,40 +59,8 @@ namespace rl
         }
     };
 
-    struct input
-    {
-        const static inline void load_project_inputs()
-        {
-            auto input_map{ godot::InputMap::get_singleton() };
-            if (input_map != nullptr) [[likely]]
-                return input_map->load_from_project_settings();
-            rl::log::error("godot::Input singleton not intitialized");
-        }
-
-        const static inline void use_accumulated_inputs(bool enable)
-        {
-            auto input{ godot::Input::get_singleton() };
-            if (input != nullptr) [[likely]]
-                return input->set_use_accumulated_input(enable);
-            rl::log::error("godot::Input singleton not intitialized");
-        }
-    };
-
     struct engine
     {
-        struct debugger
-        {
-            static inline godot::EngineDebugger* const get()
-            {
-                return godot::EngineDebugger::get_singleton();
-            }
-
-            // static inline print_handler()
-            //{
-            //     debugger::get()->send_message();
-            // };
-        };
-
         static inline godot::Engine* const get()
         {
             return godot::Engine::get_singleton();

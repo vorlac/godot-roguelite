@@ -1,7 +1,8 @@
 #include "main.hpp"
 
 #include "nodes/character.hpp"
-#include "nodes/level.hpp"
+#include "nodes/level_manager.hpp"
+#include "util/input.hpp"
 #include "util/io.hpp"
 
 #include <godot_cpp/classes/node.hpp>

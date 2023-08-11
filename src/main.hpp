@@ -1,6 +1,6 @@
 #pragma once
 
-#include "nodes/level.hpp"
+#include "nodes/level_manager.hpp"
 
 #include <godot_cpp/classes/node2d.hpp>
 #include <godot_cpp/classes/wrapped.hpp>
@@ -30,6 +30,6 @@ namespace rl
         void teardown();
 
     private:
-        rl::Level* m_level{ memnew(rl::Level) };
+        rl::LevelManager* m_level{ memnew(rl::LevelManager) };
     };
 }

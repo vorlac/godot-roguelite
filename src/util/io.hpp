@@ -17,7 +17,6 @@ namespace rl
     }
 
     struct log
-
     {
         enum class DetailLevel : uint_fast8_t
         {

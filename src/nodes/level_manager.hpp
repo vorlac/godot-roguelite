@@ -17,17 +17,13 @@
 
 namespace rl
 {
-    class godot::Input;
-    class godot::Object;
-    class godot::InputEvent;
-
-    class Level : public godot::Node2D
+    class LevelManager : public godot::Node2D
     {
-        GDCLASS(Level, godot::Node2D);
+        GDCLASS(LevelManager, godot::Node2D);
 
     public:
-        Level();
-        ~Level();
+        LevelManager();
+        ~LevelManager();
 
         void _ready() override;
         void _input(const godot::Ref<godot::InputEvent>& event) override;
@@ -40,12 +36,12 @@ namespace rl
         static void _bind_methods()
         {
             godot::ClassDB::bind_method(godot::D_METHOD("on_character_position_changed"),
-                                        &rl::Level::on_character_position_changed);
+                                        &rl::LevelManager::on_character_position_changed);
         }
 
     private:
         using callback_connection = std::pair<godot::String, godot::Callable>;
         std::vector<callback_connection> m_signal_connections{};
-        rl::Character* m_player{ memnew(rl::Character) };
+        Character* m_player{ memnew(Character) };
     };
 }

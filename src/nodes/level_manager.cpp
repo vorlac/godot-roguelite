@@ -1,4 +1,4 @@
-#include "nodes/level.hpp"
+#include "nodes/level_manager.hpp"
 
 #include "nodes/character.hpp"
 #include "util/io.hpp"
@@ -8,12 +8,12 @@
 
 namespace rl
 {
-    Level::Level()
+    LevelManager::LevelManager()
     {
         this->set_name("LevelManager");
     }
 
-    Level::~Level()
+    LevelManager::~LevelManager()
     {
         if (!this->is_queued_for_deletion())
             this->queue_free();
@@ -25,7 +25,7 @@ namespace rl
         }
     }
 
-    void Level::_ready()
+    void LevelManager::_ready()
     {
         rl::log::info(FUNCTION_STR);
         this->add_child(m_player);
@@ -46,12 +46,12 @@ namespace rl
         }
     }
 
-    void Level::_input(const godot::Ref<godot::InputEvent>& event)
+    void LevelManager::_input(const godot::Ref<godot::InputEvent>& event)
     {
     }
 
-    void Level::on_character_position_changed(const godot::Object* node,
-                                              godot::Vector2 location) const
+    void LevelManager::on_character_position_changed(const godot::Object* node,
+                                                     godot::Vector2 location) const
     {
         log::info(node->get_class() + " new location: " + location);
     }
