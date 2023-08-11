@@ -11,7 +11,6 @@
 #include <gdextension_interface.h>
 #include <godot_cpp/classes/camera2d.hpp>
 #include <godot_cpp/classes/collision_shape2d.hpp>
-#include <godot_cpp/classes/editor_interface.hpp>
 #include <godot_cpp/classes/image.hpp>
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_map.hpp>
@@ -84,12 +83,8 @@ namespace rl
 
     void Character::_process(double delta_time)
     {
-        bool test = rl::editor::active();
-        bool test2 = godot::Engine::get_singleton()->is_editor_hint();
-        if (test != test2)
-            int asdf = 1234;
-        if (!test2)
-            int fdslj = 234;
+        if (rl::editor::active())
+            return;
 
         godot::Input* const input{ godot::Input::get_singleton() };
         if (input != nullptr)

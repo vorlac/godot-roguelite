@@ -4,7 +4,9 @@
   },
   "ExcludedItems": [
     ".git*",
+    ".clang*",
     ".vscode",
+    "*.md",
     "cpp.hint",
     "scripts/",
     "extension_api.json",
@@ -17,13 +19,13 @@
     "engine/**/SConstruct",
     "engine/**/SCsub",
     "engine/**/.mailmap*",
-    "engine/**/.clang*",
     "engine/**/.editorconfig",
     "engine/**/LICENSE",
     "!.out*",
     "!.out/*",
     "!.out/build/*",
-    "!.godot"
+    "!.godot",
+    "!README.md"
   ],
   "Indexing": {
     "Enabled": true

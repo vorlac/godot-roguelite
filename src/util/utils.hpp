@@ -2,6 +2,15 @@
 
 #include "util/io.hpp"
 
+#include <godot_cpp/classes/editor_debugger_plugin.hpp>
+#include <godot_cpp/classes/editor_feature_profile.hpp>
+#include <godot_cpp/classes/editor_inspector.hpp>
+#include <godot_cpp/classes/editor_inspector_plugin.hpp>
+#include <godot_cpp/classes/editor_interface.hpp>
+#include <godot_cpp/classes/editor_plugin.hpp>
+#include <godot_cpp/classes/editor_scene_post_import.hpp>
+#include <godot_cpp/classes/editor_selection.hpp>
+#include <godot_cpp/classes/editor_settings.hpp>
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/engine_debugger.hpp>
 #include <godot_cpp/classes/input.hpp>
@@ -116,6 +125,14 @@ namespace rl
 
     struct editor
     {
+        static inline godot::EditorInterface* const main_screen()
+        {
+            // godot::EditorResourcePreview::
+            //  Editor::
+            //   return godot::EditorInterface::get_singleton();  // ->get_editor_main_screen()
+            //   return godot::EditorInterface::get_singleton()->get_main_screen_control();
+        }
+
         const static inline bool active()
         {
             auto engine{ engine::get() };

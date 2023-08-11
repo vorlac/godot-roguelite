@@ -5,9 +5,11 @@
 #include "util/input.hpp"
 #include "util/io.hpp"
 
+#include <godot_cpp/classes/canvas_item.hpp>
 #include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/classes/object.hpp>
 #include <godot_cpp/classes/os.hpp>
+#include <godot_cpp/classes/viewport.hpp>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/node_path.hpp>
 #include <godot_cpp/variant/variant.hpp>
@@ -16,12 +18,6 @@ namespace rl
 {
     Main::Main()
     {
-        // engine settings
-        engine::set_fps(60);
-        input::use_accumulated_inputs(false);
-        // TODO: set resolution
-
-        // Main node init
         this->set_name("Main");
     }
 
@@ -33,6 +29,7 @@ namespace rl
 
     void Main::_ready()
     {
+        Main::apply_default_settings();
         rl::log::info(FUNCTION_STR);
         this->add_child(m_level);
     }
@@ -44,5 +41,20 @@ namespace rl
 
     void Main::_exit_tree()
     {
+    }
+
+    void Main::apply_default_settings()
+    {
+        engine::set_fps(60);
+
+        // engine::scene_tree()->get_edited_scene_root()->get_viewport()->set_handle_input_locally(true);
+        // engine::root_node()->get_viewport()->set_process_input(false);
+
+        if (editor::active())
+            engine::root_window()->set_size({ 1920, 1080 });
+        else
+            engine::root_window()->set_size({ 1024, 768 });
+
+        input::use_accumulated_inputs(false);
     }
 }

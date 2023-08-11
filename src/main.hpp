@@ -21,6 +21,8 @@ namespace rl
         void _exit_tree() override;
 
     protected:
+        void apply_default_settings();
+
         static void _bind_methods()
         {
         }
