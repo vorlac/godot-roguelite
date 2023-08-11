@@ -10,9 +10,9 @@
 #include <godot_cpp/variant/node_path.hpp>
 #include <godot_cpp/variant/variant.hpp>
 
-namespace godot
+namespace rl
 {
-    Main::Main()
+    void Main::init()
     {
         // engine settings
         rl::engine::set_fps(60);
@@ -23,7 +23,7 @@ namespace godot
         this->set_name("Main");
     }
 
-    Main::~Main()
+    void Main::teardown()
     {
         if (!this->is_queued_for_deletion())
             this->queue_free();
@@ -31,6 +31,7 @@ namespace godot
 
     void Main::_ready()
     {
+        rl::log::info(FUNCTION_STR);
         this->add_child(m_level);
     }
 
@@ -42,5 +43,4 @@ namespace godot
     void Main::_exit_tree()
     {
     }
-
 }

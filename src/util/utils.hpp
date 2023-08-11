@@ -53,6 +53,15 @@ namespace rl
         }
     }
 
+    namespace variant
+    {
+        [[nodiscard]]
+        const static inline std::string to_string(const godot::Variant& var)
+        {
+            return var.stringify().utf8().get_data();
+        }
+    }
+
     namespace input
     {
         const static inline void load_project_inputs()

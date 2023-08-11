@@ -1,11 +1,13 @@
 #include "nodes/level.hpp"
 
 #include "nodes/character.hpp"
+#include "util/io.hpp"
+#include "util/signals.hpp"
 #include "util/utils.hpp"
 
 #include <godot_cpp/variant/callable.hpp>
 
-namespace godot
+namespace rl
 {
     Level::Level()
     {
@@ -24,7 +26,6 @@ namespace godot
 
     Level::~Level()
     {
-        rl::log::trace(FUNCTION_STR);
         if (!this->is_queued_for_deletion())
             this->queue_free();
     }
@@ -35,12 +36,13 @@ namespace godot
         this->add_child(m_player);
     }
 
-    void Level::_input(const Ref<InputEvent>& event)
+    void Level::_input(const godot::Ref<godot::InputEvent>& event)
     {
     }
 
-    void Level::on_character_position_changed(const Object* node, Vector2 location) const
+    void Level::on_character_position_changed(const godot::Object* node,
+                                              godot::Vector2 location) const
     {
-        gdutils::print(node->get_class() + " new location: " + location);
+        rl::log::info(node->get_class() + " new location: " + location);
     }
 }

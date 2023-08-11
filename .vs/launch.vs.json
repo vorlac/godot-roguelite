@@ -9,7 +9,7 @@
         "--editor",
         "--windowed",
         "--resolution 1920x1080",
-        "--single-window",
+        "--verbose",
         "--path",
         "${workspaceRoot}\\roguelite"
       ],

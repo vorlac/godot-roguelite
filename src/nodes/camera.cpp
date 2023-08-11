@@ -1,6 +1,6 @@
 #include "nodes/camera.hpp"
 
-namespace godot
+namespace rl
 {
     Camera::Camera()
     {

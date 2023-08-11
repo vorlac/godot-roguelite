@@ -16,35 +16,35 @@
 #include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/vector2.hpp>
 
-namespace godot
+namespace rl
 {
-    class Input;
-    class Object;
-    class Vector2;
-    class InputEvent;
+    class godot::Input;
+    class godot::Object;
+    class godot::InputEvent;
 
-    class Level : public Node2D
+    class Level : public godot::Node2D
     {
-        GDCLASS(Level, Node2D);
+        GDCLASS(Level, godot::Node2D);
 
     public:
         Level();
         ~Level();
 
         void _ready() override;
-        void _input(const Ref<InputEvent>& event) override;
+        void _input(const godot::Ref<godot::InputEvent>& event) override;
 
     protected:
         [[signal_callback]]
-        void on_character_position_changed(const Object* node, Vector2 location) const;
+        void on_character_position_changed(const godot::Object* node,
+                                           godot::Vector2 location) const;
 
         static void _bind_methods()
         {
-            ClassDB::bind_method(D_METHOD("on_character_position_changed"),
-                                 &Level::on_character_position_changed);
+            godot::ClassDB::bind_method(godot::D_METHOD("on_character_position_changed"),
+                                        &rl::Level::on_character_position_changed);
         }
 
     private:
-        Character* m_player{ memnew(Character) };
+        rl::Character* m_player{ memnew(rl::Character) };
     };
 }

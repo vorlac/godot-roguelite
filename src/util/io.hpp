@@ -39,8 +39,8 @@ namespace rl::log
             WARN_PRINT_ED(msg);
     }
 
-    [[msvc::flatten]]
-    static inline void info(const char* const msg)
+    template <typename TString>
+    static inline void info(TString&& msg)
     {
         if constexpr (level_active(DetailLevel::Info))
             godot::UtilityFunctions::print(msg);

@@ -17,10 +17,10 @@ namespace godot
         if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE)
             return;
 
-        ClassDB::register_class<Main>();
-        ClassDB::register_class<Level>();
-        ClassDB::register_class<Character>();
-        ClassDB::register_class<Camera>();
+        ClassDB::register_class<rl::Camera>();
+        ClassDB::register_class<rl::Character>();
+        ClassDB::register_class<rl::Level>();
+        ClassDB::register_class<rl::Main>();
     }
 
     void uninitialize_roguelite_module(ModuleInitializationLevel p_level)

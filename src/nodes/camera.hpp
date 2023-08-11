@@ -4,11 +4,11 @@
 #include <godot_cpp/classes/input_event.hpp>
 #include <godot_cpp/core/class_db.hpp>
 
-namespace godot
+namespace rl
 {
-    class Camera : public Camera2D
+    class Camera : public godot::Camera2D
     {
-        GDCLASS(Camera, Camera2D);
+        GDCLASS(Camera, godot::Camera2D);
 
     public:
         Camera();
