@@ -1,11 +1,20 @@
 #pragma once
+
 #include "nodes/character.hpp"
 #include "util/signals.hpp"
 #include "util/utils.hpp"
 
+#include <array>
+#include <tuple>
+#include <utility>
+
 #include <godot_cpp/classes/input_event.hpp>
 #include <godot_cpp/classes/node2d.hpp>
+#include <godot_cpp/classes/object.hpp>
 #include <godot_cpp/core/class_db.hpp>
+#include <godot_cpp/variant/callable.hpp>
+#include <godot_cpp/variant/string.hpp>
+#include <godot_cpp/variant/vector2.hpp>
 
 namespace godot
 {
@@ -20,19 +29,20 @@ namespace godot
 
     public:
         Level();
+        ~Level();
 
         void _ready() override;
-        void _enter_tree() override;
-        void _exit_tree() override;
         void _input(const Ref<InputEvent>& event) override;
-
-        static void _bind_methods();
-        static void bind_signals();
-        static void bind_properties();
 
     protected:
         [[signal_callback]]
         void on_character_position_changed(const Object* node, Vector2 location) const;
+
+        static void _bind_methods()
+        {
+            ClassDB::bind_method(D_METHOD("on_character_position_changed"),
+                                 &Level::on_character_position_changed);
+        }
 
     private:
         Character* m_player{ memnew(Character) };

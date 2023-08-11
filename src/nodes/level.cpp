@@ -10,41 +10,32 @@ namespace godot
     Level::Level()
     {
         this->set_name("Level Manager");
+
+        std::array signal_connections = {
+            SignalConnection(Character::Signals::PositionChanged, on_character_position_changed),
+        };
+
+        for (auto&& conn : signal_connections)
+        {
+            auto&& [signal, slot] = conn;
+            m_player->connect(signal, slot);
+        }
+    }
+
+    Level::~Level()
+    {
+        rl::log::trace(FUNCTION_STR);
+        if (!this->is_queued_for_deletion())
+            this->queue_free();
     }
 
     void Level::_ready()
     {
-        rl::log::info(FUNCTION_STR);
+        rl::log::trace(FUNCTION_STR);
         this->add_child(m_player);
-        m_player->connect(Character::Signals::PositionChanged,
-                          Callable(this, "on_character_position_changed"));
-    }
-
-    void Level::_enter_tree()
-    {
-        rl::log::info(FUNCTION_STR);
-    }
-
-    void Level::_exit_tree()
-    {
-        // this->queue_free();
     }
 
     void Level::_input(const Ref<InputEvent>& event)
-    {
-    }
-
-    void Level::_bind_methods()
-    {
-        ClassDB::bind_method(D_METHOD("on_character_position_changed"),
-                             &Level::on_character_position_changed);
-    }
-
-    void Level::bind_signals()
-    {
-    }
-
-    void Level::bind_properties()
     {
     }
 

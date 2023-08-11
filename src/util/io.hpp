@@ -3,9 +3,10 @@
 #include <godot_cpp/core/error_macros.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 
-namespace rl
+namespace rl::log
 {
-    enum class DebugLevel : uint_fast8_t
+
+    enum class DetailLevel : uint_fast8_t
     {
         None,
         Error,
@@ -14,46 +15,42 @@ namespace rl
         Debug,
         Trace
     };
+
+    static inline constexpr DetailLevel DETAIL_LEVEL = DetailLevel::Debug;
+
+    static inline constexpr bool level_active(const DetailLevel level)
+    {
+        return DETAIL_LEVEL <= level;
+    }
 }
 
 namespace rl::log
 {
-    constexpr inline DebugLevel DEBUG_LEVEL{ DebugLevel::Debug };
 
-    constexpr static inline bool level_active(const DebugLevel level)
+    static inline constexpr void error(const char* const msg)
     {
-        return DEBUG_LEVEL <= level;
-    }
-
-    static inline void verbose(const char* const msg)
-    {
-        if constexpr (level_active(DebugLevel::Trace))
-            godot::UtilityFunctions::print_verbose(msg);
-    }
-
-    static inline void info(const char* const msg)
-    {
-        if constexpr (level_active(DebugLevel::Info))
-            godot::UtilityFunctions::print(msg);
-    }
-
-    static inline void warning(const char* const msg)
-    {
-        if constexpr (level_active(DebugLevel::Warning))
-            WARN_PRINT_ED(msg);
-    }
-
-    static inline void error(const char* const msg)
-    {
-        if constexpr (level_active(DebugLevel::Error))
+        if constexpr (level_active(DetailLevel::Error))
             ERR_PRINT_ED(msg);
     }
 
-    static inline void assert(const bool cond)
+    static inline constexpr void warning(const char* const msg)
     {
-        // print condition and break debugger when cond is false.
-        // calls to this function and the consitions are replaced with (void(0))
-        // when building in release mode.
-        DEV_ASSERT(cond);
+        if constexpr (level_active(DetailLevel::Warning))
+            WARN_PRINT_ED(msg);
+    }
+
+    [[msvc::flatten]]
+    static inline void info(const char* const msg)
+    {
+        if constexpr (level_active(DetailLevel::Info))
+            godot::UtilityFunctions::print(msg);
+    }
+
+    [[msvc::flatten]]
+    static inline void trace(const char* const msg)
+    {
+        // godot::UtilityFunctions::print_verbose(msg);
+        if constexpr (level_active(DetailLevel::Trace))
+            godot::UtilityFunctions::print(msg);
     }
 }

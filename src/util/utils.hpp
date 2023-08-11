@@ -1,8 +1,10 @@
 #pragma once
 
+#include "util/debug.hpp"
 #include "util/io.hpp"
 
 #include <godot_cpp/classes/engine.hpp>
+#include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_map.hpp>
 #include <godot_cpp/classes/main_loop.hpp>
 #include <godot_cpp/classes/node.hpp>
@@ -18,6 +20,7 @@ using gdutils = godot::UtilityFunctions;
 namespace rl
 {
     using godot::Engine;
+    using godot::Input;
     using godot::InputMap;
     using godot::MainLoop;
     using godot::Node;
@@ -45,7 +48,7 @@ namespace rl
         inline Node* edited_root(TNode* node)
         {
             Node* edited_root{ node->get_tree()->get_edited_scene_root() };
-            rl::log::assert(edited_root != nullptr);
+            rl::debug::assert(edited_root != nullptr);
             return edited_root;
         }
     }
@@ -56,7 +59,16 @@ namespace rl
         {
             auto input_map{ InputMap::get_singleton() };
             if (input_map != nullptr) [[likely]]
-                input_map->load_from_project_settings();
+                return input_map->load_from_project_settings();
+            rl::log::error("godot::Input singleton not intitialized");
+        }
+
+        const static inline void use_accumulated_inputs(bool enable)
+        {
+            auto input{ Input::get_singleton() };
+            if (input != nullptr) [[likely]]
+                return input->set_use_accumulated_input(enable);
+            rl::log::error("godot::Input singleton not intitialized");
         }
 
     }

@@ -31,7 +31,6 @@ namespace godot
 
     extern "C"
     {
-        // GDExtension init
         GDExtensionBool GDE_EXPORT roguelite_library_init(GDExtensionInterfaceGetProcAddress addr,
                                                           GDExtensionClassLibraryPtr lib,
                                                           GDExtensionInitialization* init)

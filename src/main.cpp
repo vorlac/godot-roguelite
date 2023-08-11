@@ -14,26 +14,33 @@ namespace godot
 {
     Main::Main()
     {
+        // engine settings
+        rl::engine::set_fps(60);
+        rl::input::use_accumulated_inputs(false);
+        // TODO: set resolution
+
+        // Main node init
         this->set_name("Main");
+    }
+
+    Main::~Main()
+    {
+        if (!this->is_queued_for_deletion())
+            this->queue_free();
     }
 
     void Main::_ready()
     {
-        rl::log::info(FUNCTION_STR);
-        rl::engine::set_fps(60);
+        this->add_child(m_level);
     }
 
     void Main::_enter_tree()
     {
         rl::log::info(FUNCTION_STR);
-        this->add_child(m_level);
     }
 
     void Main::_exit_tree()
     {
     }
 
-    void Main::_bind_methods()
-    {
-    }
 }

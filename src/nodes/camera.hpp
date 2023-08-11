@@ -12,13 +12,14 @@ namespace godot
 
     public:
         Camera();
+        ~Camera();
 
         void _ready() override;
-        void _enter_tree() override;
-        void _exit_tree() override;
         void _draw() override;
 
     protected:
-        static void _bind_methods();
+        static void _bind_methods()
+        {
+        }
     };
 }

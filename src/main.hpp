@@ -12,14 +12,18 @@ namespace godot
     {
         GDCLASS(Main, Node2D);
 
-        Main();
-
     public:
+        Main();
+        ~Main();
+
         void _ready() override;
         void _enter_tree() override;
         void _exit_tree() override;
 
-        static void _bind_methods();
+    protected:
+        static void _bind_methods()
+        {
+        }
 
     private:
         Level* m_level{ memnew(Level) };

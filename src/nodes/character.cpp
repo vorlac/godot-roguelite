@@ -17,6 +17,7 @@
 #include <godot_cpp/classes/input_map.hpp>
 #include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/classes/node2d.hpp>
+#include <godot_cpp/classes/rectangle_shape2d.hpp>
 #include <godot_cpp/classes/ref.hpp>
 #include <godot_cpp/classes/resource.hpp>
 #include <godot_cpp/classes/resource_loader.hpp>
@@ -35,45 +36,44 @@ namespace godot
     Character::Character()
     {
         this->set_name("Player");
-        m_camera->set_name("PlayerCamera");
+        this->set_motion_mode(MotionMode::MOTION_MODE_FLOATING);
+        this->set_scale({ 0.70, 0.70 });
+
         m_sprite->set_name("PlayerSprite");
-        m_collision_shape->set_name("PlayerCollision");
+        ResourceLoader* resource_loader{ ResourceLoader::get_singleton() };
+        Ref<Resource> image_resource{ resource_loader->load("res://icon.svg") };
+        m_sprite->set_texture(image_resource);
+
+        m_collision_shape->set_name("PlayerCollisionShape");
+        auto&& sprite_rect{ m_sprite->get_rect() };
+        Ref<RectangleShape2D> rect{ memnew(RectangleShape2D) };
+        rect->set_name("PlayerCollisionRect");
+        rect->set_size(sprite_rect.get_size());
+        m_collision_shape->set_shape(rect);
+        m_collision_shape->set_visible(true);
+        m_collision_shape->set_debug_color({ 255, 0, 0 });
+        m_collision_shape->set_modulate(Color::hex(0x8B000077));
+
+        m_camera->set_name("PlayerCamera");
+    }
+
+    Character::~Character()
+    {
+        if (!this->is_queued_for_deletion())
+            this->queue_free();
     }
 
     void Character::_ready()
     {
-        gdutils::print(FUNCTION_STR);
-        ResourceLoader* resource_loader{ ResourceLoader::get_singleton() };
-        Ref<Resource> image_resource{ resource_loader->load("res://icon.svg") };
-        Ref<Shape2D> rect{ memnew(Rect2) };
-
-        m_sprite->set_texture(image_resource);
-        m_collision_shape->set_shape(rect);
-
-        this->add_child(m_sprite);
         this->add_child(m_collision_shape);
+        this->add_child(m_sprite);
         this->add_child(m_camera);
-
-        this->set_motion_mode(MotionMode::MOTION_MODE_FLOATING);
-        this->set_scale({ 0.70, 0.70 });
-    }
-
-    void Character::_enter_tree()
-    {
-        gdutils::print(FUNCTION_STR);
-    }
-
-    void Character::_exit_tree()
-    {
-        this->queue_free();
     }
 
     void Character::_physics_process(double delta_time)
     {
         if (rl::editor::active())
             return;
-
-        // m_camera->align();
     }
 
     void Character::_input(const Ref<InputEvent>& event)
@@ -103,26 +103,6 @@ namespace godot
                 this->emit_signal(Signals::PositionChanged, this, this->get_global_position());
                 m_elapsed_time = 0.0;
             }
-        }
-    }
-
-    void Character::_draw()
-    {
-        Vector2 camera_pos{ m_camera->get_global_position() };
-        Rect2 camera_center_rect(camera_pos, { 50, 50 });
-        draw_texture_rect(m_sprite->get_texture(), m_sprite->get_rect(), false, Color(100, 25, 25));
-    }
-
-    void Character::_notification(int notify_reason)
-    {
-        switch (notify_reason)
-        {
-            case CanvasItem::NOTIFICATION_DRAW:
-                this->queue_redraw();
-                break;
-
-            default:
-                break;
         }
     }
 

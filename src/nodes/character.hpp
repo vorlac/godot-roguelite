@@ -32,20 +32,14 @@ namespace godot
             inline static constexpr auto PositionChanged{ "position_changed" };
         };
 
-        constexpr inline static auto Name{ "Player" };
-
     public:
         Character();
+        ~Character();
 
         void _ready() override;
-        void _enter_tree() override;
-        void _exit_tree() override;
         void _process(double delta_time) override;
         void _physics_process(double delta_time) override;
         void _input(const Ref<InputEvent>& event) override;
-        void _draw() override;
-
-        void _notification(int notify_reason);
 
         static void _bind_methods();
         static void bind_signals();

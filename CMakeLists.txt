@@ -99,19 +99,19 @@ set(godot_debug_editor_executable "${CMAKE_SOURCE_DIR}/godot/engine/bin/godot.wi
 if(NOT EXISTS "${godot_debug_editor_executable}")
     message("Godot engine debug binaries not found, invoking debug build of engine...")
 
-#    execute_process(
-#        COMMAND scons arch=x64            \\
-#                      platform=windows    \\
-#                      target=editor       \\
-#                      use_static_cpp=no   \\
-#                      dev_build=yes       \\
-#                      debug_symbols=yes   \\
-#                      optimize=none       \\
-#                      use_lto=no          \\
-#                      --clean                 
-#        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/godot/engine"
-#        COMMAND_ERROR_IS_FATAL ANY
-#    )
+    execute_process(
+        COMMAND scons arch=x64            \\
+                      platform=windows    \\
+                      target=editor       \\
+                      use_static_cpp=no   \\
+                      dev_build=yes       \\
+                      debug_symbols=yes   \\
+                      optimize=none       \\
+                      use_lto=no          \\
+                      --clean                 
+        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/godot/engine"
+        COMMAND_ERROR_IS_FATAL ANY
+    )
 
     # this build should only ever need to be run once (unless the
     # enging debug binaries are deleted or you want to change the
@@ -216,6 +216,7 @@ if(MSVC)
     set(roguelite_compile_flags
         /EHsc
         /utf-8
+        /Zc:preprocessor
     ) # /GF /MP
 
     if(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -241,15 +242,6 @@ if(MSVC)
             REPLACE "/RTC1" ""
             CMAKE_CXX_FLAGS_DEBUG
             ${CMAKE_CXX_FLAGS_DEBUG}
-        )
-    endif()
-
-    if(CMAKE_CXX_COMPILER MATCHES "/cl$")
-        # fixes C macro __ARGS__ expansion for MSVC so it's
-        # consistent with other major C++ compilers (gcc/clang)
-        set(roguelite_compile_flags
-            ${roguelite_compile_flags}
-            /Zc:preprocessor
         )
     endif()
 
