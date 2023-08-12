@@ -48,9 +48,7 @@ namespace rl
         // engine::scene_tree()->get_edited_scene_root()->get_viewport()->set_handle_input_locally(true);
         // engine::root_node()->get_viewport()->set_process_input(false);
 
-        if (editor::active())
-            engine::root_window()->set_size({ 1920, 1080 });
-        else
+        if (not editor::active())
             engine::root_window()->set_size({ 1024, 768 });
 
         input::use_accumulated_inputs(false);
