@@ -10,6 +10,7 @@
 #include <godot_cpp/classes/input_event.hpp>
 #include <godot_cpp/classes/node2d.hpp>
 #include <godot_cpp/classes/object.hpp>
+#include <godot_cpp/classes/sprite2d.hpp>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/callable.hpp>
 #include <godot_cpp/variant/string.hpp>
@@ -41,6 +42,8 @@ namespace rl
     private:
         using callback_connection = std::pair<godot::String, godot::Callable>;
         std::vector<callback_connection> m_signal_connections{};
+
+        godot::Sprite2D* m_background{ memnew(godot::Sprite2D) };
         Character* m_player{ memnew(Character) };
     };
 }

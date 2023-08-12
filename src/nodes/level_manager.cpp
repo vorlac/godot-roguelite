@@ -1,6 +1,7 @@
 #include "nodes/level_manager.hpp"
 
 #include "nodes/character.hpp"
+#include "util/assets.hpp"
 #include "util/io.hpp"
 #include "util/signals.hpp"
 #include "util/utils.hpp"
@@ -11,6 +12,16 @@ namespace rl
 {
     LevelManager::LevelManager()
     {
+        godot::ResourceLoader* resource_loader{ resource::loader::get() };
+        godot::Ref<godot::Resource> background_texture{ resource_loader->load(
+            rl::asset::path::BackgroundImage) };
+
+        m_background->set_name("BackgroundTexture");
+        m_background->set_texture(background_texture);
+        m_background->set_global_position({ 0, 0 });
+        m_background->set_centered(true);
+        m_background->set_z_index(-100);
+
         this->set_name("LevelManager");
     }
 
@@ -30,6 +41,8 @@ namespace rl
     void LevelManager::_ready()
     {
         this->add_child(m_player);
+        this->add_child(m_background);
+
         if (m_signal_connections.empty())
         {
             m_signal_connections = {

@@ -39,7 +39,7 @@ namespace rl
         this->set_scale({ 0.70, 0.70 });
         this->set_name("Player");
 
-        godot::ResourceLoader* resource_loader{ godot::ResourceLoader::get_singleton() };
+        godot::ResourceLoader* resource_loader{ resource::loader::get() };
         godot::Ref<godot::Resource> player_image{ resource_loader->load(asset::path::PlayerImage) };
         m_sprite->set_texture(player_image);
         m_sprite->set_name("PlayerSprite");

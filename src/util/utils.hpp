@@ -20,6 +20,7 @@
 #include <godot_cpp/classes/node2d.hpp>
 #include <godot_cpp/classes/object.hpp>
 #include <godot_cpp/classes/os.hpp>
+#include <godot_cpp/classes/resource_loader.hpp>
 #include <godot_cpp/classes/scene_tree.hpp>
 #include <godot_cpp/classes/viewport.hpp>
 #include <godot_cpp/classes/window.hpp>
@@ -48,6 +49,14 @@ namespace rl
             godot::Node* edited_root{ node->get_tree()->get_edited_scene_root() };
             rl::assert(edited_root != nullptr);
             return edited_root;
+        }
+    }
+
+    namespace resource::loader
+    {
+        static inline godot::ResourceLoader* get()
+        {
+            return godot::ResourceLoader::get_singleton();
         }
     }
 

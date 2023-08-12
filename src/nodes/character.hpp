@@ -69,6 +69,7 @@ namespace rl
         // elapsed runtime (seconds)
         double m_elapsed_time{ 0.0 };
 
+    private:
         // the player character camera
         rl::Camera* m_camera{ memnew(rl::Camera) };
         // the player character's texture
