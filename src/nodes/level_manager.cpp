@@ -2,6 +2,7 @@
 
 #include "nodes/character.hpp"
 #include "util/io.hpp"
+#include "util/signals.hpp"
 #include "util/utils.hpp"
 
 #include <godot_cpp/variant/callable.hpp>
@@ -21,20 +22,19 @@ namespace rl
         for (const auto& conn : m_signal_connections)
         {
             const auto& [signal, slot] = conn;
-            m_player->disconnect(signal, godot::Callable(slot));
+            if (m_player->has_signal(signal))
+                m_player->disconnect(signal, slot);
         }
     }
 
     void LevelManager::_ready()
     {
-        rl::log::info(FUNCTION_STR);
         this->add_child(m_player);
         if (m_signal_connections.empty())
         {
             m_signal_connections = {
                 std::pair{
-                    Character::Signals::PositionChanged,
-                    godot::Callable(this, "on_character_position_changed"),
+                    SignalConnection(Character::Signals::PositionChanged, on_position_changed),
                 },
             };
 
@@ -50,9 +50,9 @@ namespace rl
     {
     }
 
-    void LevelManager::on_character_position_changed(const godot::Object* node,
-                                                     godot::Vector2 location) const
+    void LevelManager::on_position_changed(const godot::Object* node, godot::Vector2 location) const
     {
-        log::info(node->get_class() + " new location: " + location);
+        rl::assert(node != nullptr);
+        log::info(node->get_class() + " location: " + location);
     }
 }

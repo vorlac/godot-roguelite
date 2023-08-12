@@ -29,14 +29,12 @@ namespace rl
 
     void Main::_ready()
     {
-        Main::apply_default_settings();
-        rl::log::info(FUNCTION_STR);
+        this->apply_default_settings();
         this->add_child(m_level);
     }
 
     void Main::_enter_tree()
     {
-        rl::log::info(FUNCTION_STR);
     }
 
     void Main::_exit_tree()

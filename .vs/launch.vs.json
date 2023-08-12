@@ -13,25 +13,24 @@
         "--debug",
         "--verbose",
         "--path",
-        "${workspaceRoot}\\roguelite",
-        "res://main.tscn"
+        "${workspaceRoot}\\roguelite"
       ],
       "project": "CMakeLists.txt",
       "name": "roguelite (editor)"
     },
     {
       "type": "dll",
-      "exe": "${workspaceRoot}\\godot\\engine\\bin\\godot.windows.editor.dev.x86_64.console.exe",
+      "debugType": "native",
+      "exe": "${workspaceRoot}\\godot\\engine\\bin\\godot.windows.editor.dev.x86_64.exe",
       "args": [
-        "--remote-debug",
-        "tcp://127.0.0.1:6007",
-        "--windowed",
+        "--remote-debug tcp://127.0.0.1:6007",
         "--delta-smoothing enable",
+        "--windowed",
         "--resolution 1024x768",
         "--debug",
         "--verbose",
         "--path",
-        "${workspaceRoot}\\roguelite",
+        "${workspaceRoot}/roguelite",
         "res://main.tscn"
       ],
       "project": "CMakeLists.txt",

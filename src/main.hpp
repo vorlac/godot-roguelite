@@ -32,6 +32,6 @@ namespace rl
         void teardown();
 
     private:
-        rl::LevelManager* m_level{ memnew(rl::LevelManager) };
+        LevelManager* m_level{ memnew(LevelManager) };
     };
 }

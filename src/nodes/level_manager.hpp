@@ -30,13 +30,12 @@ namespace rl
 
     protected:
         [[signal_callback]]
-        void on_character_position_changed(const godot::Object* node,
-                                           godot::Vector2 location) const;
+        void on_position_changed(const godot::Object* node, godot::Vector2 location) const;
 
         static void _bind_methods()
         {
-            godot::ClassDB::bind_method(godot::D_METHOD("on_character_position_changed"),
-                                        &rl::LevelManager::on_character_position_changed);
+            godot::ClassDB::bind_method(godot::D_METHOD("on_position_changed"),
+                                        &LevelManager::on_position_changed);
         }
 
     private:

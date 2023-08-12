@@ -1,6 +1,7 @@
 #include "nodes/character.hpp"
 
 #include "nodes/camera.hpp"
+#include "util/assets.hpp"
 #include "util/bindings.hpp"
 #include "util/signals.hpp"
 #include "util/utils.hpp"
@@ -34,24 +35,25 @@ namespace rl
 {
     Character::Character()
     {
-        this->set_name("Player");
         this->set_motion_mode(MotionMode::MOTION_MODE_FLOATING);
         this->set_scale({ 0.70, 0.70 });
+        this->set_name("Player");
 
-        m_sprite->set_name("PlayerSprite");
         godot::ResourceLoader* resource_loader{ godot::ResourceLoader::get_singleton() };
-        godot::Ref<godot::Resource> image_resource{ resource_loader->load("res://icon.svg") };
-        m_sprite->set_texture(image_resource);
+        godot::Ref<godot::Resource> player_image{ resource_loader->load(asset::path::PlayerImage) };
+        m_sprite->set_texture(player_image);
+        m_sprite->set_name("PlayerSprite");
 
-        m_collision_shape->set_name("PlayerCollisionShape");
-        auto&& sprite_rect{ m_sprite->get_rect() };
-        godot::Ref<godot::RectangleShape2D> rect{ memnew(godot::RectangleShape2D) };
-        rect->set_name("PlayerCollisionRect");
-        rect->set_size(sprite_rect.get_size());
-        m_collision_shape->set_shape(rect);
-        m_collision_shape->set_visible(true);
+        godot::Rect2 sprite_rect{ m_sprite->get_rect() };
+        godot::Ref<godot::RectangleShape2D> collision_rect{ memnew(godot::RectangleShape2D) };
+        collision_rect->set_size(sprite_rect.get_size());
+        collision_rect->set_name("PlayerCollisionRect");
+
+        m_collision_shape->set_shape(collision_rect);
         m_collision_shape->set_debug_color({ 255, 0, 0 });
         m_collision_shape->set_modulate(godot::Color::hex(0x8B000077));
+        m_collision_shape->set_visible(true);
+        m_collision_shape->set_name("PlayerCollisionShape");
 
         m_camera->set_name("PlayerCamera");
     }
@@ -107,8 +109,8 @@ namespace rl
 
     void Character::process_movement_input(godot::Input* const input, double delta_time)
     {
-        godot::Vector2 velocity{ input->get_vector("move_left", "move_right", "move_up",
-                                                   "move_down") };
+        using godot::Vector2;
+        Vector2 velocity{ input->get_vector("move_left", "move_right", "move_up", "move_down") };
         velocity = this->get_velocity().lerp(velocity, m_movement_friction * delta_time);
         velocity = velocity.clamp({ -1.0, -1.0 }, { 1.0, 1.0 });
         this->translate(velocity * this->get_movement_speed() * delta_time);

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://blbhfivaj35nf"
-path="res://.godot/imported/TX Struct.png-42225458d9c255b0f0eccaa77f59877e.ctex"
+uid="uid://d1xgkx6ele2yh"
+path="res://.godot/imported/background.png-304394d6bdac8fa11e342125176d9e07.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/TX Struct.png"
-dest_files=["res://.godot/imported/TX Struct.png-42225458d9c255b0f0eccaa77f59877e.ctex"]
+source_file="res://assets/art/placeholder/background.png"
+dest_files=["res://.godot/imported/background.png-304394d6bdac8fa11e342125176d9e07.ctex"]
 
 [params]
 
