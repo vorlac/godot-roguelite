@@ -1,6 +1,7 @@
 # TODO
     
-### Rendering Diagnostics
+### Rendering Diagnostics / HUD / Overlays
+* https://docs.godotengine.org/en/stable/getting_started/first_2d_game/06.heads_up_display.html
 * https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-property-debug-draw
 
 ### Stats / Resource Monitoring
@@ -8,6 +9,7 @@
 * https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-method-gui-get-focus-owner
 
 ### Handle inputs properly while the editor is running and standalone
+* https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-property-gui-disable-input
 * https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-property-handle-input-locally
 * https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-property-gui-disable-input
 * https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-property-exclusive
@@ -25,7 +27,7 @@
 * https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-method-push-input
 * https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-method-push-unhandled-input
 
-# in-game menu UI 
+# In game menu UI 
 * https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-property-wrap-controls
 
 # Editor mode enhancements:

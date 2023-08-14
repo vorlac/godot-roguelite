@@ -2,6 +2,7 @@
 
 #include "nodes/character.hpp"
 #include "util/assets.hpp"
+#include "util/debug.hpp"
 #include "util/io.hpp"
 #include "util/signals.hpp"
 #include "util/utils.hpp"
@@ -65,7 +66,7 @@ namespace rl
 
     void LevelManager::on_position_changed(const godot::Object* node, godot::Vector2 location) const
     {
-        rl::assert(node != nullptr);
+        debug::assert(node != nullptr);
         log::info(node->get_class() + " location: " + location);
     }
 }

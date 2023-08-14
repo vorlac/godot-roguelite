@@ -4,6 +4,6 @@
 
 namespace godot
 {
-    void initialize_roguelite_module(ModuleInitializationLevel p_level);
-    void uninitialize_roguelite_module(ModuleInitializationLevel p_level);
+    void initialize_extension_module(ModuleInitializationLevel init_level);
+    void uninitialize_extension_module(ModuleInitializationLevel init_level);
 }

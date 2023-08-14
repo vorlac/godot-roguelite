@@ -1,5 +1,6 @@
 #pragma once
 
+#include "util/debug.hpp"
 #include "util/io.hpp"
 
 #include <godot_cpp/classes/editor_debugger_plugin.hpp>
@@ -47,7 +48,7 @@ namespace rl
         inline godot::Node* edited_root(TNode* node)
         {
             godot::Node* edited_root{ node->get_tree()->get_edited_scene_root() };
-            rl::assert(edited_root != nullptr);
+            debug::assert(edited_root != nullptr);
             return edited_root;
         }
     }

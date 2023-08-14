@@ -16,7 +16,7 @@
         "${workspaceRoot}\\roguelite"
       ],
       "project": "CMakeLists.txt",
-      "name": "roguelite (editor)"
+      "name": "gdextension (editor)"
     },
     {
       "type": "dll",
@@ -34,7 +34,7 @@
         "res://main.tscn"
       ],
       "project": "CMakeLists.txt",
-      "name": "roguelite (console)"
+      "name": "gdextension (console)"
     }
   ]
 }
