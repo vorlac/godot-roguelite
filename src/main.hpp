@@ -36,8 +36,5 @@ namespace rl
 
     private:
         rl::LevelManager* m_level{ memnew(rl::LevelManager) };
-
-        godot::CanvasLayer* m_debug_canvas{ memnew(godot::CanvasLayer) };
-        godot::Node2D* m_debug_node{ memnew(Node2D) };
     };
 }

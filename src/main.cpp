@@ -25,13 +25,6 @@ namespace rl
     Main::Main()
     {
         this->set_name("Main");
-
-        m_debug_node->set_name("Diagnostics");
-        m_debug_canvas->set_name("DebugCanvasLayer");
-        m_debug_canvas->set_follow_viewport(true);
-        m_debug_canvas->set_follow_viewport_scale(true);
-        m_debug_canvas->set_visible(true);
-        // m_debug_canvas->set_layer(1234);
     }
 
     Main::~Main()
@@ -45,8 +38,6 @@ namespace rl
         this->apply_default_settings();
 
         this->add_child(m_level);
-        this->add_child(m_debug_canvas);
-        m_debug_canvas->add_child(m_debug_node);
     }
 
     void Main::_process(double delta_time)
@@ -65,17 +56,16 @@ namespace rl
 
     void Main::_draw()
     {
-        godot::Point2 mouse_pos{ this->get_global_mouse_position() };
-        m_debug_node->draw_circle(mouse_pos, 20, { "DARK_CYAN" });
-        m_debug_node->queue_redraw();
+        if constexpr (diag::is_enabled(diag::RootProcess))
+        {
+            godot::Point2 mouse_pos{ this->get_global_mouse_position() };
+            this->draw_circle(mouse_pos, 20, { "DARK_CYAN" });
+        }
     }
 
     void Main::apply_default_settings()
     {
         engine::set_fps(60);
-
-        // engine::scene_tree()->get_edited_scene_root()->get_viewport()->set_handle_input_locally(true);
-        // engine::root_node()->get_viewport()->set_process_input(false);
 
         if (not editor::active())
             engine::root_window()->set_size({ 1024, 768 });

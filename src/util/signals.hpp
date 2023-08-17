@@ -2,7 +2,7 @@
 
 namespace rl
 {
-// clang-format off
+    // clang-format off
 
     // [[signal_event]] attribute to make callback signals easy to spot/find
     #define signal_event __declspec(godot_signal_event)

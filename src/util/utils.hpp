@@ -135,14 +135,6 @@ namespace rl
 
     struct editor
     {
-        static inline godot::EditorInterface* const main_screen()
-        {
-            // godot::EditorResourcePreview::
-            //  Editor::
-            //   return godot::EditorInterface::get_singleton();  // ->get_editor_main_screen()
-            //   return godot::EditorInterface::get_singleton()->get_main_screen_control();
-        }
-
         const static inline bool active()
         {
             auto engine{ engine::get() };

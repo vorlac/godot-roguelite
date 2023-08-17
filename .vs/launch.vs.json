@@ -23,10 +23,9 @@
       "debugType": "native",
       "exe": "${workspaceRoot}\\godot\\engine\\bin\\godot.windows.editor.dev.x86_64.exe",
       "args": [
-        "--remote-debug tcp://127.0.0.1:6007",
         "--delta-smoothing enable",
         "--windowed",
-        "--resolution 1024x768",
+        "--resolution 1920x1080",
         "--debug",
         "--verbose",
         "--path",
