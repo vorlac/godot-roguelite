@@ -14,9 +14,6 @@ namespace rl::debug
     [[msvc::flatten]]
     static inline constexpr void assert(const bool cond)
     {
-        // print condition and break debugger when cond is false.
-        // calls to this function and the consitions are replaced with (void(0))
-        // when building in release mode.
         DEV_ASSERT(cond);
     }
 }
@@ -29,6 +26,7 @@ namespace rl::diag
         RootPhysics,
         RootViewport,
         RootInputs,
+        LevelProcess,
         LevelLoad,
         LevelUnload,
         MainMenuInit,
@@ -43,6 +41,7 @@ namespace rl::diag
             { Option::RootPhysics, true },
             { Option::RootViewport, true },
             { Option::RootInputs, true },
+            { Option::LevelProcess, true },
             { Option::LevelLoad, true },
             { Option::LevelUnload, true },
             { Option::MainMenuInit, true },

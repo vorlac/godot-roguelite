@@ -3,7 +3,6 @@
   "configurations": [
     {
       "type": "dll",
-      "isDefaultConfiguration": true,
       "exe": "${workspaceRoot}\\godot\\engine\\bin\\godot.windows.editor.dev.x86_64.exe",
       "args": [
         "--editor",
@@ -20,16 +19,13 @@
     },
     {
       "type": "dll",
-      "debugType": "native",
+      "isDefaultConfiguration": true,
       "exe": "${workspaceRoot}\\godot\\engine\\bin\\godot.windows.editor.dev.x86_64.exe",
       "args": [
-        "--delta-smoothing enable",
-        "--windowed",
-        "--resolution 1920x1080",
         "--debug",
         "--verbose",
         "--path",
-        "${workspaceRoot}/roguelite",
+        "${workspaceRoot}\\roguelite",
         "res://main.tscn"
       ],
       "project": "CMakeLists.txt",

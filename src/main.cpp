@@ -1,7 +1,7 @@
 #include "main.hpp"
 
+#include "core/level_loader.hpp"
 #include "nodes/character.hpp"
-#include "nodes/level_manager.hpp"
 #include "util/debug.hpp"
 #include "util/input.hpp"
 #include "util/io.hpp"
@@ -33,10 +33,19 @@ namespace rl
             this->queue_free();
     }
 
+    void Main::apply_default_settings()
+    {
+        engine::set_fps(60);
+
+        if (not editor::active())
+            engine::root_window()->set_size({ 1920, 1080 });
+
+        input::use_accumulated_inputs(false);
+    }
+
     void Main::_ready()
     {
         this->apply_default_settings();
-
         this->add_child(m_level);
     }
 
@@ -46,14 +55,6 @@ namespace rl
             this->queue_redraw();
     }
 
-    void Main::_enter_tree()
-    {
-    }
-
-    void Main::_exit_tree()
-    {
-    }
-
     void Main::_draw()
     {
         if constexpr (diag::is_enabled(diag::RootProcess))
@@ -61,15 +62,5 @@ namespace rl
             godot::Point2 mouse_pos{ this->get_global_mouse_position() };
             this->draw_circle(mouse_pos, 20, { "DARK_CYAN" });
         }
-    }
-
-    void Main::apply_default_settings()
-    {
-        engine::set_fps(60);
-
-        if (not editor::active())
-            engine::root_window()->set_size({ 1920, 1080 });
-
-        input::use_accumulated_inputs(false);
     }
 }

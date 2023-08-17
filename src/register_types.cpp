@@ -1,9 +1,10 @@
 #include "register_types.hpp"
 
+#include "core/level_loader.hpp"
+#include "core/projectile_spawner.hpp"
 #include "main.hpp"
 #include "nodes/camera.hpp"
 #include "nodes/character.hpp"
-#include "nodes/level_manager.hpp"
 
 #include <gdextension_interface.h>
 #include <godot_cpp/core/class_db.hpp>
@@ -18,8 +19,10 @@ namespace godot
             return;
 
         ClassDB::register_class<rl::Camera>();
+        ClassDB::register_class<rl::Projectile>();
+        ClassDB::register_class<rl::ProjectileSpawner>();
         ClassDB::register_class<rl::Character>();
-        ClassDB::register_class<rl::LevelManager>();
+        ClassDB::register_class<rl::LevelLoader>();
         ClassDB::register_class<rl::Main>();
     }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "nodes/level_manager.hpp"
+#include "core/level_loader.hpp"
 
 #include <godot_cpp/classes/canvas_layer.hpp>
 #include <godot_cpp/classes/node2d.hpp>
@@ -19,8 +19,6 @@ namespace rl
 
         void _ready() override;
         void _process(double delta_time) override;
-        void _enter_tree() override;
-        void _exit_tree() override;
         void _draw() override;
 
     protected:
@@ -35,6 +33,6 @@ namespace rl
         void teardown();
 
     private:
-        rl::LevelManager* m_level{ memnew(rl::LevelManager) };
+        rl::LevelLoader* m_level{ memnew(rl::LevelLoader) };
     };
 }

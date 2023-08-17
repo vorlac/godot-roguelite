@@ -1,7 +1,18 @@
 #pragma once
 
-namespace rl::asset::path
+namespace rl::asset
 {
-    static inline constexpr auto PlayerImage{ "res://assets/art/placeholder/player.svg" };
-    static inline constexpr auto BackgroundImage{ "res://assets/art/placeholder/background.png" };
+    namespace sprite
+    {
+        inline constexpr auto Player{ "res://assets/art/placeholder/player.svg" };
+        inline constexpr auto Enemy{ "res://assets/art/placeholder/enemy.svg" };
+        inline constexpr auto Bullet{ "res://assets/art/placeholder/bullet.svg" };
+        inline constexpr auto Background{ "res://assets/art/placeholder/background.png" };
+    }
+
+    namespace scene
+    {
+        inline constexpr auto Bullet{ "res://assets/scenes/projectiles/bullet.tscn" };
+
+    }
 }

@@ -1,7 +1,7 @@
 #pragma once
 
+#include "core/projectile_spawner.hpp"
 #include "nodes/character.hpp"
-#include "util/signals.hpp"
 #include "util/utils.hpp"
 
 #include <utility>
@@ -18,31 +18,36 @@
 
 namespace rl
 {
-    class LevelManager : public godot::Node2D
+    class LevelLoader : public godot::Node2D
     {
-        GDCLASS(LevelManager, godot::Node2D);
+        GDCLASS(LevelLoader, godot::Node2D);
 
     public:
-        LevelManager();
-        ~LevelManager();
+        LevelLoader();
+        ~LevelLoader();
 
         void _ready() override;
         void _input(const godot::Ref<godot::InputEvent>& event) override;
+        void _draw() override;
 
     protected:
         [[signal_callback]]
-        void on_position_changed(const godot::Object* node, godot::Vector2 location) const;
+        void on_position_changed(const godot::Object* const obj, godot::Vector2 location) const;
+        void on_shoot_projectile(const godot::Object* const obj);
 
         static void _bind_methods()
         {
             godot::ClassDB::bind_method(godot::D_METHOD("on_position_changed"),
-                                        &LevelManager::on_position_changed);
+                                        &LevelLoader::on_position_changed);
+            godot::ClassDB::bind_method(godot::D_METHOD("on_shoot_projectile"),
+                                        &LevelLoader::on_shoot_projectile);
         }
 
     private:
         using callback_connection = std::pair<godot::String, godot::Callable>;
         std::vector<callback_connection> m_signal_connections{};
 
+        rl::ProjectileSpawner* m_projectile_spawner{ memnew(rl::ProjectileSpawner) };
         godot::Sprite2D* m_background{ memnew(godot::Sprite2D) };
         Character* m_player{ memnew(Character) };
     };

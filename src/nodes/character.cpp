@@ -3,7 +3,6 @@
 #include "nodes/camera.hpp"
 #include "util/assets.hpp"
 #include "util/bindings.hpp"
-#include "util/signals.hpp"
 #include "util/utils.hpp"
 
 #include <array>
@@ -40,7 +39,8 @@ namespace rl
         this->set_name("Player");
 
         godot::ResourceLoader* resource_loader{ resource::loader::get() };
-        godot::Ref<godot::Resource> player_image{ resource_loader->load(asset::path::PlayerImage) };
+        godot::Ref<godot::Resource> player_image{ resource_loader->load(asset::sprite::Player) };
+
         m_sprite->set_texture(player_image);
         m_sprite->set_name("PlayerSprite");
 
@@ -73,19 +73,19 @@ namespace rl
 
     void Character::_physics_process(double delta_time)
     {
-        if (rl::editor::active())
+        if (editor::active())
             return;
     }
 
     void Character::_input(const godot::Ref<godot::InputEvent>& event)
     {
-        if (rl::editor::active())
+        if (editor::active())
             return;
     }
 
     void Character::_process(double delta_time)
     {
-        if (rl::editor::active())
+        if (editor::active())
             return;
 
         godot::Input* const input{ godot::Input::get_singleton() };
@@ -93,6 +93,7 @@ namespace rl
         {
             this->process_movement_input(input, delta_time);
             this->process_rotation_input(input, delta_time);
+            this->process_state_input(input, delta_time);
 
             godot::Point2 mouse_pos{ this->get_global_mouse_position() };
             if (this->get_viewport_rect().has_point(mouse_pos))
@@ -105,6 +106,12 @@ namespace rl
                 m_elapsed_time = 0.0;
             }
         }
+    }
+
+    void Character::process_state_input(godot::Input* const input, double delta_time)
+    {
+        if (input->is_action_pressed("shoot"))
+            this->emit_signal(Signals::ShootProjectile, this);
     }
 
     void Character::process_movement_input(godot::Input* const input, double delta_time)
@@ -147,6 +154,7 @@ namespace rl
         switch (this->get_input_mode(input))
         {
             default:
+                [[fallthrough]];
             case InputMode::MouseAndKeyboard:
             {
                 godot::Vector2 rotation_dir{ this->get_global_mouse_position() -
@@ -223,17 +231,24 @@ namespace rl
     {
         const static std::array signal_bindings = {
             rl::SignalBinding{
-                Signals::PositionChanged,
-                PropertyInfo{ Variant::OBJECT, "node" },
-                PropertyInfo{ Variant::VECTOR2, "new_position" },
+                Character::Signals::PositionChanged,
+                {
+                    godot::PropertyInfo{ godot::Variant::OBJECT, "node" },
+                    godot::PropertyInfo{ godot::Variant::VECTOR2, "new_position" },
+                },
+            },
+            rl::SignalBinding{
+                Character::Signals::ShootProjectile,
+                {
+                    godot::PropertyInfo{ godot::Variant::OBJECT, "node" },
+                },
             },
         };
 
         for (auto&& signal : signal_bindings)
         {
-            godot::ClassDB::add_signal(
-                Character::get_class_static(),
-                godot::MethodInfo(signal.name, signal.receiver_info, signal.sender_info));
+            godot::ClassDB::add_signal(Character::get_class_static(),
+                                       godot::MethodInfo(signal.name, signal.params));
         }
     }
 
@@ -243,17 +258,17 @@ namespace rl
             rl::PropertyBinding{
                 std::tuple{ "get_movement_speed", "set_movement_speed" },
                 std::tuple{ &Character::get_movement_speed, &Character::set_movement_speed },
-                std::tuple{ "movement_speed", Variant::FLOAT },
+                std::tuple{ "movement_speed", godot::Variant::FLOAT },
             },
             rl::PropertyBinding{
                 std::tuple{ "get_movement_friction", "set_movement_friction" },
                 std::tuple{ &Character::get_movement_friction, &Character::set_movement_friction },
-                std::tuple{ "movement_friction", Variant::FLOAT },
+                std::tuple{ "movement_friction", godot::Variant::FLOAT },
             },
             rl::PropertyBinding{
                 std::tuple{ "get_rotation_speed", "set_rotation_speed" },
                 std::tuple{ &Character::get_rotation_speed, &Character::set_rotation_speed },
-                std::tuple{ "rotation_speed", Variant::FLOAT },
+                std::tuple{ "rotation_speed", godot::Variant::FLOAT },
             }
         };
 
@@ -262,7 +277,7 @@ namespace rl
             godot::ClassDB::bind_method(godot::D_METHOD(bind.getter_name), bind.getter_func);
             godot::ClassDB::bind_method(godot::D_METHOD(bind.setter_name, bind.property_name),
                                         bind.setter_func);
-            PropertyInfo binding_prop_info{ bind.property_type, bind.property_name };
+            godot::PropertyInfo binding_prop_info{ bind.property_type, bind.property_name };
             godot::ClassDB::add_property(Character::get_class_static(), binding_prop_info,
                                          bind.setter_name, bind.getter_name);
         }

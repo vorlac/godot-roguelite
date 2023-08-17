@@ -3,6 +3,7 @@
 #include <optional>
 #include <tuple>
 #include <type_traits>
+#include <vector>
 
 #include <godot_cpp/core/property_info.hpp>
 #include <godot_cpp/variant/string.hpp>
@@ -10,16 +11,23 @@
 
 namespace rl
 {
-    using godot::PropertyInfo;
-    using godot::String;
-    using godot::Variant;
+    // clang-format off
+    
+    // [[signal_event]] attribute to make callback signals easy to spot/find
+    #define signal_event __declspec(godot_signal_event)
+    // [[signal_callback]] attribute to make callback signals easy to spot/find
+    #define signal_callback __declspec(godot_signal_callback)
+    // wrapper for simpler signal/slot connections
+    #define SignalConnection(signal, func_name, ...) std::pair<godot::String, godot::Callable> { signal, godot::Callable(this, #func_name __VA_OPT__(,) __VA_ARGS__) }
+
+    // clang-format on
 
     template <typename TGetter, typename TSetter>
     struct PropertyBinding
     {
-        PropertyBinding(std::tuple<String, String>&& func_names,
+        PropertyBinding(std::tuple<godot::String, godot::String>&& func_names,
                         std::tuple<TGetter, TSetter>&& func_callables,
-                        std::tuple<String, Variant::Type>&& prop_desc)
+                        std::tuple<godot::String, godot::Variant::Type>&& prop_desc)
             : getter_name{ std::get<0>(func_names) }
             , setter_name{ std::get<1>(func_names) }
             , getter_func{ std::get<0>(func_callables) }
@@ -29,25 +37,23 @@ namespace rl
         {
         }
 
-        String getter_name{};
-        String setter_name{};
-        String property_name{};
+        godot::String getter_name{};
+        godot::String setter_name{};
+        godot::String property_name{};
         TGetter getter_func{ nullptr };
         TSetter setter_func{ nullptr };
-        Variant::Type property_type{ Variant::NIL };
+        godot::Variant::Type property_type{ godot::Variant::NIL };
     };
 
     struct SignalBinding
     {
-        SignalBinding(String&& name, PropertyInfo&& recv_info, PropertyInfo&& send_info)
+        SignalBinding(godot::String&& name, std::vector<godot::PropertyInfo>&& param_info)
             : name{ std::move(name) }
-            , sender_info{ std::move(send_info) }
-            , receiver_info{ std::move(recv_info) }
+            , params{ std::move(param_info) }
         {
         }
 
-        String name{};
-        PropertyInfo sender_info{};
-        PropertyInfo receiver_info{};
+        godot::String name{};
+        std::vector<godot::PropertyInfo> params{};
     };
 }

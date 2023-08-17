@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://chvmxkabyukup"
-path="res://.godot/imported/TX Props.png-d9cf934e0d726057b526954be74b85f9.ctex"
+uid="uid://cwyux312tlv8y"
+path="res://.godot/imported/bullet.svg-d100e2dad7d39036a5efc6e96465aa9e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/art/tilepack/TX Props.png"
-dest_files=["res://.godot/imported/TX Props.png-d9cf934e0d726057b526954be74b85f9.ctex"]
+source_file="res://assets/art/placeholder/bullet.svg"
+dest_files=["res://.godot/imported/bullet.svg-d100e2dad7d39036a5efc6e96465aa9e.ctex"]
 
 [params]
 
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

@@ -2,13 +2,14 @@
 
 #include <godot_cpp/classes/engine_debugger.hpp>
 #include <godot_cpp/core/error_macros.hpp>
+#include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 
 namespace rl
 {
     struct log
     {
-        enum class DetailLevel : uint_fast8_t
+        enum DetailLevel : uint_fast8_t
         {
             None,
             Error,
@@ -18,41 +19,39 @@ namespace rl
             Trace
         };
 
-        static constexpr inline DetailLevel DETAIL_LEVEL = DetailLevel::Debug;
+        static constexpr const DetailLevel DETAIL_LEVEL{ log::DetailLevel::Debug };
 
-        [[msvc::flatten]]
-        static constexpr inline bool level_active(const DetailLevel level)
+        static constexpr inline bool level_active(const log::DetailLevel level)
         {
             return level <= log::DETAIL_LEVEL;
         }
 
-        [[msvc::flatten]]
-        static inline void error(const char* const msg)
+        template <typename TString>
+        static inline void error(TString msg)
         {
-            if constexpr (log::level_active(DetailLevel::Error))
-                ERR_PRINT_ED(msg);
-        }
-
-        [[msvc::flatten]]
-        static inline void warning(const char* const msg)
-        {
-            if constexpr (log::level_active(DetailLevel::Warning))
-                WARN_PRINT_ED(msg);
+            if (log::level_active(log::DetailLevel::Error))
+                ERR_PRINT_ED(std::move(msg));
         }
 
         template <typename TString>
-        [[msvc::flatten]] static inline void info(TString msg)
+        static inline void warning(TString msg)
         {
-            if (log::level_active(DetailLevel::Info))
-                godot::UtilityFunctions::print(std::move(msg));
+            if (log::level_active(log::DetailLevel::Warning))
+                WARN_PRINT_ED(std::move(msg));
         }
 
         template <typename TString>
-        [[msvc::flatten]] static inline void trace(TString msg)
+        static inline void info(TString msg)
         {
-            // godot::UtilityFunctions::print_verbose(msg);
-            if (log::level_active(DetailLevel::Trace))
-                godot::UtilityFunctions::print_verbose(std::move(msg));
+            if (log::level_active(log::DetailLevel::Info))
+                log::error(std::move(msg));
+        }
+
+        template <typename TString>
+        static inline void trace(TString msg)
+        {
+            if (log::level_active(log::DetailLevel::Trace))
+                log::error(std::move(msg));
         }
     };
 }

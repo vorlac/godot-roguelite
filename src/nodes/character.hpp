@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/projectile_spawner.hpp"
 #include "nodes/camera.hpp"
 
 #include <godot_cpp/classes/character_body2d.hpp>
@@ -8,7 +9,6 @@
 #include <godot_cpp/classes/sprite2d.hpp>
 #include <godot_cpp/classes/wrapped.hpp>
 #include <godot_cpp/core/class_db.hpp>
-#include <godot_cpp/core/error_macros.hpp>
 #include <godot_cpp/variant/string.hpp>
 
 namespace rl
@@ -29,6 +29,7 @@ namespace rl
         struct Signals
         {
             inline static constexpr auto PositionChanged{ "position_changed" };
+            inline static constexpr auto ShootProjectile{ "shoot_projectile" };
         };
 
     public:
@@ -56,6 +57,7 @@ namespace rl
         InputMode get_input_mode(godot::Input* const input);
         void process_movement_input(godot::Input* input, double delta_time);
         void process_rotation_input(godot::Input* input, double delta_time);
+        void process_state_input(godot::Input* const input, double delta_time);
 
     private:
         // Rate of acceleration/deceleration (unit/s/s)

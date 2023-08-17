@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cr5fotvxtm70h"]
+
+[ext_resource type="Texture2D" uid="uid://cwyux312tlv8y" path="res://assets/art/placeholder/bullet.svg" id="1_sadn1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_70ybn"]
+
+[node name="Projectile" type="Projectile"]
+
+[node name="Bullet" type="Sprite2D" parent="."]
+texture = ExtResource("1_sadn1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(0.8, 0.8)
+shape = SubResource("CircleShape2D_70ybn")
