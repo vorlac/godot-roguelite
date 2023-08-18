@@ -46,6 +46,7 @@ namespace rl
     void Main::_ready()
     {
         this->apply_default_settings();
+        this->add_child(m_debug_overlay);
         this->add_child(m_level);
     }
 

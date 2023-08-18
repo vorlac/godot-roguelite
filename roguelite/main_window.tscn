@@ -1,0 +1,197 @@
+[gd_scene load_steps=2 format=3 uid="uid://3d84gof8ehwq"]
+
+[ext_resource type="Theme" uid="uid://bjiaijiglw4a3" path="res://assets/scenes/ui/themes/ui_theme.tres" id="1_lp5so"]
+
+[node name="Panel" type="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_stretch_ratio = 0.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FileMenu" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/FileMenu"]
+layout_mode = 2
+
+[node name="MenuButton2" type="MenuButton" parent="VBoxContainer/FileMenu/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "File"
+item_count = 3
+popup/item_0/text = "SubOpt1"
+popup/item_0/id = 0
+popup/item_1/text = "SubOpt2"
+popup/item_1/id = 1
+popup/item_2/text = "SubOpt3"
+popup/item_2/id = 2
+
+[node name="Button1" type="Button" parent="VBoxContainer/FileMenu/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Options"
+
+[node name="Button2" type="Button" parent="VBoxContainer/FileMenu/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Debug"
+
+[node name="Test" type="Button" parent="VBoxContainer/FileMenu/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 0
+text = "Test"
+
+[node name="Control" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VSplitContainer" type="VSplitContainer" parent="VBoxContainer/Control"]
+layout_mode = 2
+split_offset = 250
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="VBoxContainer/Control/VSplitContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.0
+auto_translate = false
+localize_numeral_system = false
+theme = ExtResource("1_lp5so")
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="VBoxContainer/Control/VSplitContainer/SubViewportContainer"]
+disable_3d = true
+handle_input_locally = false
+audio_listener_enable_2d = true
+physics_object_picking = true
+physics_object_picking_sort = true
+gui_embed_subwindows = true
+size = Vector2i(1920, 745)
+render_target_update_mode = 4
+
+[node name="CanvasLayer" type="CanvasLayer" parent="VBoxContainer/Control/VSplitContainer/SubViewportContainer/SubViewport"]
+follow_viewport_enabled = true
+
+[node name="Main" type="Main" parent="VBoxContainer/Control/VSplitContainer/SubViewportContainer/SubViewport/CanvasLayer"]
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/Control/VSplitContainer"]
+custom_minimum_size = Vector2(640, 100)
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Control/VSplitContainer/PanelContainer"]
+clip_contents = false
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_stretch_ratio = 0.0
+auto_translate = false
+focus_mode = 2
+bbcode_enabled = true
+text = "[info] [code]W 0:00:00:0699   ResourceLoaderText::load: res://assets/scenes/projectiles/bullet.tscn:3 - ext_resource, invalid UID: uid://cwyux312tlv8y - using text path instead: res://assets/art/placeholder/bullet.svg[/code]
+[codeblock]
+red = ColorN(\"red\", 1) 
+[/codeblock]
+<C++ Source>   scene\\resources\\resource_format_text.cpp:447 @ ResourceLoaderText::load()
+[info] W 0:00:00:0699   ResourceLoaderText::load: res://assets/scenes/projectiles/bullet.tscn:3 - ext_resource, invalid UID: uid://cwyux312tlv8y - using text path instead: res://assets/art/placeholder/bullet.svg
+  <C++ Source>   scene\\resources\\resource_format_text.cpp:447 @ ResourceLoaderText::load()
+[info] W 0:00:00:0699   ResourceLoaderText::load: res://assets/scenes/projectiles/bullet.tscn:3 - ext_resource, invalid UID: uid://cwyux312tlv8y - using text path instead: res://assets/art/placeholder/bullet.svg
+  <C++ Source>   scene\\resources\\resource_format_text.cpp:447 @ ResourceLoaderText::load()
+[info] W 0:00:00:0699   ResourceLoaderText::load: res://assets/scenes/projectiles/bullet.tscn:3 - ext_resource, invalid UID: uid://cwyux312tlv8y - using text path instead: res://assets/art/placeholder/bullet.svg
+  <C++ Source>   scene\\resources\\resource_format_text.cpp:447 @ ResourceLoaderText::load()
+"
+fit_content = true
+scroll_following = true
+autowrap_mode = 0
+tab_size = 3
+context_menu_enabled = true
+meta_underlined = false
+hint_underlined = false
+threaded = true
+selection_enabled = true
+deselect_on_focus_loss_enabled = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="CheckBox" type="CheckBox" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Toggle Console"
+
+[node name="Label1" type="Label" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "Label1: "
+
+[node name="Val1" type="Label" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Val1"
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "Label2: "
+
+[node name="Val2" type="Label" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Val2"
+
+[node name="Label3" type="Label" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "Label3: "
+
+[node name="Val3" type="Label" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Val3"
+
+[node name="Label4" type="Label" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "Label4: "
+
+[node name="Val4" type="Label" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Val4"

@@ -26,7 +26,7 @@
         "--verbose",
         "--path",
         "${workspaceRoot}\\roguelite",
-        "res://main.tscn"
+        "res://main_window.tscn"
       ],
       "project": "CMakeLists.txt",
       "name": "gdextension (console)"

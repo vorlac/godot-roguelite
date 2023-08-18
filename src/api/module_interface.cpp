@@ -5,6 +5,7 @@
 #include "main.hpp"
 #include "nodes/camera.hpp"
 #include "nodes/character.hpp"
+#include "ui/debug_overlay.hpp"
 
 #include <gdextension_interface.h>
 #include <godot_cpp/core/class_db.hpp>
@@ -18,6 +19,7 @@ namespace godot
         if (init_level != MODULE_INITIALIZATION_LEVEL_SCENE)
             return;
 
+        ClassDB::register_class<rl::DebugOverlay>();
         ClassDB::register_class<rl::Camera>();
         ClassDB::register_class<rl::Projectile>();
         ClassDB::register_class<rl::ProjectileSpawner>();
