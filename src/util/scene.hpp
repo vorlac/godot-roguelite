@@ -12,6 +12,7 @@
 
 namespace rl::inline utils
 {
+
     namespace scene
     {
         template <typename TNode = godot::Node>

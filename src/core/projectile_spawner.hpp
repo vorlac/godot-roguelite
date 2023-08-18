@@ -33,8 +33,7 @@ namespace rl
         }
 
     protected:
-        using callback_connection = std::pair<godot::String, godot::Callable>;
-        std::vector<callback_connection> m_signal_connections{};
+        std::vector<signal::callback_connection_t> m_signal_connections{};
         resource::preload::scene<rl::Projectile> m_scene{ path::scene::Bullet };
     };
 }

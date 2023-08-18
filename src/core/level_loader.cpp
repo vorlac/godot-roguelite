@@ -79,8 +79,16 @@ namespace rl
 
         rl::Projectile* projectile{ m_projectile_spawner->spawn_projectile() };
         projectile->set_position(node->get_global_position());
-        projectile->set_rotation(node->get_global_rotation() - godot::Math::deg_to_rad(45.0));
-        projectile->look_at(node->get_local_mouse_position());
+        projectile->set_rotation(node->get_rotation() - math::deg_to_rad(45.0));
+        //  projectile->look_at(node->get_local_mouse_position());
+
+        const rl::Character* const character{ godot::Object::cast_to<rl::Character>(node) };
+        if (character != nullptr)
+        {
+            projectile->set_velocity(
+                godot::Vector2{ 0, -1 }.rotated(character->get_global_rotation()));
+        }
+
         this->add_child(projectile);
     }
 

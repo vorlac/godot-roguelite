@@ -13,8 +13,6 @@
 
 namespace rl
 {
-    using godot::CharacterBody2D;
-
     class Character : public godot::CharacterBody2D
     {
         GDCLASS(Character, godot::CharacterBody2D);
@@ -44,18 +42,17 @@ namespace rl
         static void bind_signals();
         static void bind_properties();
 
-    protected:
-        [[nodiscard]] double get_movement_speed() const;
-        [[nodiscard]] double get_movement_friction() const;
-        [[nodiscard]] double get_rotation_speed() const;
-        void set_movement_speed(const double move_speed);
-        void set_movement_friction(const double move_friction);
-        void set_rotation_speed(const double rotation_speed);
-
         InputMode get_input_mode(godot::Input* const input);
         void process_movement_input(godot::Input* input, double delta_time);
         void process_rotation_input(godot::Input* input, double delta_time);
         void process_state_input(godot::Input* const input, double delta_time);
+
+        [[node_property]] double get_movement_speed() const;
+        [[node_property]] double get_movement_friction() const;
+        [[node_property]] double get_rotation_speed() const;
+        [[node_property]] void set_movement_speed(const double move_speed);
+        [[node_property]] void set_movement_friction(const double move_friction);
+        [[node_property]] void set_rotation_speed(const double rotation_speed);
 
     private:
         // Rate of acceleration/deceleration (unit/s/s)

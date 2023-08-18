@@ -44,14 +44,14 @@ namespace rl::inline utils
         static inline void info(TString msg)
         {
             if (log::level_active(log::DetailLevel::Info))
-                log::error(std::move(msg));
+                godot::UtilityFunctions::print(std::move(msg));
         }
 
         template <typename TString>
         static inline void trace(TString msg)
         {
             if (log::level_active(log::DetailLevel::Trace))
-                log::error(std::move(msg));
+                godot::UtilityFunctions::print(std::move(msg));
         }
     };
 }

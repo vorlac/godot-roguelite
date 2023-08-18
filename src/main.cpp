@@ -34,11 +34,13 @@ namespace rl
     void Main::apply_default_settings()
     {
         engine::set_fps(60);
-        input::hide_cursor(true);
-        if (not engine::editor_active())
-            engine::root_window()->set_size({ 1920, 1080 });
-
         input::use_accumulated_inputs(false);
+
+        if (not engine::editor_active())
+        {
+            engine::root_window()->set_size({ 1920, 1080 });
+            input::hide_cursor(true);
+        }
     }
 
     void Main::_ready()

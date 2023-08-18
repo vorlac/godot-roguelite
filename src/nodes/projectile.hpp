@@ -1,5 +1,7 @@
 #pragma once
 
+#include "util/utils.hpp"
+
 #include <godot_cpp/classes/area2d.hpp>
 #include <godot_cpp/classes/path2d.hpp>
 #include <godot_cpp/classes/tween.hpp>
@@ -18,24 +20,37 @@ namespace rl
         void _ready() override;
         void _process(double delta_time) override;
 
-        void _mouse_enter() override
-        {
-        }
+        // void _mouse_enter() override;
+        // void _area_entered(Node* node) override;
+
+        static void _bind_methods();
+
+        [[node_property]] double get_movement_speed() const;
+        [[node_property]] double get_time_to_live() const;
+        [[node_property]] double get_max_travel_dist() const;
+        [[node_property]] double get_acceleration() const;
+        [[node_property]] godot::Vector2 get_velocity() const;
+        [[node_property]] void set_movement_speed(const double speed);
+        [[node_property]] void set_time_to_live(const double ttl);
+        [[node_property]] void set_max_travel_dist(const double dist);
+        [[node_property]] void set_acceleration(const double acceleration);
+        [[node_property]] void set_velocity(const godot::Vector2 velocity);
 
     protected:
-        static void _bind_methods()
-        {
-        }
+        // projectile movement velocity (pixels)
+        godot::Vector2 m_velocity{ 1.0, 1.0 };
+        // projectile movement speed (pixels/s)
+        double m_movement_speed{ 1000.0 };
+        // projectile acceleration (pixels/s/s)
+        double m_accelleration{ 100.0 };
+        // max time duration alive (seconds)
+        double m_time_to_live{ 1.0 };
+        // max travel distance (pixels) - uint32_t?
+        double m_max_travel_dist{ 1000.0 * 1000.0 };
 
     protected:
-        // projectile speed
-        godot::Vector2 m_velocity{ 1000, 1000 };
-        // time to live
-        double m_ttl{ 1.0 };
-        // collision layer mask
-        // TODO: figure out how to define collision layer mask
-        godot::Vector2 m_scale{ 1.0, 1.0 };
-        // tween to use for trajectory behavior
+        godot::Vector2 m_start_pos{ 0.0, 0.0 };
         godot::Ref<godot::Tween> m_tween{};
+        godot::Path2D* m_path{ nullptr };
     };
 }

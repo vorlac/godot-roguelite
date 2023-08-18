@@ -1,33 +1,15 @@
 #include "nodes/character.hpp"
 
 #include "nodes/camera.hpp"
+#include "util/bind.hpp"
 #include "util/utils.hpp"
 
 #include <array>
 #include <tuple>
+#include <vector>
 
-#include <gdextension_interface.h>
-#include <godot_cpp/classes/camera2d.hpp>
-#include <godot_cpp/classes/collision_shape2d.hpp>
-#include <godot_cpp/classes/image.hpp>
-#include <godot_cpp/classes/input.hpp>
-#include <godot_cpp/classes/input_map.hpp>
-#include <godot_cpp/classes/node.hpp>
-#include <godot_cpp/classes/node2d.hpp>
 #include <godot_cpp/classes/rectangle_shape2d.hpp>
-#include <godot_cpp/classes/ref.hpp>
-#include <godot_cpp/classes/resource.hpp>
-#include <godot_cpp/classes/resource_loader.hpp>
-#include <godot_cpp/classes/shape2d.hpp>
-#include <godot_cpp/classes/texture2d.hpp>
-#include <godot_cpp/variant/rect2.hpp>
-#include <godot_cpp/variant/string.hpp>
-#include <godot_cpp/variant/typed_array.hpp>
-#include <godot_cpp/variant/variant.hpp>
 
-/**
- * @brief behavior
- * */
 namespace rl
 {
     Character::Character()
@@ -62,6 +44,12 @@ namespace rl
             this->queue_free();
     }
 
+    void Character::_bind_methods()
+    {
+        Character::bind_properties();
+        Character::bind_signals();
+    }
+
     void Character::_ready()
     {
         this->add_child(m_sprite);
@@ -88,7 +76,7 @@ namespace rl
             m_elapsed_time += delta_time;
             if (m_elapsed_time > 1.0)
             {
-                this->emit_signal(Signals::PositionChanged, this, this->get_global_position());
+                this->emit_signal(signal::name::position_changed, this, get_global_position());
                 m_elapsed_time = 0.0;
             }
         }
@@ -97,7 +85,7 @@ namespace rl
     void Character::process_state_input(godot::Input* const input, double delta_time)
     {
         if (input->is_action_pressed("shoot"))
-            this->emit_signal(Signals::ShootProjectile, this);
+            this->emit_signal(signal::name::shoot_projectile, this);
     }
 
     void Character::process_movement_input(godot::Input* const input, double delta_time)
@@ -170,72 +158,23 @@ namespace rl
                                                         m_rotation_speed * delta_time);
         this->set_rotation(smoothed_angle);
     }
-}
 
-/**
- * @brief properties
- * */
-namespace rl
-{
-    [[nodiscard]] double Character::get_movement_speed() const
-    {
-        return m_movement_speed;
-    }
-
-    void Character::set_movement_speed(const double move_speed)
-    {
-        m_movement_speed = move_speed;
-    }
-
-    [[nodiscard]] double Character::get_movement_friction() const
-    {
-        return m_movement_friction;
-    }
-
-    void Character::set_movement_friction(const double move_friction)
-    {
-        m_movement_friction = move_friction;
-    }
-
-    [[nodiscard]] double Character::get_rotation_speed() const
-    {
-        return m_rotation_speed;
-    }
-
-    void Character::set_rotation_speed(const double rotation_speed)
-    {
-        m_rotation_speed = rotation_speed;
-    }
-}
-
-/**
- * @brief property/signal bindings
- * */
-namespace rl
-{
     void Character::bind_signals()
     {
-        const static std::array signal_bindings = {
-            rl::SignalBinding{
-                Character::Signals::PositionChanged,
-                {
-                    godot::PropertyInfo{ godot::Variant::OBJECT, "node" },
-                    godot::PropertyInfo{ godot::Variant::VECTOR2, "new_position" },
-                },
+        static std::array signal_bindings{
+            signal::binding<Character>{
+                signal::name::position_changed,
+                { godot::PropertyInfo(godot::Variant::OBJECT, "node"),
+                  godot::PropertyInfo(godot::Variant::VECTOR2, "new_position") },
             },
-            rl::SignalBinding{
-                Character::Signals::ShootProjectile,
-                {
-                    godot::PropertyInfo{ godot::Variant::OBJECT, "node" },
-                },
-            },
+            signal::binding<Character>{
+                signal::name::shoot_projectile,
+                { godot::PropertyInfo(godot::Variant::OBJECT, "node") },
+            }
         };
 
         for (auto&& signal : signal_bindings)
-        {
-            godot::ClassDB::add_signal(Character::get_class_static(),
-                                       godot::MethodInfo(signal.name, signal.params));
-        }
+            signal.add_to_classdb();
     }
 
     void Character::bind_properties()
@@ -269,9 +208,39 @@ namespace rl
         }
     }
 
-    void Character::_bind_methods()
+    [[node_property]]
+    double Character::get_movement_speed() const
     {
-        Character::bind_properties();
-        Character::bind_signals();
+        return m_movement_speed;
+    }
+
+    [[node_property]]
+    void Character::set_movement_speed(const double move_speed)
+    {
+        m_movement_speed = move_speed;
+    }
+
+    [[node_property]]
+    double Character::get_movement_friction() const
+    {
+        return m_movement_friction;
+    }
+
+    [[node_property]]
+    void Character::set_movement_friction(const double move_friction)
+    {
+        m_movement_friction = move_friction;
+    }
+
+    [[node_property]]
+    double Character::get_rotation_speed() const
+    {
+        return m_rotation_speed;
+    }
+
+    [[node_property]]
+    void Character::set_rotation_speed(const double rotation_speed)
+    {
+        m_rotation_speed = rotation_speed;
     }
 }

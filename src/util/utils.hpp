@@ -8,3 +8,8 @@
 #include "util/os.hpp"
 #include "util/scene.hpp"
 #include "util/variant.hpp"
+
+namespace rl
+{
+    namespace math = ::godot::Math;
+}
