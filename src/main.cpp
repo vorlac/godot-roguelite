@@ -2,9 +2,7 @@
 
 #include "core/level_loader.hpp"
 #include "nodes/character.hpp"
-#include "util/debug.hpp"
-#include "util/input.hpp"
-#include "util/io.hpp"
+#include "util/utils.hpp"
 
 #include <godot_cpp/classes/area2d.hpp>
 #include <godot_cpp/classes/canvas_item.hpp>
@@ -36,8 +34,8 @@ namespace rl
     void Main::apply_default_settings()
     {
         engine::set_fps(60);
-
-        if (not editor::active())
+        input::hide_cursor(true);
+        if (not engine::editor_active())
             engine::root_window()->set_size({ 1920, 1080 });
 
         input::use_accumulated_inputs(false);
@@ -60,7 +58,7 @@ namespace rl
         if constexpr (diag::is_enabled(diag::RootProcess))
         {
             godot::Point2 mouse_pos{ this->get_global_mouse_position() };
-            this->draw_circle(mouse_pos, 20, { "DARK_CYAN" });
+            this->draw_circle(mouse_pos, 10, { "DARK_CYAN" });
         }
     }
 }

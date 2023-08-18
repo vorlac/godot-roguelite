@@ -27,12 +27,12 @@ namespace rl
         ~LevelLoader();
 
         void _ready() override;
-        void _input(const godot::Ref<godot::InputEvent>& event) override;
         void _draw() override;
 
     protected:
         [[signal_callback]]
         void on_position_changed(const godot::Object* const obj, godot::Vector2 location) const;
+        [[signal_callback]]
         void on_shoot_projectile(const godot::Object* const obj);
 
         static void _bind_methods()

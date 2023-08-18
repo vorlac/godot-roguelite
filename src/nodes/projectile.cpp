@@ -23,5 +23,9 @@ namespace rl
         godot::Vector2 position{ this->get_position() };
         position += m_velocity * delta_time;
         this->set_position(position);
+
+        m_ttl -= delta_time;
+        if (m_ttl <= 0)
+            this->queue_free();
     }
 }

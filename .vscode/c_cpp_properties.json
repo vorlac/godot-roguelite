@@ -4,10 +4,7 @@
         {
             "name": "GDNative C++",
             "configurationProvider": "ms-vscode.cmake-tools",
-            "intelliSenseMode": "${default}",
-            "browse": {
-                "limitSymbolsToIncludedHeaders": false
-            }
+            "intelliSenseMode": "${default}"
         }
     ]
 }

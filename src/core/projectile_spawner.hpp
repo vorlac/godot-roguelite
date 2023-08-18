@@ -1,9 +1,6 @@
 #pragma once
 
 #include "nodes/projectile.hpp"
-#include "util/assets.hpp"
-#include "util/bindings.hpp"
-#include "util/debug.hpp"
 #include "util/utils.hpp"
 
 #include <utility>
@@ -38,6 +35,6 @@ namespace rl
     protected:
         using callback_connection = std::pair<godot::String, godot::Callable>;
         std::vector<callback_connection> m_signal_connections{};
-        resource::preload::scene<rl::Projectile> m_scene{ asset::scene::Bullet };
+        resource::preload::scene<rl::Projectile> m_scene{ path::scene::Bullet };
     };
 }

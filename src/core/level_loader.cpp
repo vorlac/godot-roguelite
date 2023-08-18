@@ -1,9 +1,6 @@
 #include "core/level_loader.hpp"
 
 #include "nodes/character.hpp"
-#include "util/assets.hpp"
-#include "util/debug.hpp"
-#include "util/io.hpp"
 #include "util/utils.hpp"
 
 #include <godot_cpp/classes/node2d.hpp>
@@ -17,8 +14,7 @@ namespace rl
     LevelLoader::LevelLoader()
     {
         gd::ResourceLoader* resource_loader{ resource::loader::get() };
-        gd::Ref<gd::Resource> background_texture{ resource_loader->load(
-            asset::sprite::Background) };
+        gd::Ref<gd::Resource> background_texture{ resource_loader->load(path::sprite::Background) };
 
         m_background->set_name("BackgroundTexture");
         m_background->set_texture(background_texture);
@@ -71,11 +67,11 @@ namespace rl
             this->draw_rect(level_bounds, { "RED" }, false, 5.0);
         }
     }
+}
 
-    void LevelLoader::_input(const godot::Ref<godot::InputEvent>& event)
-    {
-    }
-
+namespace rl
+{
+    [[signal_callback]]
     void LevelLoader::on_shoot_projectile(const godot::Object* const obj)
     {
         const godot::Node2D* const node{ godot::Object::cast_to<godot::Node2D>(obj) };

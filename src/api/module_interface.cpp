@@ -1,4 +1,4 @@
-#include "register_types.hpp"
+#include "api/module_interface.hpp"
 
 #include "core/level_loader.hpp"
 #include "core/projectile_spawner.hpp"

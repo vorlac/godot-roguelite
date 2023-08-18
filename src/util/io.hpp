@@ -5,7 +5,7 @@
 #include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 
-namespace rl
+namespace rl::inline utils
 {
     struct log
     {

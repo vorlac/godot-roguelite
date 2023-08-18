@@ -9,8 +9,9 @@
 
 #include <godot_cpp/core/error_macros.hpp>
 
-namespace rl::debug
+namespace rl::inline utils::debug
 {
+
     [[msvc::flatten]]
     static inline constexpr void assert(const bool cond)
     {
@@ -18,7 +19,7 @@ namespace rl::debug
     }
 }
 
-namespace rl::diag
+namespace rl::inline utils::diag
 {
     enum Option : uint_fast8_t
     {

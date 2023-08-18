@@ -1,8 +1,6 @@
 #include "nodes/character.hpp"
 
 #include "nodes/camera.hpp"
-#include "util/assets.hpp"
-#include "util/bindings.hpp"
 #include "util/utils.hpp"
 
 #include <array>
@@ -39,7 +37,7 @@ namespace rl
         this->set_name("Player");
 
         godot::ResourceLoader* resource_loader{ resource::loader::get() };
-        godot::Ref<godot::Resource> player_image{ resource_loader->load(asset::sprite::Player) };
+        godot::Ref<godot::Resource> player_image{ resource_loader->load(path::sprite::Player) };
 
         m_sprite->set_texture(player_image);
         m_sprite->set_name("PlayerSprite");
@@ -71,21 +69,9 @@ namespace rl
         this->add_child(m_camera);
     }
 
-    void Character::_physics_process(double delta_time)
-    {
-        if (editor::active())
-            return;
-    }
-
-    void Character::_input(const godot::Ref<godot::InputEvent>& event)
-    {
-        if (editor::active())
-            return;
-    }
-
     void Character::_process(double delta_time)
     {
-        if (editor::active())
+        if (engine::editor_active())
             return;
 
         godot::Input* const input{ godot::Input::get_singleton() };

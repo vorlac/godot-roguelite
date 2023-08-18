@@ -9,7 +9,7 @@
 #include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/variant.hpp>
 
-namespace rl
+namespace rl::inline utils
 {
     // clang-format off
     

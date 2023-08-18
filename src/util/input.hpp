@@ -1,5 +1,6 @@
 #pragma once
 
+#include "util/debug.hpp"
 #include "util/io.hpp"
 
 #include <godot_cpp/classes/input.hpp>
@@ -7,7 +8,7 @@
 #include <godot_cpp/classes/input_event_action.hpp>
 #include <godot_cpp/classes/input_map.hpp>
 
-namespace rl
+namespace rl::inline utils
 {
     struct input
     {
@@ -15,13 +16,24 @@ namespace rl
         {
             static inline godot::InputMap* const get()
             {
-                return godot::InputMap::get_singleton();
+                godot::InputMap* const mappings{ godot::InputMap::get_singleton() };
+                debug::assert(mappings != nullptr);
+                return mappings;
             }
         };
 
         static inline godot::Input* const get()
         {
-            return godot::Input::get_singleton();
+            godot::Input* const input{ godot::Input::get_singleton() };
+            debug::assert(input != nullptr);
+            return input;
+        }
+
+        const static inline void hide_cursor(bool hide = true)
+        {
+            godot::Input* const input{ input::get() };
+            input->set_mouse_mode(hide ? godot::Input::MOUSE_MODE_HIDDEN :
+                                         godot::Input::MOUSE_MODE_VISIBLE);
         }
 
         const static inline void load_project_inputs()
