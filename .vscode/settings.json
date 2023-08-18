@@ -1,7 +1,13 @@
 {
+    "cmake.configureOnOpen": true,
+    "cmake.buildBeforeRun": true,
+    "cmake.automaticReconfigure": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+    "C_Cpp.clang_format_style": "file",
+    "C_Cpp.clang_format_path": "C:/Program Files/LLVM/bin/clang-format.exe",
     "[cpp]": {
-        "diffEditor.diffAlgorithm": "advanced"
-    },
-    "cmake.configureOnOpen": false,
-    "dotnet.defaultSolution": "disable"
+        "editor.gotoLocation.multipleDeclarations": "gotoAndPeek",
+        "debug.saveBeforeStart": "allEditorsInActiveGroup",
+    }
 }

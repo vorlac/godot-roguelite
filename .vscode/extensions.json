@@ -1,0 +1,19 @@
+{
+    "recommendations": [
+        "ms-vscode.cpptools",
+        "twxs.cmake",
+        "josetr.cmake-language-support-vscode",
+        "ms-vscode.cmake-tools",
+        "eamodio.gitlens",
+        "alfish.godot-files",
+        "ms-python.python",
+        "ms-vscode-remote.remote-ssh",
+        "ms-vscode.remote-explorer",
+        "yzhang.markdown-all-in-one",
+        "foxundermoon.shell-format",
+        "vadimcn.vscode-lldb",
+        "calro.vscode-theme-one-dark-muted",
+        "jeff-hykin.better-cpp-syntax",
+        "mitaki28.vscode-clang"
+    ]
+}

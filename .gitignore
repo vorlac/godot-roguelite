@@ -12,6 +12,12 @@ export_presets.cfg
 **/bin/*
 !**/bin/*.gdextension
 
-.vs/
+.vs/**
 !.vs/launch.vs.json
 !.vs/VSWorkspaceSettings.json
+
+.vscode/**
+!.vscode/c_cpp_properties.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
