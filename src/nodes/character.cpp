@@ -9,6 +9,10 @@
 #include <vector>
 
 #include <godot_cpp/classes/rectangle_shape2d.hpp>
+#include <godot_cpp/classes/ref.hpp>
+#include <godot_cpp/classes/resource_loader.hpp>
+#include <godot_cpp/variant/color.hpp>
+#include <godot_cpp/variant/vector2.hpp>
 
 namespace rl
 {
@@ -62,16 +66,16 @@ namespace rl
         if (engine::editor_active())
             return;
 
-        godot::Input* const input{ godot::Input::get_singleton() };
-        if (input != nullptr)
+        godot::Input* const input_handler{ input::get() };
+        if (input_handler != nullptr)
         {
-            this->process_movement_input(input, delta_time);
-            this->process_rotation_input(input, delta_time);
-            this->process_state_input(input, delta_time);
+            this->process_movement_input(input_handler, delta_time);
+            this->process_rotation_input(input_handler, delta_time);
+            this->process_state_input(input_handler, delta_time);
 
             godot::Point2 mouse_pos{ this->get_global_mouse_position() };
             if (this->get_viewport_rect().has_point(mouse_pos))
-                input->flush_buffered_events();
+                input_handler->flush_buffered_events();
 
             m_elapsed_time += delta_time;
             if (m_elapsed_time > 1.0)

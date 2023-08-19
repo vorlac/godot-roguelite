@@ -23,9 +23,6 @@ namespace rl
         [[nodiscard]]
         rl::Projectile* const spawn_projectile();
 
-    public:
-        [[signal_callback]]
-        void on_shoot_projectile(godot::Object* obj);
 
     protected:
         static void _bind_methods()
@@ -33,7 +30,6 @@ namespace rl
         }
 
     protected:
-        std::vector<signal::callback_connection_t> m_signal_connections{};
         resource::preload::scene<rl::Projectile> m_scene{ path::scene::Bullet };
     };
 }

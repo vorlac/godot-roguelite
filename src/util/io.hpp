@@ -1,5 +1,6 @@
 #pragma once
 
+#include <godot_cpp/classes/editor_node3d_gizmo_plugin.hpp>
 #include <godot_cpp/classes/engine_debugger.hpp>
 #include <godot_cpp/core/error_macros.hpp>
 #include <godot_cpp/variant/string.hpp>
@@ -53,5 +54,29 @@ namespace rl::inline utils
             if (log::level_active(log::DetailLevel::Trace))
                 godot::UtilityFunctions::print(std::move(msg));
         }
+
+        // namespace asdf
+        //{
+        //     void EditorNode::_print_handler(void *p_this, const String &p_string, bool p_error,
+        //     bool p_rich) {
+        //      callable_mp_static(&EditorNode::_print_handler_impl).bind(p_string, p_error,
+        //      p_rich).call_deferred();
+        //    }
+
+        //    void EditorNode::_print_handler_impl(const String &p_string, bool p_error, bool
+        //    p_rich) {
+        //     if (p_error) {
+        //      singleton->log->add_message(p_string, EditorLog::MSG_TYPE_ERROR);
+        //     } else if (p_rich) {
+        //      singleton->log->add_message(p_string, EditorLog::MSG_TYPE_STD_RICH);
+        //     } else {
+        //      singleton->log->add_message(p_string, EditorLog::MSG_TYPE_STD);
+        //     }
+        //    }
+
+        //    print_handler.printfunc = _print_handler;
+        // print_handler.userdata = this;
+        // add_print_handler(&print_handler);
+        //}
     };
 }

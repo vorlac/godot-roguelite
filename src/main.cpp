@@ -4,6 +4,18 @@
 #include "nodes/character.hpp"
 #include "util/utils.hpp"
 
+#include <cstdint>
+#include <ios>
+#include <iosfwd>
+#include <iostream>
+#include <ostream>
+#include <sstream>
+#include <streambuf>
+#include <string>
+#include <string_view>
+#include <strstream>
+#include <type_traits>
+
 #include <godot_cpp/classes/area2d.hpp>
 #include <godot_cpp/classes/canvas_item.hpp>
 #include <godot_cpp/classes/circle_shape2d.hpp>

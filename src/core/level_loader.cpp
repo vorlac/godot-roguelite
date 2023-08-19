@@ -47,8 +47,8 @@ namespace rl
         if (m_signal_connections.empty())
         {
             m_signal_connections = {
-                SignalConnection(Character::Signals::PositionChanged, on_position_changed),
-                SignalConnection(Character::Signals::ShootProjectile, on_shoot_projectile),
+                SignalConnection(signal::name::position_changed, on_position_changed),
+                SignalConnection(signal::name::shoot_projectile, on_shoot_projectile),
             };
 
             for (const auto& conn : m_signal_connections)
@@ -80,7 +80,6 @@ namespace rl
         rl::Projectile* projectile{ m_projectile_spawner->spawn_projectile() };
         projectile->set_position(node->get_global_position());
         projectile->set_rotation(node->get_rotation() - math::deg_to_rad(45.0));
-        //  projectile->look_at(node->get_local_mouse_position());
 
         const rl::Character* const character{ godot::Object::cast_to<rl::Character>(node) };
         if (character != nullptr)

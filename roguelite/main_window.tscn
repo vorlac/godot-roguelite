@@ -1,8 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://3d84gof8ehwq"]
+[gd_scene load_steps=4 format=3 uid="uid://3d84gof8ehwq"]
 
 [ext_resource type="Theme" uid="uid://bjiaijiglw4a3" path="res://assets/scenes/ui/themes/ui_theme.tres" id="1_lp5so"]
 
-[node name="Panel" type="Panel"]
+[sub_resource type="SystemFont" id="SystemFont_l3qir"]
+
+[sub_resource type="FontVariation" id="FontVariation_4ded8"]
+resource_local_to_scene = true
+base_font = SubResource("SystemFont_l3qir")
+
+[node name="MainInterfaceDiagnostic" type="MainInterfaceDiag"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -70,7 +76,7 @@ layout_mode = 2
 split_offset = 250
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="VBoxContainer/Control/VSplitContainer"]
-clip_contents = true
+custom_minimum_size = Vector2(1024, 768)
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.0
@@ -86,7 +92,7 @@ audio_listener_enable_2d = true
 physics_object_picking = true
 physics_object_picking_sort = true
 gui_embed_subwindows = true
-size = Vector2i(1920, 745)
+size = Vector2i(1920, 898)
 render_target_update_mode = 4
 
 [node name="CanvasLayer" type="CanvasLayer" parent="VBoxContainer/Control/VSplitContainer/SubViewportContainer/SubViewport"]
@@ -98,36 +104,24 @@ follow_viewport_enabled = true
 custom_minimum_size = Vector2(640, 100)
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Control/VSplitContainer/PanelContainer"]
-clip_contents = false
+[node name="ConsolePanel" type="RichTextLabel" parent="VBoxContainer/Control/VSplitContainer/PanelContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
+size_flags_vertical = 8
 size_flags_stretch_ratio = 0.0
-auto_translate = false
-focus_mode = 2
+focus_mode = 1
+mouse_filter = 2
+mouse_default_cursor_shape = 1
+theme_override_fonts/normal_font = SubResource("FontVariation_4ded8")
 bbcode_enabled = true
-text = "[info] [code]W 0:00:00:0699   ResourceLoaderText::load: res://assets/scenes/projectiles/bullet.tscn:3 - ext_resource, invalid UID: uid://cwyux312tlv8y - using text path instead: res://assets/art/placeholder/bullet.svg[/code]
-[codeblock]
-red = ColorN(\"red\", 1) 
-[/codeblock]
-<C++ Source>   scene\\resources\\resource_format_text.cpp:447 @ ResourceLoaderText::load()
-[info] W 0:00:00:0699   ResourceLoaderText::load: res://assets/scenes/projectiles/bullet.tscn:3 - ext_resource, invalid UID: uid://cwyux312tlv8y - using text path instead: res://assets/art/placeholder/bullet.svg
-  <C++ Source>   scene\\resources\\resource_format_text.cpp:447 @ ResourceLoaderText::load()
-[info] W 0:00:00:0699   ResourceLoaderText::load: res://assets/scenes/projectiles/bullet.tscn:3 - ext_resource, invalid UID: uid://cwyux312tlv8y - using text path instead: res://assets/art/placeholder/bullet.svg
-  <C++ Source>   scene\\resources\\resource_format_text.cpp:447 @ ResourceLoaderText::load()
-[info] W 0:00:00:0699   ResourceLoaderText::load: res://assets/scenes/projectiles/bullet.tscn:3 - ext_resource, invalid UID: uid://cwyux312tlv8y - using text path instead: res://assets/art/placeholder/bullet.svg
-  <C++ Source>   scene\\resources\\resource_format_text.cpp:447 @ ResourceLoaderText::load()
-"
 fit_content = true
 scroll_following = true
-autowrap_mode = 0
-tab_size = 3
-context_menu_enabled = true
+shortcut_keys_enabled = false
 meta_underlined = false
 hint_underlined = false
 threaded = true
 selection_enabled = true
-deselect_on_focus_loss_enabled = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <concepts>
 #include <optional>
 #include <string_view>
 #include <tuple>
@@ -15,22 +16,22 @@
 
 namespace rl::inline utils
 {
-    // clang-format off
-    
-    // [[node_property]] attribute to make node properties easy spot/find
-    #define node_property __declspec(godot_node_property)
-    // [[signal_callback]] attribute to make callback signals easy to spot/find
-    #define signal_callback __declspec(godot_signal_callback)
-    // wrapper for simpler signal/slot connections
-    #define SignalConnection(signal, func_name, ...) std::pair<godot::String, godot::Callable> { signal, godot::Callable(this, #func_name __VA_OPT__(,) __VA_ARGS__) }
+// clang-format off
+
+        // [[node_property]] attribute to make node properties easy spot/find
+        #define node_property __declspec(godot_node_property)
+        // [[signal_callback]] attribute to make callback signals easy to spot/find
+        #define signal_callback __declspec(godot_signal_callback)
+        // wrapper for simpler signal/slot connections
+        #define SignalConnection(signal_name, func_name, ...) std::pair<godot::String, godot::Callable> { signal_name, godot::Callable(this, #func_name __VA_OPT__(,) __VA_ARGS__) }
 
     // clang-format on
 
     namespace signal
     {
 
-        template <class T>
-            requires std::derived_from<T, godot::Node>
+        template <typename T>
+            requires std::derived_from<godot::Node, std::type_identity_t<T>>
         using params_t = std::vector<T>;
 
         using callback_connection_t = std::pair<godot::String, godot::Callable>;
