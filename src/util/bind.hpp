@@ -47,7 +47,7 @@ namespace rl::inline utils
             requires std::derived_from<TNode, godot::Node>
         struct binding
         {
-            using node_t = typename TNode;
+            using node_t = typename std::type_identity_t<TNode>;
 
             binding(godot::String&& name, std::vector<godot::PropertyInfo>&& param_info)
                 : signal_name{ std::forward<godot::String>(name) }

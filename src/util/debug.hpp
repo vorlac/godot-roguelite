@@ -11,8 +11,6 @@
 
 namespace rl::inline utils::debug
 {
-
-    [[msvc::flatten]]
     static inline constexpr void assert(const bool cond)
     {
         DEV_ASSERT(cond);

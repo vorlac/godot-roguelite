@@ -58,8 +58,8 @@ namespace rl::inline utils
                          std::convertible_to<TObj, godot::Node>
             struct scene
             {
-                using scene_t = typename TScene;
-                using object_t = typename TObj;
+                using scene_t = typename std::type_identity_t<TScene>;
+                using object_t = typename std::type_identity_t<TObj>;
 
                 scene(const char* const resource_path)
                 {
