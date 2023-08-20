@@ -2,7 +2,7 @@
   "version": 3,
   "configurePresets": [
     {
-      "name": "base",
+      "name": "msvc",
       "generator": "Ninja",
       "installDir": "${sourceDir}/.out/install/${presetName}",
       "binaryDir": "${sourceDir}/.out/build/${presetName}",
@@ -11,9 +11,9 @@
         "value": "x64",
         "strategy": "external"
       },
-      "toolset": {
-        "value": "host=x64",
-        "strategy": "external"
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "cl",
+        "CMAKE_CXX_COMPILER": "cl"
       },
       "environment": {
         "NINJA_STATUS": "%p [%f/%t] - "
@@ -22,83 +22,60 @@
     {
       "displayName": "MSVC Debug",
       "name": "msvc-debug",
-      "hidden": false,
-      "inherits": "base",
+      "inherits": "msvc",
       "cacheVariables": {
-        "CMAKE_C_COMPILER": "cl",
-        "CMAKE_CXX_COMPILER": "cl",
         "CMAKE_BUILD_TYPE": "Debug"
       }
     },
     {
-      "name": "msvc-release",
       "displayName": "MSVC Release",
-      "inherits": "msvc-debug",
+      "name": "msvc-release",
+      "inherits": "msvc",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       }
     },
     {
-      "name": "msvc-relwithdebinfo",
       "displayName": "MSVC RelWithDebInfo",
-      "inherits": "msvc-debug",
+      "name": "msvc-relwdebinfo",
+      "inherits": "msvc",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo"
       }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "defaults",
+      "hidden": true,
+      "cleanFirst": false,
+      "verbose": false,
+      "jobs": 16,
+      "inheritConfigureEnvironment": true,
+      "configurePreset": "msvc"
     },
     {
-      "displayName": "Clang Debug",
-      "name": "clang-debug",
-      "hidden": false,
-      "inherits": "base",
-      "cacheVariables": {
-        "CMAKE_C_COMPILER": "clang",
-        "CMAKE_CXX_COMPILER": "clang++",
-        "CMAKE_BUILD_TYPE": "Debug"
-      }
+      "name": "debug",
+      "inherits": "defaults",
+      "configurePreset": "msvc-debug",
+      "configuration": "Debug"
     },
     {
-      "name": "clang-release",
-      "displayName": "Clang Release",
-      "inherits": "clang-debug",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
-      }
+      "name": "debug-verbose",
+      "inherits": "debug",
+      "verbose": true
     },
     {
-      "name": "clang-relwithdebinfo",
-      "displayName": "Clang RelWithDebInfo",
-      "inherits": "clang-debug",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
-      }
+      "name": "release",
+      "inherits": "defaults",
+      "configurePreset": "msvc-release",
+      "configuration": "Release"
     },
     {
-      "displayName": "GCC Debug",
-      "name": "gcc-debug",
-      "hidden": false,
-      "inherits": "base",
-      "cacheVariables": {
-        "CMAKE_C_COMPILER": "gcc",
-        "CMAKE_CXX_COMPILER": "g++",
-        "CMAKE_BUILD_TYPE": "Debug"
-      }
-    },
-    {
-      "name": "gcc-release",
-      "displayName": "GCC Release",
-      "inherits": "gcc-debug",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
-      }
-    },
-    {
-      "name": "gcc-relwithdebinfo",
-      "displayName": "GCC RelWithDebInfo",
-      "inherits": "gcc-debug",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
-      }
+      "name": "relwithdebinfo",
+      "inherits": "defaults",
+      "configurePreset": "msvc-relwdebinfo",
+      "configuration": "RelWithDebInfo"
     }
   ]
 }

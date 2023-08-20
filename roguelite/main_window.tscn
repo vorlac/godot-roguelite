@@ -106,18 +106,13 @@ layout_mode = 2
 
 [node name="ConsolePanel" type="RichTextLabel" parent="VBoxContainer/Control/VSplitContainer/PanelContainer"]
 unique_name_in_owner = true
+clip_contents = false
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
-size_flags_vertical = 8
 size_flags_stretch_ratio = 0.0
-focus_mode = 1
-mouse_filter = 2
-mouse_default_cursor_shape = 1
+focus_mode = 2
 theme_override_fonts/normal_font = SubResource("FontVariation_4ded8")
-bbcode_enabled = true
-fit_content = true
 scroll_following = true
-shortcut_keys_enabled = false
 meta_underlined = false
 hint_underlined = false
 threaded = true

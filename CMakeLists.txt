@@ -141,7 +141,55 @@ endif()
 # Godot C++ bindings library setup/configuration
 # =======================================================================
 
+#set(is_release_config "$<CONFIG:Release>")
+#set(CMAKE_BUILD_TYPE "$<$<CONFIG:release>:Release>" CACHE STRING FORCE)
+#$<$<NOT:"$<CMAKE_BUILD_TYPE>">:
+#    $<$<CONFIG:Debug>:
+#        set(CMAKE_BUILD_TYPE Debug)
+#    >
+#    $<$<CONFIG:Release>:
+#        set(CMAKE_BUILD_TYPE Release)
+#    >
+#>
+
+
 add_subdirectory(${CMAKE_SOURCE_DIR}/godot/godot-cpp)
+
+# =======================================================================
+# Compiler and linker configuration.
+# Build flags/definitions match what the engine and bindings use.
+# =======================================================================
+
+# if(MSVC)
+#     # using Visual Studio C++
+# 
+#     # set compiler definitions that match up with the buid used for the editor:
+#     # scons platform=windows arch=x86_64 target=editor dev_build=yes
+#     # debug_symbols=yes verbose=yes warnings=extra werror=yes
+#     add_compile_definitions(
+#         DEBUG_ENABLED
+# 		DEBUG_METHODS_ENABLED
+#         DEV_ENABLED
+#         NOMINMAX
+#         TOOLS_ENABLED
+#         NO_EDITOR_SPLASH
+#         WINDOWS_ENABLED
+#         WASAPI_ENABLED
+#         WINMIDI_ENABLED
+#         TYPED_METHOD_BIND
+#         VULKAN_ENABLED
+#         GLES3_ENABLED
+#         MINIZIP_ENABLED
+#         BROTLI_ENABLED
+#         ZSTD_STATIC_LINKING_ONLY
+#         USE_VOLK
+#         VK_USE_PLATFORM_WIN32_KHR
+#         GLAD_ENABLED
+#         GLES_OVER_GL
+#     )
+# endif()
+
+
 
 # =======================================================================
 # Godot engine library setup/configuration.
@@ -165,6 +213,32 @@ target_include_directories(godot_engine PUBLIC
     SYSTEM "${CMAKE_SOURCE_DIR}/godot/engine/thirdparty/mbedtls/include"
 )
 
+# define a bunch of the same symbol definitions 
+# used when the engine was build using scons
+target_compile_definitions(godot_engine PUBLIC
+    $<$<CONFIG:Debug>:
+        DEBUG_ENABLED
+		DEBUG_METHODS_ENABLED
+        DEV_ENABLED
+    >
+    NOMINMAX
+    TOOLS_ENABLED
+    NO_EDITOR_SPLASH
+    WINDOWS_ENABLED
+    WASAPI_ENABLED
+    WINMIDI_ENABLED
+    TYPED_METHOD_BIND
+    VULKAN_ENABLED
+    GLES3_ENABLED
+    MINIZIP_ENABLED
+    BROTLI_ENABLED
+    ZSTD_STATIC_LINKING_ONLY
+    USE_VOLK
+    VK_USE_PLATFORM_WIN32_KHR
+    GLAD_ENABLED
+    GLES_OVER_GL
+)
+
 # =======================================================================
 # GDExtension dynamic library setup/configuration
 # =======================================================================
@@ -176,79 +250,72 @@ file(GLOB_RECURSE roguelite_sources CONFIGURE_DEPENDS
 )
 
 # add the gdextension dynamic library
-add_library(${PROJECT_NAME} SHARED ${roguelite_sources})
-target_include_directories(${PROJECT_NAME} PUBLIC
-    "${CMAKE_CURRENT_SOURCE_DIR}/src"
-)
+add_library(${gdextension_lib_name} SHARED ${roguelite_sources})
 
-# =======================================================================
-# Compiler and linker configuration.
-# Build flags/definitions match what the engine and bindings use.
-# =======================================================================
-
-if(MSVC)
-    # using Visual Studio C++
-
-    # set compiler definitions that match up with the buid used for the editor:
-    # scons platform=windows arch=x86_64 target=editor dev_build=yes
-    # debug_symbols=yes verbose=yes warnings=extra werror=yes
-    add_compile_definitions(
-        NOMINMAX
-        TOOLS_ENABLED
-        DEBUG_ENABLED
-        DEV_ENABLED
-        NO_EDITOR_SPLASH
-        WINDOWS_ENABLED
-        WASAPI_ENABLED
-        WINMIDI_ENABLED
-        TYPED_METHOD_BIND
-        VULKAN_ENABLED
-        GLES3_ENABLED
-        MINIZIP_ENABLED
-        BROTLI_ENABLED
-        ZSTD_STATIC_LINKING_ONLY
-        USE_VOLK
-        VK_USE_PLATFORM_WIN32_KHR
-        GLAD_ENABLED
-        GLES_OVER_GL
-    )
-
-    set(roguelite_compile_flags
+# set compiler options for the gdextension library
+target_compile_options(${gdextension_lib_name} PUBLIC
+    $<${MSVC}:
         /EHsc
         /utf-8
         /Zc:preprocessor
-    ) # /GF /MP
-
-    if(CMAKE_BUILD_TYPE MATCHES Debug)
-        set(roguelite_compile_flags
-            ${roguelite_compile_flags}
+        $<$<CONFIG:Debug>:
             /MDd
-        )
-    else()
-        set(roguelite_compile_flags
-            ${roguelite_compile_flags}
+        >
+        $<$<CONFIG:Release>:
             /MD
             /O2
-        )
+        >
+    >
+    $<$<NOT:${MSVC}>:
+        -g
+        /utf-8
+        /Zc:preprocessor
+        $<$<CONFIG:Debug>:
+            -fno-omit-frame-pointer
+            -O0
+        >
+        $<$<CONFIG:Release>:
+            -O3
+        >
+    >
+)
 
-        string(
-            REGEX REPLACE
-            "/RTC(su|[1su])" ""
-            CMAKE_CXX_FLAGS
-            "${CMAKE_CXX_FLAGS}"
-        )
+## set symbol defs to use when building the library
+#target_compile_definitions(${gdextension_lib_name} PUBLIC
+#    $<$<CONFIG:Debug>:
+#        DEBUG_ENABLED
+#		DEBUG_METHODS_ENABLED
+#        DEV_ENABLED
+#    >
+#    NOMINMAX
+#    TOOLS_ENABLED
+#    NO_EDITOR_SPLASH
+#    WINDOWS_ENABLED
+#    WASAPI_ENABLED
+#    WINMIDI_ENABLED
+#    TYPED_METHOD_BIND
+#    VULKAN_ENABLED
+#    GLES3_ENABLED
+#    MINIZIP_ENABLED
+#    BROTLI_ENABLED
+#    ZSTD_STATIC_LINKING_ONLY
+#    USE_VOLK
+#    VK_USE_PLATFORM_WIN32_KHR
+#    GLAD_ENABLED
+#    GLES_OVER_GL
+#)
 
-        string(
-            REPLACE "/RTC1" ""
-            CMAKE_CXX_FLAGS_DEBUG
-            ${CMAKE_CXX_FLAGS_DEBUG}
-        )
-    endif()
+target_include_directories(${gdextension_lib_name} PUBLIC
+    "${CMAKE_CURRENT_SOURCE_DIR}/src"
+)
 
-    target_compile_options(${gdextension_lib_name} PUBLIC
-        ${roguelite_compile_flags}
-    )
-endif()
+target_link_options(${gdextension_lib_name} PRIVATE
+	$<$<NOT:${MSVC}>:
+		-static-libgcc
+		-static-libstdc++
+		-Wl,-R,'$$ORIGIN'
+	>
+)
 
 # =======================================================================
 # Dependency linkage

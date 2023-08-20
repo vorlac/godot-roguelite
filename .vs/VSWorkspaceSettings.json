@@ -5,6 +5,7 @@
   "ExcludedItems": [
     ".git*",
     ".clang*",
+    ".idea",
     ".vscode",
     "*.md",
     "cpp.hint",
