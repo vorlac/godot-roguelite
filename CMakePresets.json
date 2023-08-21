@@ -50,7 +50,7 @@
       "hidden": true,
       "cleanFirst": false,
       "verbose": false,
-      "jobs": 16,
+      "jobs": 12,
       "inheritConfigureEnvironment": true,
       "configurePreset": "msvc"
     },

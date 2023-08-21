@@ -1,14 +1,8 @@
+#pragma once
 #include "ui/main_interface_diag.hpp"
 
-#pragma once
-
+#include "core/console_capture.hpp"
 #include "util/utils.hpp"
-
-#ifdef WIN32
-  #define WIN32_LEAN_AND_MEAN
-  #include <Windows.h>
-  #include <corecrt_io.h>
-#endif
 
 #include <atomic>
 #include <ios>
@@ -34,6 +28,16 @@
 
 namespace rl
 {
+    static constexpr inline auto profiler_cap = [](void* this_ptr, const godot::String& cmd,
+                                                   const godot::Array& data, bool& captured) {
+        return reinterpret_cast<MainInterfaceDiag*>(this_ptr)->message_callback(cmd, data,
+                                                                                captured);
+    };
+
+    void MainInterfaceDiag::test(int notification)
+    {
+    }
+
     // static void RedirectStreamRL(const char* p_file_name, const char* p_mode, FILE* p_cpp_stream,
     //                              const DWORD p_std_handle)
     // {
@@ -67,10 +71,12 @@ namespace rl
 
     MainInterfaceDiag::MainInterfaceDiag()
     {
+        stdoutRedirect.Start();
     }
 
     MainInterfaceDiag::~MainInterfaceDiag()
     {
+        stdoutRedirect.Stop();
         m_is_active = false;
         if (m_console_write_thread != nullptr)
             m_console_write_thread->join();
@@ -85,24 +91,50 @@ namespace rl
 
     void MainInterfaceDiag::_ready()
     {
+        static const auto asdf = [&](int notification) {
+            while (m_is_active)
+            {
+                {
+                    std::cout << "__notification__ => " << std::to_string(notification)
+                              << std::endl;
+                    log::info("log::[info]: " + godot::itos(notification));
+                    log::error("log::[error] : " + godot::itos(notification));
+                    log::warning("log::[warn] Notification: " + godot::itos(notification));
+                    printf("[printf]: notification = %d", notification);
+
+                    stdoutRedirect.Stop();
+                    // std::scoped_lock<std::mutex> lock{ m_lock };
+                    char buffer[512] = { 0 };
+                    size_t read_bytes = stdoutRedirect.GetBuffer(buffer, 512);
+                    if (read_bytes > 0)
+                    {
+                        std::string_view out{ buffer, read_bytes };
+                        m_console->add_text(out.data());
+                    }
+                }
+                using namespace std::chrono_literals;
+                std::this_thread::sleep_for(0.1s);
+            }
+        };
+
+        // m_is_active = true;
+        //  m_console_write_thread = new std::thread(asdf, 0);
+
         if (m_console == nullptr)
         {
             auto scene_root{ scene::tree::root_node(this) };
             m_console = rl::convert<godot::RichTextLabel>(
                 scene_root->find_child("ConsolePanel", true, false));
             debug::assert(m_console != nullptr);
-
-            std::streambuf* stdout_stream{ std::cout.rdbuf() };
-            std::cout.rdbuf(stdout_strstm.rdbuf());
-
-            auto profiler_cap([this](void* p_user, const godot::String& p_cmd,
-                                     const godot::Array& p_data, bool& r_captured) {
-                return this->message_callback(p_cmd, p_data, r_captured);
-            });
-
-            debug::engine::debugger::register_logger(
-                SignalConnection("rl_message_handler", handle_messages));
         }
+        //    std::streambuf* stdout_stream{ std::cout.rdbuf() };
+        //    std::cout.rdbuf(stdout_strstm.rdbuf());
+
+        //    debug::engine::debugger::register_logger(
+        //        SignalConnection("rl_message_handler", &handle_messages));
+
+        //    // CreateConsole();
+        //}
     }
 
     void MainInterfaceDiag::_notification(int notification)
@@ -110,31 +142,47 @@ namespace rl
         // TODO: fixme
         // stdio gets piped to console in new UI, but internal logging APIs don't.
         // need to hook into the C io file/stream handles so it can all be intercepted
-        std::cout << "__notification__ => " << std::to_string(notification) << std::endl;
-        log::info("Notification: " + godot::itos(notification));
-        // TODO: remove
-        stdout_strstm.flush();
-        std::string test = stdout_strstm.str();
-        godot::String str{ test.c_str() };
-        if (!str.is_empty() && m_console != nullptr)
+        if (m_console != nullptr)
         {
-            // m_console->add_text(str);
-            // m_console->newline();
-        }
-        switch (notification)
-        {
-            case NOTIFICATION_DRAW:
+            std::cout << "__notification__ => " << std::to_string(notification) << std::endl;
+            log::info("log::[info]: " + godot::itos(notification));
+            log::error("log::[error] : " + godot::itos(notification));
+            log::warning("log::[warn] Notification: " + godot::itos(notification));
+            printf("[printf]: notification = %d", notification);
+
+            char buffer[512] = { 0 };
+            size_t read_bytes = stdoutRedirect.GetBuffer(buffer, 512);
+            if (read_bytes > 0)
             {
-                if (!str.is_empty())
-                {
-                    // m_console->append_text(str);
-                    // m_console->queue_redraw();
-                }
-                break;
+                godot::String out{ buffer };
+                m_console->add_text(out);
+                m_console->newline();
             }
-            default:
-                break;
         }
+
+        // TODO: remove
+        // stdout_strstm.flush();
+        // std::string test = stdout_strstm.str();
+        // godot::String str{ test.c_str() };
+        // if (!str.is_empty() && m_console != nullptr)
+        //{
+        //    // m_console->add_text(str);
+        //    // m_console->newline();
+        //}
+        // switch (notification)
+        //{
+        //    case NOTIFICATION_DRAW:
+        //    {
+        //        if (!str.is_empty())
+        //        {
+        //            // m_console->append_text(str);
+        //            // m_console->queue_redraw();
+        //        }
+        //        break;
+        //    }
+        //    default:
+        //        break;
+        //}
     }
 
 }
