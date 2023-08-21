@@ -6,6 +6,7 @@
       "generator": "Ninja",
       "installDir": "${sourceDir}/.out/install/${presetName}",
       "binaryDir": "${sourceDir}/.out/build/${presetName}",
+      "toolchainFile": "${sourceDir}/extern/vcpkg/scripts/buildsystems/vcpkg.cmake",
       "hidden": true,
       "architecture": {
         "value": "x64",

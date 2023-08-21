@@ -52,43 +52,43 @@ if(NOT EXISTS "${CMAKE_SOURCE_DIR}/godot/engine/core")
 endif()
 
 
-# # confirm we found the vcpkg submodule ports dir.
-# # if the sources list is empty, the submodule probably
-# # hasn't been initialized or updated yet.
-# if(NOT EXISTS "${CMAKE_SOURCE_DIR}/tools/vcpkg/ports")
-#     message("VCPKG package manager sources not found")
-#     message("initializing/updating the vcpkg submodule...")
-# 
-#     # update the vcpkg submodule to populate it with the code necessary
-#     # to grab all dependencies needed for the gdextension library build
-#     execute_process(
-#         COMMAND git submodule update --init tools/vcpkg
-#         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-#         COMMAND_ERROR_IS_FATAL ANY
-#     )
-# endif()
-#
-# # =======================================================================
-# # VCPKG bootstrap / initialization. 
-# # Only happens once, when vcpkg.exe is missing.
-# # =======================================================================
-#
-# set(vcpkg_executable "${CMAKE_SOURCE_DIR}/tools/vcpkg/vcpkg.exe")
-# 
-# if(NOT EXISTS "${vcpkg_executable}")
-#     # bootstrap vcpkg so vcpkg.exe 
-#     # is configured and installed
-#     execute_process(
-#         COMMAND ps -c "./tools/vcpkg/boostrap-vcpkg.bat"
-#         WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-#         COMMAND_ERROR_IS_FATAL ANY
-#     )
-# 
-#     # fail out if vcpkg isn't found after setup
-#     if(NOT EXISTS "${vcpkg_executable}")
-#         message(FATAL_ERROR "ERROR: tools/vcpkg/vcpkg.exe not found!")
-#     endif()
-# endif()
+# confirm we found the vcpkg submodule ports dir.
+# if the sources list is empty, the submodule probably
+# hasn't been initialized or updated yet.
+if(NOT EXISTS "${CMAKE_SOURCE_DIR}/extern/vcpkg/ports")
+    message("VCPKG package manager sources not found")
+    message("initializing/updating the vcpkg submodule...")
+
+    # update the vcpkg submodule to populate it with the code necessary
+    # to grab all dependencies needed for the gdextension library build
+    execute_process(
+        COMMAND git submodule update --init tools/vcpkg
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMAND_ERROR_IS_FATAL ANY
+    )
+endif()
+
+# =======================================================================
+# VCPKG bootstrap / initialization. 
+# Only happens once, when vcpkg.exe is missing.
+# =======================================================================
+
+set(vcpkg_executable "${CMAKE_SOURCE_DIR}/extern/vcpkg/vcpkg.exe")
+
+if(NOT EXISTS "${vcpkg_executable}")
+    # bootstrap vcpkg so vcpkg.exe 
+    # is configured and installed
+    execute_process(
+        COMMAND ps -c "./extern/vcpkg/boostrap-vcpkg.bat"
+        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+        COMMAND_ERROR_IS_FATAL ANY
+    )
+
+    # fail out if vcpkg isn't found after setup
+    if(NOT EXISTS "${vcpkg_executable}")
+        message(FATAL_ERROR "ERROR: extern/vcpkg/vcpkg.exe not found!")
+    endif()
+endif()
 
 
 # =======================================================================
@@ -138,58 +138,17 @@ if(NOT EXISTS "${godot_debug_editor_executable}")
 endif()
 
 # =======================================================================
+# 3rd party library setup/configuration (leverages vcpkg)
+# =======================================================================
+
+find_package(fmt CONFIG REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
+
+# =======================================================================
 # Godot C++ bindings library setup/configuration
 # =======================================================================
 
-#set(is_release_config "$<CONFIG:Release>")
-#set(CMAKE_BUILD_TYPE "$<$<CONFIG:release>:Release>" CACHE STRING FORCE)
-#$<$<NOT:"$<CMAKE_BUILD_TYPE>">:
-#    $<$<CONFIG:Debug>:
-#        set(CMAKE_BUILD_TYPE Debug)
-#    >
-#    $<$<CONFIG:Release>:
-#        set(CMAKE_BUILD_TYPE Release)
-#    >
-#>
-
-
 add_subdirectory(${CMAKE_SOURCE_DIR}/godot/godot-cpp)
-
-# =======================================================================
-# Compiler and linker configuration.
-# Build flags/definitions match what the engine and bindings use.
-# =======================================================================
-
-# if(MSVC)
-#     # using Visual Studio C++
-# 
-#     # set compiler definitions that match up with the buid used for the editor:
-#     # scons platform=windows arch=x86_64 target=editor dev_build=yes
-#     # debug_symbols=yes verbose=yes warnings=extra werror=yes
-#     add_compile_definitions(
-#         DEBUG_ENABLED
-# 		DEBUG_METHODS_ENABLED
-#         DEV_ENABLED
-#         NOMINMAX
-#         TOOLS_ENABLED
-#         NO_EDITOR_SPLASH
-#         WINDOWS_ENABLED
-#         WASAPI_ENABLED
-#         WINMIDI_ENABLED
-#         TYPED_METHOD_BIND
-#         VULKAN_ENABLED
-#         GLES3_ENABLED
-#         MINIZIP_ENABLED
-#         BROTLI_ENABLED
-#         ZSTD_STATIC_LINKING_ONLY
-#         USE_VOLK
-#         VK_USE_PLATFORM_WIN32_KHR
-#         GLAD_ENABLED
-#         GLES_OVER_GL
-#     )
-# endif()
-
-
 
 # =======================================================================
 # Godot engine library setup/configuration.
@@ -280,31 +239,6 @@ target_compile_options(${gdextension_lib_name} PUBLIC
     >
 )
 
-## set symbol defs to use when building the library
-#target_compile_definitions(${gdextension_lib_name} PUBLIC
-#    $<$<CONFIG:Debug>:
-#        DEBUG_ENABLED
-#		DEBUG_METHODS_ENABLED
-#        DEV_ENABLED
-#    >
-#    NOMINMAX
-#    TOOLS_ENABLED
-#    NO_EDITOR_SPLASH
-#    WINDOWS_ENABLED
-#    WASAPI_ENABLED
-#    WINMIDI_ENABLED
-#    TYPED_METHOD_BIND
-#    VULKAN_ENABLED
-#    GLES3_ENABLED
-#    MINIZIP_ENABLED
-#    BROTLI_ENABLED
-#    ZSTD_STATIC_LINKING_ONLY
-#    USE_VOLK
-#    VK_USE_PLATFORM_WIN32_KHR
-#    GLAD_ENABLED
-#    GLES_OVER_GL
-#)
-
 target_include_directories(${gdextension_lib_name} PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
 )
@@ -324,6 +258,9 @@ target_link_options(${gdextension_lib_name} PRIVATE
 # link gdextension to the cpp bindings library
 target_link_libraries(${gdextension_lib_name}
     PUBLIC godot::cpp
+    PRIVATE fmt::fmt 
+    PRIVATE fmt::fmt-header-only
+    PRIVATE spdlog::spdlog
 )
 
 # =======================================================================
