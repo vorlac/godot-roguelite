@@ -1,6 +1,6 @@
 #include "api/module_interface.hpp"
 
-#include "core/level_loader.hpp"
+#include "core/level.hpp"
 #include "core/projectile_spawner.hpp"
 #include "main.hpp"
 #include "nodes/camera.hpp"
@@ -21,7 +21,7 @@ namespace godot
         ClassDB::register_class<rl::Projectile>();
         ClassDB::register_class<rl::ProjectileSpawner>();
         ClassDB::register_class<rl::Character>();
-        ClassDB::register_class<rl::LevelLoader>();
+        ClassDB::register_class<rl::Level>();
         ClassDB::register_class<rl::Main>();
     }
 
@@ -37,7 +37,7 @@ namespace godot
                                                           GDExtensionClassLibraryPtr lib,
                                                           GDExtensionInitialization* init)
         {
-            auto init_level{ MODULE_INITIALIZATION_LEVEL_SCENE };
+            const auto init_level = MODULE_INITIALIZATION_LEVEL_SCENE;
             GDExtensionBinding::InitObject init_obj(addr, lib, init);
 
             init_obj.register_initializer(initialize_extension_module);

@@ -69,6 +69,8 @@
 * particle effects (projectiles? dashing?)
 
 # Resources
+### Editor Plugin
+* https://docs.godotengine.org/en/stable/tutorials/plugins/editor/making_main_screen_plugins.html
 
 ### Handle inputs properly while the editor is running and standalone
 * https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-property-gui-disable-input

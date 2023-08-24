@@ -13,13 +13,13 @@
 
 namespace rl
 {
-    class LevelLoader : public godot::Node2D
+    class Level : public godot::Node2D
     {
-        GDCLASS(LevelLoader, godot::Node2D);
+        GDCLASS(Level, godot::Node2D);
 
     public:
-        LevelLoader();
-        ~LevelLoader();
+        Level();
+        ~Level();
 
         void _ready() override;
         void _draw() override;
@@ -28,14 +28,14 @@ namespace rl
         [[signal_callback]]
         void on_position_changed(const godot::Object* const obj, godot::Vector2 location) const;
         [[signal_callback]]
-        void on_shoot_projectile(const godot::Object* const obj);
+        void on_shoot_projectile(godot::Object* const obj);
 
         static void _bind_methods()
         {
             godot::ClassDB::bind_method(godot::D_METHOD("on_position_changed"),
-                                        &LevelLoader::on_position_changed);
+                                        &Level::on_position_changed);
             godot::ClassDB::bind_method(godot::D_METHOD("on_shoot_projectile"),
-                                        &LevelLoader::on_shoot_projectile);
+                                        &Level::on_shoot_projectile);
         }
 
     private:

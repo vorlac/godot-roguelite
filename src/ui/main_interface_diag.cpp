@@ -25,7 +25,7 @@ namespace rl
         if (m_console_label == nullptr)
         {
             auto scene_root{ scene::tree::root_node(this) };
-            m_console_label = rl::convert<godot::RichTextLabel>(
+            m_console_label = rl::as<godot::RichTextLabel>(
                 scene_root->find_child("ConsolePanel", true, false));
 
             debug::assert(m_console_label != nullptr);

@@ -111,10 +111,10 @@ namespace rl::inline utils
 
     template <typename TOut, typename TIn = godot::Node>
         requires std::derived_from<TOut, TIn>
-    static inline constexpr TOut* const convert(TIn* const node)
+    [[nodiscard]] static inline constexpr TOut* const as(TIn* const node)
     {
         debug::assert(node != nullptr);
-        TOut* const ret{ godot::Object::cast_to<TOut>(node) };
+        TOut* const ret{ godot::Object::cast_to<std::type_identity_t<TOut>>(node) };
         debug::assert(ret != nullptr);
         return ret;
     }

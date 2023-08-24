@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/level_loader.hpp"
+#include "core/level.hpp"
 #include "ui/main_interface_diag.hpp"
 
 #include <godot_cpp/classes/canvas_layer.hpp>
@@ -37,7 +37,7 @@ namespace rl
         void teardown();
 
     private:
-        rl::LevelLoader* m_level{ memnew(rl::LevelLoader) };
+        rl::Level* m_level{ memnew(rl::Level) };
         rl::MainInterfaceDiag* m_debug_overlay{ memnew(rl::MainInterfaceDiag) };
     };
 }

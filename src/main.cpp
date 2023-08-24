@@ -1,6 +1,5 @@
 #include "main.hpp"
 
-#include "core/level_loader.hpp"
 #include "nodes/character.hpp"
 #include "util/utils.hpp"
 

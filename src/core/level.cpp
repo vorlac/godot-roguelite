@@ -1,6 +1,7 @@
-#include "core/level_loader.hpp"
+#include "core/level.hpp"
 
 #include "nodes/character.hpp"
+#include "util/scene.hpp"
 #include "util/utils.hpp"
 
 #include <godot_cpp/classes/node2d.hpp>
@@ -11,7 +12,7 @@ namespace rl
 {
     namespace gd = ::godot;
 
-    LevelLoader::LevelLoader()
+    Level::Level()
     {
         gd::ResourceLoader* resource_loader{ resource::loader::get() };
         gd::Ref<gd::Resource> background_texture{ resource_loader->load(path::sprite::Background) };
@@ -22,10 +23,10 @@ namespace rl
         m_background->set_centered(true);
         m_background->set_z_index(-100);
 
-        this->set_name("LevelLoader");
+        this->set_name("Level");
     }
 
-    LevelLoader::~LevelLoader()
+    Level::~Level()
     {
         if (!this->is_queued_for_deletion())
             this->queue_free();
@@ -38,7 +39,7 @@ namespace rl
         }
     }
 
-    void LevelLoader::_ready()
+    void Level::_ready()
     {
         this->add_child(m_player);
         this->add_child(m_background);
@@ -59,7 +60,7 @@ namespace rl
         }
     }
 
-    void LevelLoader::_draw()
+    void Level::_draw()
     {
         if constexpr (diag::is_enabled(diag::LevelProcess))
         {
@@ -72,28 +73,24 @@ namespace rl
 namespace rl
 {
     [[signal_callback]]
-    void LevelLoader::on_shoot_projectile(const godot::Object* const obj)
+    void Level::on_shoot_projectile(godot::Object* const obj)
     {
-        const godot::Node2D* const node{ godot::Object::cast_to<godot::Node2D>(obj) };
+        godot::Node2D* const node{ rl::as<godot::Node2D>(obj) };
         debug::assert(node != nullptr);
 
-        rl::Projectile* projectile{ m_projectile_spawner->spawn_projectile() };
-        projectile->set_position(node->get_global_position());
-        projectile->set_rotation(node->get_rotation() - math::deg_to_rad(45.0));
+        rl::Projectile* const proj{ m_projectile_spawner->spawn_projectile() };
+        proj->set_position(node->get_global_position());
+        proj->set_rotation(node->get_rotation() - math::deg_to_rad(45.0));
 
-        const rl::Character* const character{ godot::Object::cast_to<rl::Character>(node) };
+        rl::Character* const character{ rl::as<rl::Character>(node) };
         if (character != nullptr)
-        {
-            projectile->set_velocity(
-                godot::Vector2{ 0, -1 }.rotated(character->get_global_rotation()));
-        }
+            proj->set_velocity(godot::Vector2{ 0, -1 }.rotated(character->get_global_rotation()));
 
-        this->add_child(projectile);
+        this->add_child(proj);
     }
 
     [[signal_callback]]
-    void LevelLoader::on_position_changed(const godot::Object* const node,
-                                          godot::Vector2 location) const
+    void Level::on_position_changed(const godot::Object* const node, godot::Vector2 location) const
     {
         debug::assert(node != nullptr);
         log::info(node->get_class() + " location: " + location);
