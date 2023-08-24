@@ -4,14 +4,8 @@
 #include "core/console_capture.hpp"
 #include "util/utils.hpp"
 
-#include <atomic>
-#include <ios>
-#include <mutex>
-#include <ostream>
-#include <sstream>
-#include <thread>
-#include <tuple>
-#include <utility>
+#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include <godot_cpp/classes/canvas_layer.hpp>
 #include <godot_cpp/classes/panel.hpp>
@@ -28,49 +22,45 @@
 
 namespace rl
 {
-    void MainInterfaceDiag::test(int notification)
-    {
-    }
-
     MainInterfaceDiag::MainInterfaceDiag()
     {
-        stdoutRedirect.Start();
     }
 
     MainInterfaceDiag::~MainInterfaceDiag()
     {
-        stdoutRedirect.Stop();
     }
 
     void MainInterfaceDiag::_ready()
     {
-        if (m_console == nullptr)
+        if (m_console_label == nullptr)
         {
             auto scene_root{ scene::tree::root_node(this) };
-            m_console = rl::convert<godot::RichTextLabel>(
+            m_console_label = rl::convert<godot::RichTextLabel>(
                 scene_root->find_child("ConsolePanel", true, false));
-            debug::assert(m_console != nullptr);
+
+            debug::assert(m_console_label != nullptr);
+            m_console.set_output_label(m_console_label);
+            m_console.enable(true);
         }
     }
 
     void MainInterfaceDiag::_notification(int notification)
     {
-        if (m_console != nullptr)
+        switch (notification)
         {
-            fmt::print("asdf");
-            std::cout << "__notification__ => " << std::to_string(notification) << std::endl;
-            log::info("log::[info]: " + godot::itos(notification));
-            log::error("log::[error] : " + godot::itos(notification));
-            log::warning("log::[warn] Notification: " + godot::itos(notification));
-            printf("[printf]: notification = %d", notification);
-
-            char buffer[512] = { 0 };
-            size_t read_bytes = stdoutRedirect.GetBuffer(buffer, 512);
-            if (read_bytes > 0)
+            case Object::NOTIFICATION_PREDELETE:
+                [[fallthrough]];
+            case Node::NOTIFICATION_UNPARENTED:
             {
-                godot::String out{ buffer };
-                m_console->add_text(out);
-                m_console->newline();
+                m_console.enable(false);
+                m_console.set_output_label(nullptr);
+                break;
+            }
+            default:
+            {
+                m_console.print("notification: {}\n",
+                                rl::to_string<Translation::Notification>(notification));
+                break;
             }
         }
     }

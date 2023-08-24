@@ -2,9 +2,15 @@
 
 #include "util/debug.hpp"
 
+#include <array>
 #include <concepts>
+#include <fmt/compile.h>
+#include <fmt/format.h>
 #include <type_traits>
+#include <utility>
 
+#include <godot_cpp/classes/canvas_item.hpp>
+#include <godot_cpp/classes/control.hpp>
 #include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/classes/object.hpp>
 #include <godot_cpp/classes/packed_scene.hpp>
@@ -15,6 +21,94 @@
 
 namespace rl::inline utils
 {
+
+    enum class Translation
+    {
+        Notification
+    };
+
+    template <Translation T>
+        requires(T == Translation::Notification)
+    static constexpr inline std::string_view to_string(int notification)
+    {
+        using godot::CanvasItem;
+        using godot::Control;
+        using godot::Node;
+        using godot::Object;
+        static constexpr std::array notification_map =
+            std::to_array<std::pair<int, std::string_view>>({
+                { Object::NOTIFICATION_POSTINITIALIZE, "Object::POSTINITIALIZE" },
+                { Object::NOTIFICATION_PREDELETE, "Object::PREDELETE" },
+                { Node::NOTIFICATION_ENTER_TREE, "Node::ENTER_TREE" },
+                { Node::NOTIFICATION_EXIT_TREE, "Node::EXIT_TREE" },
+                { Node::NOTIFICATION_MOVED_IN_PARENT, "Node::MOVED_IN_PARENT" },
+                { Node::NOTIFICATION_READY, "Node::READY" },
+                { Node::NOTIFICATION_PAUSED, "Node::PAUSED" },
+                { Node::NOTIFICATION_UNPAUSED, "Node::UNPAUSED" },
+                { Node::NOTIFICATION_PHYSICS_PROCESS, "Node::PHYSICS_PROCESS" },
+                { Node::NOTIFICATION_PROCESS, "Node::PROCESS" },
+                { Node::NOTIFICATION_PARENTED, "Node::PARENTED" },
+                { Node::NOTIFICATION_UNPARENTED, "Node::UNPARENTED" },
+                { Node::NOTIFICATION_SCENE_INSTANTIATED, "Node::SCENE_INSTANTIATED" },
+                { Node::NOTIFICATION_DRAG_BEGIN, "Node::DRAG_BEGIN" },
+                { Node::NOTIFICATION_DRAG_END, "Node::DRAG_END" },
+                { Node::NOTIFICATION_PATH_RENAMED, "Node::PATH_RENAMED" },
+                { Node::NOTIFICATION_CHILD_ORDER_CHANGED, "Node::CHILD_ORDER_CHANGED" },
+                { Node::NOTIFICATION_INTERNAL_PROCESS, "Node::INTERNAL_PROCESS" },
+                { Node::NOTIFICATION_INTERNAL_PHYSICS_PROCESS, "Node::INTERNAL_PHYSICS_PROCESS" },
+                { Node::NOTIFICATION_POST_ENTER_TREE, "Node::POST_ENTER_TREE" },
+                { Node::NOTIFICATION_DISABLED, "Node::DISABLED" },
+                { Node::NOTIFICATION_ENABLED, "Node::ENABLED" },
+                { Node::NOTIFICATION_NODE_RECACHE_REQUESTED, "Node::NODE_RECACHE_REQUESTED" },
+                { Node::NOTIFICATION_EDITOR_PRE_SAVE, "Node::EDITOR_PRE_SAVE" },
+                { Node::NOTIFICATION_EDITOR_POST_SAVE, "Node::EDITOR_POST_SAVE" },
+                { Node::NOTIFICATION_WM_MOUSE_ENTER, "Node::WM_MOUSE_ENTER" },
+                { Node::NOTIFICATION_WM_MOUSE_EXIT, "Node::WM_MOUSE_EXIT" },
+                { Node::NOTIFICATION_WM_WINDOW_FOCUS_IN, "Node::WM_WINDOW_FOCUS_IN" },
+                { Node::NOTIFICATION_WM_WINDOW_FOCUS_OUT, "Node::WM_WINDOW_FOCUS_OUT" },
+                { Node::NOTIFICATION_WM_CLOSE_REQUEST, "Node::WM_CLOSE_REQUEST" },
+                { Node::NOTIFICATION_WM_GO_BACK_REQUEST, "Node::WM_GO_BACK_REQUEST" },
+                { Node::NOTIFICATION_WM_SIZE_CHANGED, "Node::WM_SIZE_CHANGED" },
+                { Node::NOTIFICATION_WM_DPI_CHANGE, "Node::WM_DPI_CHANGE" },
+                { Node::NOTIFICATION_VP_MOUSE_ENTER, "Node::VP_MOUSE_ENTER" },
+                { Node::NOTIFICATION_VP_MOUSE_EXIT, "Node::VP_MOUSE_EXIT" },
+                { Node::NOTIFICATION_OS_MEMORY_WARNING, "Node::OS_MEMORY_WARNING" },
+                { Node::NOTIFICATION_TRANSLATION_CHANGED, "Node::TRANSLATION_CHANGED" },
+                { Node::NOTIFICATION_WM_ABOUT, "Node::WM_ABOUT" },
+                { Node::NOTIFICATION_CRASH, "Node::CRASH" },
+                { Node::NOTIFICATION_OS_IME_UPDATE, "Node::OS_IME_UPDATE" },
+                { Node::NOTIFICATION_APPLICATION_RESUMED, "Node::APPLICATION_RESUMED" },
+                { Node::NOTIFICATION_APPLICATION_PAUSED, "Node::APPLICATION_PAUSED" },
+                { Node::NOTIFICATION_APPLICATION_FOCUS_IN, "Node::APPLICATION_FOCUS_IN" },
+                { Node::NOTIFICATION_APPLICATION_FOCUS_OUT, "Node::APPLICATION_FOCUS_OUT" },
+                { Node::NOTIFICATION_TEXT_SERVER_CHANGED, "Node::TEXT_SERVER_CHANGED" },
+                { Control::NOTIFICATION_RESIZED, "Control::RESIZED" },
+                { Control::NOTIFICATION_MOUSE_ENTER, "Control::MOUSE_ENTER" },
+                { Control::NOTIFICATION_MOUSE_EXIT, "Control::MOUSE_EXIT" },
+                { Control::NOTIFICATION_FOCUS_ENTER, "Control::FOCUS_ENTER" },
+                { Control::NOTIFICATION_FOCUS_EXIT, "Control::FOCUS_EXIT" },
+                { Control::NOTIFICATION_THEME_CHANGED, "Control::THEME_CHANGED" },
+                { Control::NOTIFICATION_SCROLL_BEGIN, "Control::SCROLL_BEGIN" },
+                { Control::NOTIFICATION_SCROLL_END, "Control::SCROLL_END" },
+                { Control::NOTIFICATION_LAYOUT_DIRECTION_CHANGED,
+                  "Control::LAYOUT_DIRECTION_CHANGED" },
+                { CanvasItem::NOTIFICATION_TRANSFORM_CHANGED, "CanvasItem::TRANSFORM_CHANGED" },
+                { CanvasItem::NOTIFICATION_DRAW, "CanvasItem::DRAW" },
+                { CanvasItem::NOTIFICATION_VISIBILITY_CHANGED, "CanvasItem::VISIBILITY_CHANGED" },
+                { CanvasItem::NOTIFICATION_ENTER_CANVAS, "CanvasItem::ENTER_CANVAS" },
+                { CanvasItem::NOTIFICATION_EXIT_CANVAS, "CanvasItem::EXIT_CANVAS" },
+                { CanvasItem::NOTIFICATION_LOCAL_TRANSFORM_CHANGED,
+                  "CanvasItem::LOCAL_TRANSFORM_CHANGED" },
+                { CanvasItem::NOTIFICATION_WORLD_2D_CHANGED, "CanvasItem::WORLD_2D_CHANGED" },
+            });
+
+        for (auto&& nm : notification_map)
+            if (nm.first == notification)
+                return nm.second;
+
+        return fmt::to_string(fmt::format("Unknown ({})", notification));
+    };
+
     template <typename TOut, typename TIn = godot::Node>
         requires std::derived_from<TOut, TIn>
     static inline constexpr TOut* const convert(TIn* const node)
