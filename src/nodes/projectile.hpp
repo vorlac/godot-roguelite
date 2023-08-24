@@ -4,6 +4,7 @@
 
 #include <godot_cpp/classes/area2d.hpp>
 #include <godot_cpp/classes/path2d.hpp>
+#include <godot_cpp/classes/ref.hpp>
 #include <godot_cpp/classes/tween.hpp>
 #include <godot_cpp/variant/vector2.hpp>
 
@@ -20,9 +21,6 @@ namespace rl
         void _ready() override;
         void _process(double delta_time) override;
 
-        // void _mouse_enter() override;
-        // void _area_entered(Node* node) override;
-
         static void _bind_methods();
 
         [[node_property]] double get_movement_speed() const;
@@ -34,7 +32,7 @@ namespace rl
         [[node_property]] void set_time_to_live(const double ttl);
         [[node_property]] void set_max_travel_dist(const double dist);
         [[node_property]] void set_acceleration(const double acceleration);
-        [[node_property]] void set_velocity(const godot::Vector2 velocity);
+        [[node_property]] void set_velocity(const godot::Vector2& velocity);
 
     protected:
         // projectile movement velocity (pixels)

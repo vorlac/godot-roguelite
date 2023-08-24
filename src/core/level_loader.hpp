@@ -2,19 +2,14 @@
 
 #include "core/projectile_spawner.hpp"
 #include "nodes/character.hpp"
-#include "util/utils.hpp"
 
 #include <utility>
 #include <vector>
 
-#include <godot_cpp/classes/input_event.hpp>
 #include <godot_cpp/classes/node2d.hpp>
 #include <godot_cpp/classes/object.hpp>
 #include <godot_cpp/classes/sprite2d.hpp>
-#include <godot_cpp/core/class_db.hpp>
-#include <godot_cpp/variant/callable.hpp>
-#include <godot_cpp/variant/string.hpp>
-#include <godot_cpp/variant/vector2.hpp>
+#include <godot_cpp/core/memory.hpp>
 
 namespace rl
 {
@@ -49,6 +44,6 @@ namespace rl
 
         rl::ProjectileSpawner* m_projectile_spawner{ memnew(rl::ProjectileSpawner) };
         godot::Sprite2D* m_background{ memnew(godot::Sprite2D) };
-        Character* m_player{ memnew(Character) };
+        rl::Character* m_player{ memnew(rl::Character) };
     };
 }

@@ -69,10 +69,30 @@ namespace rl
             this->queue_redraw();
     }
 
+    void Main::_notification(int notification)
+    {
+        switch (notification)
+        {
+            case godot::Control::NOTIFICATION_MOUSE_ENTER:
+            {
+                input::hide_cursor(true);
+                break;
+            }
+            case godot::Control::NOTIFICATION_MOUSE_EXIT:
+            {
+                input::hide_cursor(false);
+                break;
+            }
+        }
+    }
+
     void Main::_draw()
     {
         if constexpr (diag::is_enabled(diag::RootProcess))
         {
+            if (input::cursor_visible())
+                return;
+
             godot::Point2 mouse_pos{ this->get_global_mouse_position() };
             this->draw_circle(mouse_pos, 10, { "DARK_CYAN" });
         }

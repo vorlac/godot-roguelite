@@ -1,12 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://3d84gof8ehwq"]
+[gd_scene load_steps=10 format=3 uid="uid://3d84gof8ehwq"]
 
 [ext_resource type="Theme" uid="uid://bjiaijiglw4a3" path="res://assets/scenes/ui/themes/ui_theme.tres" id="1_lp5so"]
+[ext_resource type="Theme" uid="uid://gpigx47yvww1" path="res://assets/themes/fira_code_font_theme.tres" id="2_jha0r"]
+[ext_resource type="FontFile" uid="uid://3s8bciw30ers" path="res://assets/themes/fonts/firacode/FiraCode-Regular.ttf" id="3_rno71"]
+[ext_resource type="FontFile" uid="uid://dloiaphksafst" path="res://assets/themes/fonts/firacode/FiraCode-Bold.ttf" id="4_l2181"]
+[ext_resource type="FontFile" uid="uid://v5wr18kf7fst" path="res://assets/themes/fonts/firacode/FiraCode-Retina.ttf" id="5_gla07"]
+[ext_resource type="StyleBox" uid="uid://bvq32p3ma4dum" path="res://assets/themes/console_text_box.tres" id="5_k0ydj"]
+[ext_resource type="Theme" uid="uid://hsqnbpkr6s0r" path="res://assets/themes/default.tres" id="7_hq11r"]
 
-[sub_resource type="SystemFont" id="SystemFont_l3qir"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e6l8c"]
 
-[sub_resource type="FontVariation" id="FontVariation_4ded8"]
-resource_local_to_scene = true
-base_font = SubResource("SystemFont_l3qir")
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3pq1m"]
 
 [node name="MainInterfaceDiagnostic" type="MainInterfaceDiag"]
 anchors_preset = 15
@@ -28,6 +32,7 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.0
+mouse_force_pass_scroll_events = false
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
@@ -35,6 +40,7 @@ theme_override_constants/margin_bottom = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/FileMenu"]
 layout_mode = 2
+mouse_filter = 0
 
 [node name="MenuButton2" type="MenuButton" parent="VBoxContainer/FileMenu/HBoxContainer"]
 layout_mode = 2
@@ -73,10 +79,13 @@ size_flags_vertical = 3
 
 [node name="VSplitContainer" type="VSplitContainer" parent="VBoxContainer/Control"]
 layout_mode = 2
+theme_override_constants/separation = 0
+theme_override_constants/minimum_grab_thickness = 1
+theme_override_constants/autohide = 1
 split_offset = 250
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="VBoxContainer/Control/VSplitContainer"]
-custom_minimum_size = Vector2(1024, 768)
+custom_minimum_size = Vector2(512, 256)
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.0
@@ -91,96 +100,211 @@ handle_input_locally = false
 audio_listener_enable_2d = true
 physics_object_picking = true
 physics_object_picking_sort = true
+gui_disable_input = true
 gui_embed_subwindows = true
-size = Vector2i(1920, 898)
+size = Vector2i(1920, 895)
 render_target_update_mode = 4
 
-[node name="CanvasLayer" type="CanvasLayer" parent="VBoxContainer/Control/VSplitContainer/SubViewportContainer/SubViewport"]
+[node name="MainCanvasLayer" type="CanvasLayer" parent="VBoxContainer/Control/VSplitContainer/SubViewportContainer/SubViewport"]
 follow_viewport_enabled = true
 
-[node name="Main" type="Main" parent="VBoxContainer/Control/VSplitContainer/SubViewportContainer/SubViewport/CanvasLayer"]
+[node name="Main" type="Main" parent="VBoxContainer/Control/VSplitContainer/SubViewportContainer/SubViewport/MainCanvasLayer"]
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/Control/VSplitContainer"]
+[node name="PanelContainer" type="VBoxContainer" parent="VBoxContainer/Control/VSplitContainer"]
+clip_contents = true
 custom_minimum_size = Vector2(640, 100)
 layout_mode = 2
+auto_translate = false
+localize_numeral_system = false
+mouse_filter = 0
+theme = ExtResource("2_jha0r")
 
-[node name="ConsolePanel" type="RichTextLabel" parent="VBoxContainer/Control/VSplitContainer/PanelContainer"]
+[node name="Panel" type="MarginContainer" parent="VBoxContainer/Control/VSplitContainer/PanelContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 110)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("1_lp5so")
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 0
+
+[node name="ConsolePanel" type="RichTextLabel" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/Panel"]
 unique_name_in_owner = true
 clip_contents = false
-custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
-size_flags_stretch_ratio = 0.0
-focus_mode = 2
-theme_override_fonts/normal_font = SubResource("FontVariation_4ded8")
+size_flags_vertical = 3
+auto_translate = false
+localize_numeral_system = false
+theme = ExtResource("2_jha0r")
+theme_override_colors/default_color = Color(0.792157, 0.768627, 0.756863, 1)
+theme_override_colors/font_selected_color = Color(0.929412, 0.929412, 0.929412, 1)
+theme_override_fonts/normal_font = ExtResource("3_rno71")
+theme_override_fonts/bold_font = ExtResource("4_l2181")
+theme_override_fonts/mono_font = ExtResource("5_gla07")
+theme_override_font_sizes/normal_font_size = 14
+theme_override_font_sizes/bold_font_size = 14
+theme_override_font_sizes/italics_font_size = 14
+theme_override_font_sizes/bold_italics_font_size = 14
+theme_override_font_sizes/mono_font_size = 14
+theme_override_styles/focus = ExtResource("5_k0ydj")
+theme_override_styles/normal = ExtResource("5_k0ydj")
 scroll_following = true
+context_menu_enabled = true
 meta_underlined = false
 hint_underlined = false
 threaded = true
 selection_enabled = true
+deselect_on_focus_loss_enabled = false
+text_direction = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Control/VSplitContainer/PanelContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
-size_flags_vertical = 8
+size_flags_vertical = 0
+mouse_force_pass_scroll_events = false
+theme = ExtResource("7_hq11r")
 
-[node name="CheckBox" type="CheckBox" parent="VBoxContainer/HBoxContainer"]
+[node name="CheckBox" type="CheckBox" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 2
 size_flags_vertical = 0
+focus_mode = 0
+theme = ExtResource("1_lp5so")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_e6l8c")
 text = "Toggle Console"
 
-[node name="Label1" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_constants/separation = 12
+
+[node name="Label1" type="Label" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
-text = "Label1: "
+auto_translate = false
+localize_numeral_system = false
+theme = ExtResource("7_hq11r")
+theme_override_colors/font_color = Color(0.713726, 0.831373, 0.792157, 1)
+theme_override_fonts/font = ExtResource("5_gla07")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_3pq1m")
+text = "Label1 =>"
+vertical_alignment = 2
 
-[node name="Val1" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="Val1" type="Label" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 2
 size_flags_vertical = 0
+auto_translate = false
+localize_numeral_system = false
+theme = ExtResource("7_hq11r")
+theme_override_fonts/font = ExtResource("5_gla07")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_3pq1m")
 text = "Val1"
+vertical_alignment = 2
 
-[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="VSeparator2" type="VSeparator" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_constants/separation = 12
+
+[node name="Label2" type="Label" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
-text = "Label2: "
+auto_translate = false
+localize_numeral_system = false
+theme = ExtResource("7_hq11r")
+theme_override_colors/font_color = Color(0.713726, 0.831373, 0.792157, 1)
+theme_override_fonts/font = ExtResource("5_gla07")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_3pq1m")
+text = "Label2 =>"
+vertical_alignment = 2
 
-[node name="Val2" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="Val2" type="Label" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 2
 size_flags_vertical = 0
+auto_translate = false
+localize_numeral_system = false
+theme = ExtResource("7_hq11r")
+theme_override_fonts/font = ExtResource("5_gla07")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_3pq1m")
 text = "Val2"
+vertical_alignment = 2
 
-[node name="Label3" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="VSeparator3" type="VSeparator" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_constants/separation = 12
+
+[node name="Label3" type="Label" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
-text = "Label3: "
+auto_translate = false
+localize_numeral_system = false
+theme = ExtResource("7_hq11r")
+theme_override_colors/font_color = Color(0.713726, 0.831373, 0.792157, 1)
+theme_override_fonts/font = ExtResource("5_gla07")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_3pq1m")
+text = "Label3 =>"
+vertical_alignment = 2
 
-[node name="Val3" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="Val3" type="Label" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 2
 size_flags_vertical = 0
+auto_translate = false
+localize_numeral_system = false
+theme = ExtResource("7_hq11r")
+theme_override_fonts/font = ExtResource("5_gla07")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_3pq1m")
 text = "Val3"
+vertical_alignment = 2
 
-[node name="Label4" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="VSeparator4" type="VSeparator" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_constants/separation = 12
+
+[node name="Label4" type="Label" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
-text = "Label4: "
+auto_translate = false
+localize_numeral_system = false
+theme = ExtResource("7_hq11r")
+theme_override_colors/font_color = Color(0.713726, 0.831373, 0.792157, 1)
+theme_override_fonts/font = ExtResource("5_gla07")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_3pq1m")
+text = "Label4 =>"
+vertical_alignment = 2
 
-[node name="Val4" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="Val4" type="Label" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 2
 size_flags_vertical = 0
+auto_translate = false
+localize_numeral_system = false
+theme = ExtResource("7_hq11r")
+theme_override_fonts/font = ExtResource("5_gla07")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_3pq1m")
 text = "Val4"
+vertical_alignment = 2

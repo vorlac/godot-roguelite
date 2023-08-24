@@ -36,6 +36,12 @@ namespace rl::inline utils
                                          godot::Input::MOUSE_MODE_VISIBLE);
         }
 
+        const static inline bool cursor_visible()
+        {
+            godot::Input* const input{ input::get() };
+            return input->get_mouse_mode() == godot::Input::MOUSE_MODE_VISIBLE;
+        }
+
         const static inline void load_project_inputs()
         {
             auto input_map{ godot::InputMap::get_singleton() };

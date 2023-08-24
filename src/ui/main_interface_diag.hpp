@@ -1,20 +1,10 @@
 #pragma once
 
-#include "core/console_capture.hpp"
-#include "util/utils.hpp"
-
-#include <atomic>
-#include <fmt/format.h>
-#include <mutex>
-#include <ostream>
-#include <sstream>
-#include <thread>
+#include "util/console.hpp"
 
 #include <godot_cpp/classes/panel.hpp>
-#include <godot_cpp/classes/rich_text_label.hpp>
-#include <godot_cpp/core/memory.hpp>
-#include <godot_cpp/variant/array.hpp>
-#include <godot_cpp/variant/string.hpp>
+
+class godot::RichTextLabel;
 
 namespace rl
 {

@@ -1,5 +1,6 @@
 #include "nodes/projectile.hpp"
 
+
 namespace rl
 {
     Projectile::Projectile()
@@ -9,8 +10,6 @@ namespace rl
 
     Projectile::~Projectile()
     {
-        if (!this->is_queued_for_deletion())
-            this->queue_free();
     }
 
     void Projectile::_bind_methods()
@@ -88,7 +87,7 @@ namespace rl
     }
 
     [[node_property]]
-    void Projectile::set_velocity(const godot::Vector2 velocity)
+    void Projectile::set_velocity(const godot::Vector2& velocity)
     {
         m_velocity = velocity;
     }

@@ -1,7 +1,5 @@
 #include "core/projectile_spawner.hpp"
 
-#include "nodes/character.hpp"
-
 namespace rl
 {
     ProjectileSpawner::ProjectileSpawner()
@@ -13,8 +11,6 @@ namespace rl
 
     ProjectileSpawner::~ProjectileSpawner()
     {
-        if (!this->is_queued_for_deletion())
-            this->queue_free();
     }
 
     [[nodiscard]]

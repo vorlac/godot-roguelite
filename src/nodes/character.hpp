@@ -5,11 +5,9 @@
 
 #include <godot_cpp/classes/character_body2d.hpp>
 #include <godot_cpp/classes/collision_shape2d.hpp>
-#include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/sprite2d.hpp>
-#include <godot_cpp/classes/wrapped.hpp>
-#include <godot_cpp/core/class_db.hpp>
-#include <godot_cpp/variant/string.hpp>
+
+class godot::Input;
 
 namespace rl
 {

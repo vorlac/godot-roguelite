@@ -23,6 +23,8 @@ namespace rl
         void _process(double delta_time) override;
         void _draw() override;
 
+        void _notification(int notification);
+
     protected:
         void apply_default_settings();
 

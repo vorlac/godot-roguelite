@@ -44,8 +44,8 @@ namespace rl
 
     Character::~Character()
     {
-        if (!this->is_queued_for_deletion())
-            this->queue_free();
+        // if (!this->is_queued_for_deletion())
+        //     this->queue_free();
     }
 
     void Character::_bind_methods()

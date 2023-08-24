@@ -1,24 +1,14 @@
 #pragma once
+
 #include "ui/main_interface_diag.hpp"
 
-#include "core/console_capture.hpp"
 #include "util/utils.hpp"
 
 #include <fmt/core.h>
 #include <fmt/format.h>
 
 #include <godot_cpp/classes/canvas_layer.hpp>
-#include <godot_cpp/classes/panel.hpp>
 #include <godot_cpp/classes/rich_text_label.hpp>
-#include <godot_cpp/core/builtin_ptrcall.hpp>
-#include <godot_cpp/core/engine_ptrcall.hpp>
-#include <godot_cpp/core/error_macros.hpp>
-#include <godot_cpp/core/math.hpp>
-#include <godot_cpp/core/memory.hpp>
-#include <godot_cpp/core/method_ptrcall.hpp>
-#include <godot_cpp/variant/array.hpp>
-#include <godot_cpp/variant/string.hpp>
-#include <godot_cpp/variant/variant.hpp>
 
 namespace rl
 {
@@ -56,12 +46,19 @@ namespace rl
                 m_console.set_output_label(nullptr);
                 break;
             }
-            default:
+            case Control::NOTIFICATION_MOUSE_ENTER:
             {
-                m_console.print("notification: {}\n",
-                                rl::to_string<Translation::Notification>(notification));
+                input::hide_cursor(true);
+                break;
+            }
+            case Control::NOTIFICATION_MOUSE_EXIT:
+            {
+                input::hide_cursor(false);
                 break;
             }
         }
+
+        m_console.print("notification: {}\n",
+                        rl::to_string<Translation::Notification>(notification));
     }
 }

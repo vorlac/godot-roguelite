@@ -1,8 +1,6 @@
 #pragma once
 
 #include <godot_cpp/classes/camera2d.hpp>
-#include <godot_cpp/classes/input_event.hpp>
-#include <godot_cpp/core/class_db.hpp>
 
 namespace rl
 {

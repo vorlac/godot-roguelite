@@ -3,10 +3,6 @@
 #include "util/input.hpp"
 
 #include <godot_cpp/classes/input.hpp>
-#include <godot_cpp/classes/input_event.hpp>
-#include <godot_cpp/classes/input_event_action.hpp>
-#include <godot_cpp/classes/node.hpp>
-#include <godot_cpp/classes/wrapped.hpp>
 
 namespace rl
 {
