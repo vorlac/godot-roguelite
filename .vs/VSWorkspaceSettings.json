@@ -5,10 +5,11 @@
   "ExcludedItems": [
     ".git*",
     ".clang*",
+    ".idea",
     ".vscode",
     "*.md",
     "cpp.hint",
-    "scripts/",
+    "/scripts",
     "extension_api.json",
     "engine/**/*.md",
     "engine/**/*.txt",

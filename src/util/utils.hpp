@@ -1,6 +1,7 @@
 #pragma once
 
 #include "util/bind.hpp"
+#include "util/console.hpp"
 #include "util/debug.hpp"
 #include "util/engine.hpp"
 #include "util/input.hpp"
