@@ -4,14 +4,17 @@
 project(roguelite LANGUAGES C CXX)
 set(gdextension_lib_name ${PROJECT_NAME})
 
+# needs to be >= C++17
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # define output paths for gdextension shared lib and debug symbols
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/bin)
-set(CMAKE_PDB_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/project/bin)
+set(CMAKE_PDB_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/project/bin)
+
+# postfix debug binaries with "d"
 set(CMAKE_DEBUG_POSTFIX "d")
 
 # =======================================================================
@@ -21,7 +24,7 @@ set(CMAKE_DEBUG_POSTFIX "d")
 # confirm we found the godot engine source files.
 # if the sources list is empty, the submodule probably
 # hasn't been initialized or updated yet.
-if(NOT EXISTS "${CMAKE_SOURCE_DIR}/godot/godot-cpp/src")
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-cpp/src")
     message(STATUS "godot-cpp bingings source not found")
     message(STATUS "initializing/updating the godot-cpp submodule...")
 
@@ -29,7 +32,7 @@ if(NOT EXISTS "${CMAKE_SOURCE_DIR}/godot/godot-cpp/src")
     # the necessary source for the gdextension library
     execute_process(
         COMMAND git submodule update --init godot/godot-cpp
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND_ERROR_IS_FATAL ANY
     )
 endif()
@@ -37,7 +40,7 @@ endif()
 # confirm we found the godot engine source files.
 # if the sources list is empty, the submodule probably
 # hasn't been initialized or updated yet.
-if(NOT EXISTS "${CMAKE_SOURCE_DIR}/godot/engine/core")
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/core")
     message("Godot engine sources not found")
     message("initializing/updating the engine submodule...")
 
@@ -46,7 +49,7 @@ if(NOT EXISTS "${CMAKE_SOURCE_DIR}/godot/engine/core")
     # can be easily debugged along with the gdextension library
     execute_process(
         COMMAND git submodule update --init godot/engine
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND_ERROR_IS_FATAL ANY
     )
 endif()
@@ -55,7 +58,7 @@ endif()
 # confirm we found the vcpkg submodule ports dir.
 # if the sources list is empty, the submodule probably
 # hasn't been initialized or updated yet.
-if(NOT EXISTS "${CMAKE_SOURCE_DIR}/extern/vcpkg/ports")
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/ports")
     message("VCPKG package manager sources not found")
     message("initializing/updating the vcpkg submodule...")
 
@@ -63,7 +66,7 @@ if(NOT EXISTS "${CMAKE_SOURCE_DIR}/extern/vcpkg/ports")
     # to grab all dependencies needed for the gdextension library build
     execute_process(
         COMMAND git submodule update --init tools/vcpkg
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND_ERROR_IS_FATAL ANY
     )
 endif()
@@ -73,35 +76,34 @@ endif()
 # Only happens once, when vcpkg.exe is missing.
 # =======================================================================
 
-set(vcpkg_executable "${CMAKE_SOURCE_DIR}/extern/vcpkg/vcpkg.exe")
+set(vcpkg_executable "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/vcpkg${CMAKE_EXECUTABLE_SUFFIX}")
 
 if(NOT EXISTS "${vcpkg_executable}")
     # bootstrap vcpkg so vcpkg.exe 
     # is configured and installed
     execute_process(
         COMMAND ps -c "./extern/vcpkg/boostrap-vcpkg.bat"
-        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
         COMMAND_ERROR_IS_FATAL ANY
     )
 
     # fail out if vcpkg isn't found after setup
     if(NOT EXISTS "${vcpkg_executable}")
-        message(FATAL_ERROR "ERROR: extern/vcpkg/vcpkg.exe not found!")
+        message(FATAL_ERROR "ERROR: ${vcpkg_executable} not found!")
     endif()
 endif()
-
 
 # =======================================================================
 # Godot editor/engine debug build
 # =======================================================================
 
-set(godot_debug_editor_executable "${CMAKE_SOURCE_DIR}/godot/engine/bin/godot.windows.editor.dev.x86_64.exe")
+set(godot_debug_editor_executable "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/bin/godot.${SYSTEM_NAME}.editor.dev.x86_64${CMAKE_EXECUTABLE_SUFFIX}")
+message(INFO "godot_debug_editor_executable = ${godot_debug_editor_executable}")
 if(NOT EXISTS "${godot_debug_editor_executable}")
     message("Godot engine debug binaries not found, invoking debug build of engine...")
 
     execute_process(
         COMMAND scons arch=x64            \\
-                      platform=windows    \\
                       target=editor       \\
                       use_static_cpp=no   \\
                       dev_build=yes       \\
@@ -109,7 +111,7 @@ if(NOT EXISTS "${godot_debug_editor_executable}")
                       optimize=none       \\
                       use_lto=no          \\
                       --clean                 
-        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/godot/engine"
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/godot/engine"
         COMMAND_ERROR_IS_FATAL ANY
     )
 
@@ -118,7 +120,6 @@ if(NOT EXISTS "${godot_debug_editor_executable}")
     # build configuration/command invoked below).
     execute_process(
         COMMAND scons arch=x64            \\
-                      platform=windows    \\
                       target=editor       \\
                       use_static_cpp=no   \\
                       dev_build=yes       \\
@@ -126,11 +127,12 @@ if(NOT EXISTS "${godot_debug_editor_executable}")
                       optimize=none       \\
                       use_lto=no          \\
                       --quiet                 
-        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/godot/engine"
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine"
         COMMAND_ERROR_IS_FATAL ANY
     )
 
-    file(REMOVE_RECURSE "${CMAKE_SOURCE_DIR}/godot/engine/.sconf_temp")
+    # not necessary, the temp file in here just confuses Visual Studio
+    file(REMOVE_RECURSE "${CMAKE_CURRENT_SOURCE_DIR}}/extern/godot-engine/.sconf_temp")
 
     if(NOT EXISTS "${godot_debug_editor_executable}")
         message(FATAL_ERROR "Couldn't find godot debug executable after scons build")
@@ -148,29 +150,29 @@ find_package(spdlog CONFIG REQUIRED)
 # Godot C++ bindings library setup/configuration
 # =======================================================================
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/godot/godot-cpp)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-cpp)
 
 # =======================================================================
 # Godot engine library setup/configuration.
-# Not necessary, just provides better support in Visual Studio
+# Not necessary, just provides better support in multiple IDEs
 # for engine source code browsing, intellisense, and debugging
 # =======================================================================
 
 # populate source file list for the godot engine submodule
 file(GLOB_RECURSE godot_engine_sources CONFIGURE_DEPENDS
-    "${CMAKE_SOURCE_DIR}/godot/engine/*.[hc]"
-    "${CMAKE_SOURCE_DIR}/godot/engine/*.[hc]pp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/*.[hc]"
+    "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/*.[hc]pp"
 )
 
 # add the engine sources as a library so intellisense actually works
 add_library(godot_engine EXCLUDE_FROM_ALL ${godot_engine_sources})
 target_include_directories(godot_engine PUBLIC
-    "${CMAKE_SOURCE_DIR}/godot/engine"
-    "${CMAKE_SOURCE_DIR}/godot/engine/platform/windows"
-    "${CMAKE_SOURCE_DIR}/godot/engine/thirdparty/zlib"
-    "${CMAKE_SOURCE_DIR}/godot/engine/thirdparty/vulkan/include"
-    SYSTEM "${CMAKE_SOURCE_DIR}/godot/engine/thirdparty/zstd"
-    SYSTEM "${CMAKE_SOURCE_DIR}/godot/engine/thirdparty/mbedtls/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine"
+    "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/platform/windows"
+    "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/thirdparty/zlib"
+    "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/thirdparty/vulkan/include"
+    SYSTEM "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/thirdparty/zstd"
+    SYSTEM "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/thirdparty/mbedtls/include"
 )
 
 # define a bunch of the same symbol definitions 
@@ -228,8 +230,6 @@ target_compile_options(${gdextension_lib_name} PUBLIC
     >
     $<$<NOT:${MSVC}>:
         -g
-        /utf-8
-        /Zc:preprocessor
         $<$<CONFIG:Debug>:
             -fno-omit-frame-pointer
             -O0
