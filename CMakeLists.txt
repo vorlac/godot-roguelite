@@ -168,6 +168,7 @@ target_include_directories(godot_engine PUBLIC
     "${CMAKE_SOURCE_DIR}/godot/engine"
     "${CMAKE_SOURCE_DIR}/godot/engine/platform/windows"
     "${CMAKE_SOURCE_DIR}/godot/engine/thirdparty/zlib"
+    "${CMAKE_SOURCE_DIR}/godot/engine/thirdparty/vulkan/include"
     SYSTEM "${CMAKE_SOURCE_DIR}/godot/engine/thirdparty/zstd"
     SYSTEM "${CMAKE_SOURCE_DIR}/godot/engine/thirdparty/mbedtls/include"
 )
