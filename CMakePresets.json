@@ -2,22 +2,40 @@
   "version": 3,
   "configurePresets": [
     {
-      "name": "msvc",
+      "name": "default",
+      "hidden": true,
       "generator": "Ninja",
       "installDir": "${sourceDir}/.out/install/${presetName}",
       "binaryDir": "${sourceDir}/.out/build/${presetName}",
       "toolchainFile": "${sourceDir}/extern/vcpkg/scripts/buildsystems/vcpkg.cmake",
-      "hidden": true,
       "architecture": {
         "value": "x64",
         "strategy": "external"
       },
+      "environment": {
+        "NINJA_STATUS": "%p [%f/%t] - "
+      }
+    },
+    {
+      "name": "default-verbose",
+      "inherits": "default",
+      "hidden": true,
+      "environment": {
+        "VERBOSE": "true"
+      }
+    },
+    {
+      "name": "msvc",
+      "inherits": "default",
+      "hidden": true,
       "cacheVariables": {
         "CMAKE_C_COMPILER": "cl",
         "CMAKE_CXX_COMPILER": "cl"
       },
-      "environment": {
-        "NINJA_STATUS": "%p [%f/%t] - "
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
       }
     },
     {
