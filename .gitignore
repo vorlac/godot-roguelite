@@ -16,6 +16,7 @@ export_presets.cfg
 .vs/**
 !.vs/launch.vs.json
 !.vs/VSWorkspaceSettings.json
+!.vs/CMakeWorkspaceSettings.json
 
 .vscode/**
 !.vscode/c_cpp_properties.json
