@@ -3,7 +3,7 @@
   "configurations": [
     {
       "type": "dll",
-      "exe": "${workspaceRoot}\\godot\\engine\\bin\\godot.windows.editor.dev.x86_64.exe",
+      "exe": "${workspaceRoot}/extern/godot-engine/bin/godot.windows.editor.dev.x86_64.exe",
       "args": [
         "--editor",
         "--windowed",
@@ -12,7 +12,7 @@
         "--debug",
         "--verbose",
         "--path",
-        "${workspaceRoot}\\roguelite"
+        "${workspaceRoot}/project"
       ],
       "project": "CMakeLists.txt",
       "name": "gdextension (editor)"
@@ -20,12 +20,12 @@
     {
       "type": "dll",
       "isDefaultConfiguration": true,
-      "exe": "${workspaceRoot}\\godot\\engine\\bin\\godot.windows.editor.dev.x86_64.exe",
+      "exe": "${workspaceRoot}/extern/godot-engine/bin/godot.windows.editor.dev.x86_64.exe",
       "args": [
         "--debug",
         "--verbose",
         "--path",
-        "${workspaceRoot}\\roguelite",
+        "${workspaceRoot}/project",
         "res://main_window.tscn"
       ],
       "project": "CMakeLists.txt",

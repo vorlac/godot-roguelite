@@ -4,66 +4,66 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        {
-            "name": "GDExtension: Project",
-            "type": "cppvsdbg",
-            "request": "launch",
-            "cwd": "${workspaceRoot}/godot/engine/bin",
-            "program": "${workspaceRoot}/godot/engine/bin/godot.windows.editor.dev.x86_64.exe",
-            "args": [
-                "--debug",
-                "--verbose",
-                "--path",
-                "${workspaceRoot}/roguelite"
+      {
+        "name": "GDExtension: Project",
+        "type": "cppvsdbg",
+        "request": "launch",
+        "cwd": "${workspaceRoot}/project",
+        "program": "${workspaceRoot}/extern/godot-engine/bin/godot.windows.editor.dev.x86_64.exe",
+        "args": [
+          "--debug",
+          "--verbose",
+          "--path",
+          "${workspaceRoot}/roguelite"
+        ],
+        "windows": {
+          "console": "integratedTerminal",
+          "internalConsoleOptions": "openOnSessionStart",
+          "logging": {
+            "programOutput": true,
+            "exceptions": true,
+            "moduleLoad": true,
+            "trace": true
+          },
+          "symbolOptions": {
+            "searchPaths": [
+              "${workspaceFolder}/project/bin",
+              "${workspaceRoot}/extern/godot-engine/bin"
             ],
-            "windows": {
-                "console": "integratedTerminal",
-                "internalConsoleOptions": "openOnSessionStart",
-                "logging": {
-                    "programOutput": true,
-                    "exceptions": true,
-                    "moduleLoad": true,
-                    "trace": true
-                },
-                "symbolOptions": {
-                    "searchPaths": [
-                        "${workspaceFolder}/roguelite/bin",
-                        "${workspaceRoot}/godot/engine/bin",
-                    ],
-                    "searchMicrosoftSymbolServer": true
-                }
-            }
-        },
-        {
-            "name": "GDExtension: Editor",
-            "type": "cppvsdbg",
-            "request": "launch",
-            "cwd": "${workspaceRoot}/godot/engine/bin",
-            "program": "${workspaceRoot}/godot/engine/bin/godot.windows.editor.dev.x86_64.exe",
-            "args": [
-                "--editor",
-                "--debug",
-                "--verbose",
-                "--path",
-                "${workspaceRoot}/roguelite"
-            ],
-            "windows": {
-                "console": "integratedTerminal",
-                "internalConsoleOptions": "openOnSessionStart",
-                "logging": {
-                    "programOutput": true,
-                    "exceptions": true,
-                    "moduleLoad": true,
-                    "trace": true
-                },
-                "symbolOptions": {
-                    "searchPaths": [
-                        "${workspaceFolder}/roguelite/bin",
-                        "${workspaceRoot}/godot/engine/bin",
-                    ],
-                    "searchMicrosoftSymbolServer": true
-                }
-            }
+            "searchMicrosoftSymbolServer": true
+          }
         }
+      },
+      {
+        "name": "GDExtension: Editor",
+        "type": "cppvsdbg",
+        "request": "launch",
+        "cwd": "${workspaceRoot}/project",
+        "program": "${workspaceRoot}/extern/godot-engine/bin/godot.windows.editor.dev.x86_64.exe",
+        "args": [
+          "--editor",
+          "--debug",
+          "--verbose",
+          "--path",
+          "${workspaceRoot}/roguelite"
+        ],
+        "windows": {
+          "console": "integratedTerminal",
+          "internalConsoleOptions": "openOnSessionStart",
+          "logging": {
+            "programOutput": true,
+            "exceptions": true,
+            "moduleLoad": true,
+            "trace": true
+          },
+          "symbolOptions": {
+            "searchPaths": [
+              "${workspaceFolder}/project/bin",
+              "${workspaceRoot}/extern/godot-engine/bin"
+            ],
+            "searchMicrosoftSymbolServer": true
+          }
+        }
+      }
     ]
 }

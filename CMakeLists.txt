@@ -1,8 +1,13 @@
 ﻿cmake_minimum_required(VERSION 3.20)
-# set(VCPKG_TARGET_TRIPLET "x64-windows-static")
 
 project(roguelite LANGUAGES C CXX)
 set(gdextension_lib_name ${PROJECT_NAME})
+
+## Uncomment to output a dump of every CMake variable
+# set(CMAKE_MESSAGE_LOG_LEVEL DEBUG)
+
+string(TOLOWER "${CMAKE_SYSTEM_NAME}" host_os)
+set(VCPKG_TARGET_TRIPLET "x64-${host_os}-static")
 
 # needs to be >= C++17
 set(CMAKE_CXX_STANDARD 23)
@@ -25,13 +30,13 @@ set(CMAKE_DEBUG_POSTFIX "d")
 # if the sources list is empty, the submodule probably
 # hasn't been initialized or updated yet.
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-cpp/src")
-    message(STATUS "godot-cpp bingings source not found")
-    message(STATUS "initializing/updating the godot-cpp submodule...")
+    message(NOTICE "godot-cpp bingings source not found")
+    message(NOTICE "initializing/updating the godot-cpp submodule...")
 
     # update the c++ bingings submodule to populate it with
     # the necessary source for the gdextension library
     execute_process(
-        COMMAND git submodule update --init godot/godot-cpp
+        COMMAND git submodule update --init extern/godot-cpp
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND_ERROR_IS_FATAL ANY
     )
@@ -41,14 +46,14 @@ endif()
 # if the sources list is empty, the submodule probably
 # hasn't been initialized or updated yet.
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/core")
-    message("Godot engine sources not found")
-    message("initializing/updating the engine submodule...")
+    message(NOTICE "Godot engine sources not found")
+    message(NOTICE "initializing/updating the engine submodule...")
 
     # update the engine submodule to populate it with the
     # code necessary to build a debug version of the editor that
     # can be easily debugged along with the gdextension library
     execute_process(
-        COMMAND git submodule update --init godot/engine
+        COMMAND git submodule update --init extern/godot-engine
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND_ERROR_IS_FATAL ANY
     )
@@ -59,13 +64,13 @@ endif()
 # if the sources list is empty, the submodule probably
 # hasn't been initialized or updated yet.
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/ports")
-    message("VCPKG package manager sources not found")
-    message("initializing/updating the vcpkg submodule...")
+    message(NOTICE "VCPKG package manager sources not found")
+    message(NOTICE "initializing/updating the vcpkg submodule...")
 
     # update the vcpkg submodule to populate it with the code necessary
     # to grab all dependencies needed for the gdextension library build
     execute_process(
-        COMMAND git submodule update --init tools/vcpkg
+        COMMAND git submodule update --init extern/vcpkg
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND_ERROR_IS_FATAL ANY
     )
@@ -77,6 +82,7 @@ endif()
 # =======================================================================
 
 set(vcpkg_executable "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/vcpkg${CMAKE_EXECUTABLE_SUFFIX}")
+message(NOTICE "VCPKG Executable: ${vcpkg_executable}")
 
 if(NOT EXISTS "${vcpkg_executable}")
     # bootstrap vcpkg so vcpkg.exe 
@@ -89,7 +95,7 @@ if(NOT EXISTS "${vcpkg_executable}")
 
     # fail out if vcpkg isn't found after setup
     if(NOT EXISTS "${vcpkg_executable}")
-        message(FATAL_ERROR "ERROR: ${vcpkg_executable} not found!")
+        message(FATAL_ERROR "ERROR: '${vcpkg_executable}' not found!")
     endif()
 endif()
 
@@ -97,7 +103,7 @@ endif()
 # Godot editor/engine debug build
 # =======================================================================
 
-set(godot_debug_editor_executable "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/bin/godot.${SYSTEM_NAME}.editor.dev.x86_64${CMAKE_EXECUTABLE_SUFFIX}")
+set(godot_debug_editor_executable "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/bin/godot.${host_os}.editor.dev.x86_64${CMAKE_EXECUTABLE_SUFFIX}")
 message(INFO "godot_debug_editor_executable = ${godot_debug_editor_executable}")
 if(NOT EXISTS "${godot_debug_editor_executable}")
     message("Godot engine debug binaries not found, invoking debug build of engine...")
@@ -135,7 +141,7 @@ if(NOT EXISTS "${godot_debug_editor_executable}")
     file(REMOVE_RECURSE "${CMAKE_CURRENT_SOURCE_DIR}}/extern/godot-engine/.sconf_temp")
 
     if(NOT EXISTS "${godot_debug_editor_executable}")
-        message(FATAL_ERROR "Couldn't find godot debug executable after scons build")
+        message(FATAL_ERROR "Couldn't find godot debug executable after scons build: ${godot_debug_editor_executable}")
     endif()
 endif()
 

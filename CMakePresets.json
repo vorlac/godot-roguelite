@@ -44,39 +44,5 @@
         "CMAKE_BUILD_TYPE": "RelWithDebInfo"
       }
     }
-  ],
-  "buildPresets": [
-    {
-      "name": "defaults",
-      "hidden": true,
-      "cleanFirst": false,
-      "verbose": false,
-      "jobs": 12,
-      "inheritConfigureEnvironment": true,
-      "configurePreset": "msvc"
-    },
-    {
-      "name": "debug",
-      "inherits": "defaults",
-      "configurePreset": "msvc-debug",
-      "configuration": "Debug"
-    },
-    {
-      "name": "debug-verbose",
-      "inherits": "debug",
-      "verbose": true
-    },
-    {
-      "name": "release",
-      "inherits": "defaults",
-      "configurePreset": "msvc-release",
-      "configuration": "Release"
-    },
-    {
-      "name": "relwithdebinfo",
-      "inherits": "defaults",
-      "configurePreset": "msvc-relwdebinfo",
-      "configuration": "RelWithDebInfo"
-    }
   ]
 }
