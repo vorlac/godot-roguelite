@@ -1,11 +1,21 @@
 ﻿cmake_minimum_required(VERSION 3.20)
-set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/scripts/buildsystems/vcpkg.cmake")
-
-project(roguelite LANGUAGES C CXX)
-set(gdextension_lib_name ${PROJECT_NAME})
 
 ## Uncomment to output a dump of every CMake variable
 # set(CMAKE_MESSAGE_LOG_LEVEL DEBUG)
+
+if(NOT CMAKE_TOOLCHAIN_FILE)
+    # define toolchain file early for vcpkg. only set the variable if the file exists.
+    # if this is the first configuration after a clean clone of this repo, this file 
+    # won't exist until the submodule is initialized below. configuration will fail if this 
+    # is set to a path that doesn't exist, so only set it after the first pass of configuration
+    set(toolchain_file_path "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/scripts/buildsystems/vcpkg.cmake")
+    if (EXISTS "${toolchain_file_path}")
+        set(CMAKE_TOOLCHAIN_FILE "${toolchain_file_path}")
+    endif()
+endif()
+
+project(roguelite LANGUAGES C CXX)
+set(gdextension_lib_name ${PROJECT_NAME})
 
 string(TOLOWER "${CMAKE_SYSTEM_NAME}" host_os)
 set(VCPKG_TARGET_TRIPLET "x64-${host_os}-static")
@@ -80,21 +90,25 @@ endif()
 # VCPKG bootstrap / initialization.
 # Only happens once, when vcpkg.exe is missing.
 # =======================================================================
-set(vcpkg_executable "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg${CMAKE_EXECUTABLE_SUFFIX}")
-message(NOTICE "VCPKG Executable: ${vcpkg_executable}")
 
-if(NOT EXISTS "${vcpkg_executable}")
-    # bootstrap vcpkg so vcpkg binary
-    # is configured and installed
+set(vcpkg_executable "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/vcpkg${CMAKE_EXECUTABLE_SUFFIX}")
+
+if(EXISTS "${vcpkg_executable}")
+    message(NOTICE "Found VCPKG Executable: ${vcpkg_executable}")
+else()
+    message(NOTICE "Could not find VCPKG Executable: ${vcpkg_executable}")
+    message(NOTICE "Calling VCPKG bootstrap scripts.")
+    # bootstrap vcpkg to configured and install
+
     if(WIN32)
         execute_process(
-            COMMAND ps -c "./extern/vcpkg/boostrap-vcpkg.bat"
+            COMMAND ps -c "./extern/vcpkg/bootstrap-vcpkg.bat"
             WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
             COMMAND_ERROR_IS_FATAL ANY
         )
     elseif(UNIX)
         execute_process(
-            COMMAND bash "./extern/vcpkg/boostrap-vcpkg.sh"
+            COMMAND bash "./extern/vcpkg/bootstrap-vcpkg.sh"
             WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
             COMMAND_ERROR_IS_FATAL ANY
         )
@@ -109,17 +123,17 @@ endif()
 # =======================================================================
 # Godot editor/engine debug build
 # =======================================================================
+
+set(host_os_engine "${host_os}")
 if(UNIX)
-    set(host_os_engine
-        "${host_os}bsd"
-    )
+    set(host_os_engine "${host_os}bsd")
 endif()
 
 set(godot_debug_editor_executable
     "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/bin/godot.${host_os_engine}.editor.dev.x86_64${CMAKE_EXECUTABLE_SUFFIX}"
 )
 
-message(INFO "godot_debug_editor_executable = ${godot_debug_editor_executable}")
+message(NOTICE "godot_debug_editor_executable = ${godot_debug_editor_executable}")
 
 if(NOT EXISTS "${godot_debug_editor_executable}")
     message("Godot engine debug binaries not found, invoking debug build of engine...")
@@ -260,14 +274,14 @@ target_compile_options(${gdextension_lib_name} PUBLIC
         -g
         -Wno-attributes
         $<${compiler_is_clang}:
-            "-Wno-unknown-attributes"
+            -Wno-unknown-attributes
         >
         $<$<CONFIG:Debug>:
-            "-fno-omit-frame-pointer"
-            "-O0"
+            -fno-omit-frame-pointer
+            -O0
         >
         $<$<CONFIG:Release>:
-            "-O3"
+            -O3
         >
     >
 )
@@ -297,7 +311,7 @@ target_link_libraries(${gdextension_lib_name}
 )
 
 # =======================================================================
-# Print useful configuration report
+# Print configuration report
 # =======================================================================
 
 include(${CMAKE_SOURCE_DIR}/scripts/cmake/utils.cmake)

@@ -18,15 +18,19 @@ namespace rl::inline utils
 {
 
 #ifdef _WIN32
-    #define node_property __declspec(godot_node_property)
-    #define signal_callback __declspec(godot_signal_callback)
+  #define node_property   __declspec("godot_node_property")
+  #define signal_callback __declspec("godot_signal_callback")
 #elif __linux__
-    #define node_property __attribute__((annotate("godot_node_property")))
-    #define signal_callback __attribute__((annotate("godot_signal_callback")))
+  #define node_property   __attribute__((annotate("godot_node_property")))
+  #define signal_callback __attribute__((annotate("godot_signal_callback")))
 #endif
-    // wrapper for simpler signal/slot connections
-    #define SignalConnection(signal_name, func_name, ...) std::pair<godot::String, godot::Callable> { signal_name, godot::Callable(this, #func_name __VA_OPT__(,) __VA_ARGS__) }
 
+// wrapper for simpler signal/slot connections
+#define SignalConnection(signal_name, func_name, ...)                             \
+    std::pair<godot::String, godot::Callable>                                     \
+    {                                                                             \
+        signal_name, godot::Callable(this, #func_name __VA_OPT__(, ) __VA_ARGS__) \
+    }
 
     namespace signal
     {
@@ -82,7 +86,6 @@ namespace rl::inline utils
             , property_type{ std::get<1>(prop_desc) }
         {
         }
-
 
         godot::String getter_name;
         godot::String setter_name;
