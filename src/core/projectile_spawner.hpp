@@ -3,9 +3,6 @@
 #include "nodes/projectile.hpp"
 #include "util/utils.hpp"
 
-#include <utility>
-#include <vector>
-
 #include <godot_cpp/classes/node2d.hpp>
 #include <godot_cpp/classes/resource.hpp>
 #include <godot_cpp/core/class_db.hpp>
@@ -20,8 +17,7 @@ namespace rl
         ProjectileSpawner();
         virtual ~ProjectileSpawner();
 
-        [[nodiscard]]
-        rl::Projectile* const spawn_projectile();
+        rl::Projectile* spawn_projectile();
 
 
     protected:

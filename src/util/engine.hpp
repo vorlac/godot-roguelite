@@ -14,14 +14,14 @@ namespace rl::inline utils
 {
     struct engine
     {
-        static inline godot::Engine* const get()
+        static inline godot::Engine* get()
         {
-            godot::Engine* const engine{ godot::Engine::get_singleton() };
+            godot::Engine* engine{ godot::Engine::get_singleton() };
             debug::assert(engine != nullptr);
             return engine;
         }
 
-        static inline godot::MainLoop* const main_loop()
+        static inline godot::MainLoop* main_loop()
         {
             auto engine{ engine::get() };
             if (engine != nullptr) [[likely]]
@@ -29,7 +29,7 @@ namespace rl::inline utils
             return nullptr;
         }
 
-        static inline godot::SceneTree* const scene_tree()
+        static inline godot::SceneTree* scene_tree()
         {
             auto loop{ engine::main_loop() };
             if (loop != nullptr) [[likely]]
@@ -37,7 +37,7 @@ namespace rl::inline utils
             return nullptr;
         }
 
-        static inline godot::Window* const root_window()
+        static inline godot::Window* root_window()
         {
             auto tree{ engine::scene_tree() };
             if (tree != nullptr) [[likely]]
@@ -45,18 +45,19 @@ namespace rl::inline utils
             return nullptr;
         }
 
-        static inline godot::Node* const root_node()
+        static inline godot::Node* root_node()
         {
             return godot::Object::cast_to<godot::Node>(engine::root_window());
         }
 
-        const static inline int32_t max_fps()
+        static inline int32_t max_fps()
         {
             auto engine{ engine::get() };
             if (engine != nullptr) [[likely]]
                 return engine->get_max_fps();
 
             log::error("Failed to get max fps");
+            return -1;
         }
 
         static inline void set_fps(const uint32_t fps)
@@ -68,7 +69,7 @@ namespace rl::inline utils
             log::error("Failed to set max fps");
         }
 
-        const static inline bool editor_active()
+        static inline bool editor_active()
         {
             auto engine{ engine::get() };
             if (engine != nullptr) [[likely]]
@@ -76,5 +77,4 @@ namespace rl::inline utils
             return false;
         }
     };
-
 }

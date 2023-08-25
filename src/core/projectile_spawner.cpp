@@ -14,7 +14,7 @@ namespace rl
     }
 
     [[nodiscard]]
-    rl::Projectile* const ProjectileSpawner::spawn_projectile()
+    rl::Projectile* ProjectileSpawner::spawn_projectile()
     {
         return m_scene.instantiate();
     }

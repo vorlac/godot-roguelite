@@ -1,4 +1,5 @@
 ﻿cmake_minimum_required(VERSION 3.20)
+set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/scripts/buildsystems/vcpkg.cmake")
 
 project(roguelite LANGUAGES C CXX)
 set(gdextension_lib_name ${PROJECT_NAME})
@@ -10,7 +11,7 @@ string(TOLOWER "${CMAKE_SYSTEM_NAME}" host_os)
 set(VCPKG_TARGET_TRIPLET "x64-${host_os}-static")
 
 # needs to be >= C++17
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -59,7 +60,6 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/core")
     )
 endif()
 
-
 # confirm we found the vcpkg submodule ports dir.
 # if the sources list is empty, the submodule probably
 # hasn't been initialized or updated yet.
@@ -77,21 +77,28 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/ports")
 endif()
 
 # =======================================================================
-# VCPKG bootstrap / initialization. 
+# VCPKG bootstrap / initialization.
 # Only happens once, when vcpkg.exe is missing.
 # =======================================================================
-
-set(vcpkg_executable "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/vcpkg${CMAKE_EXECUTABLE_SUFFIX}")
+set(vcpkg_executable "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg${CMAKE_EXECUTABLE_SUFFIX}")
 message(NOTICE "VCPKG Executable: ${vcpkg_executable}")
 
 if(NOT EXISTS "${vcpkg_executable}")
-    # bootstrap vcpkg so vcpkg.exe 
+    # bootstrap vcpkg so vcpkg binary
     # is configured and installed
-    execute_process(
-        COMMAND ps -c "./extern/vcpkg/boostrap-vcpkg.bat"
-        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-        COMMAND_ERROR_IS_FATAL ANY
-    )
+    if(WIN32)
+        execute_process(
+            COMMAND ps -c "./extern/vcpkg/boostrap-vcpkg.bat"
+            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+            COMMAND_ERROR_IS_FATAL ANY
+        )
+    elseif(UNIX)
+        execute_process(
+            COMMAND bash "./extern/vcpkg/boostrap-vcpkg.sh"
+            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+            COMMAND_ERROR_IS_FATAL ANY
+        )
+    endif()
 
     # fail out if vcpkg isn't found after setup
     if(NOT EXISTS "${vcpkg_executable}")
@@ -102,37 +109,46 @@ endif()
 # =======================================================================
 # Godot editor/engine debug build
 # =======================================================================
+if(UNIX)
+    set(host_os_engine
+        "${host_os}bsd"
+    )
+endif()
 
-set(godot_debug_editor_executable "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/bin/godot.${host_os}.editor.dev.x86_64${CMAKE_EXECUTABLE_SUFFIX}")
+set(godot_debug_editor_executable
+    "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/bin/godot.${host_os_engine}.editor.dev.x86_64${CMAKE_EXECUTABLE_SUFFIX}"
+)
+
 message(INFO "godot_debug_editor_executable = ${godot_debug_editor_executable}")
+
 if(NOT EXISTS "${godot_debug_editor_executable}")
     message("Godot engine debug binaries not found, invoking debug build of engine...")
 
     execute_process(
-        COMMAND scons arch=x64            \\
+        COMMAND scons platform=${host_os} \\
+                      arch=x64            \\
                       target=editor       \\
-                      use_static_cpp=no   \\
+                      use_static_cpp=yes  \\
                       dev_build=yes       \\
                       debug_symbols=yes   \\
                       optimize=none       \\
                       use_lto=no          \\
-                      --clean                 
+                      --clean
         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine"
         COMMAND_ERROR_IS_FATAL ANY
     )
 
-    # this build should only ever need to be run once (unless the
-    # enging debug binaries are deleted or you want to change the
-    # build configuration/command invoked below).
+    # this build should only ever need to be run once (unless the enging debug binaries
+    # are deleted or you want to change the build configuration/command invoked below).
     execute_process(
-        COMMAND scons arch=x64            \\
+        COMMAND scons platform=${host_os} \\
+                      arch=x64            \\
                       target=editor       \\
-                      use_static_cpp=no   \\
+                      use_static_cpp=yes  \\
                       dev_build=yes       \\
                       debug_symbols=yes   \\
                       optimize=none       \\
-                      use_lto=no          \\
-                      --quiet                 
+                      use_lto=no
         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine"
         COMMAND_ERROR_IS_FATAL ANY
     )
@@ -181,12 +197,12 @@ target_include_directories(godot_engine PUBLIC
     SYSTEM "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/thirdparty/mbedtls/include"
 )
 
-# define a bunch of the same symbol definitions 
+# define a bunch of the same symbol definitions
 # used when the engine was build using scons
 target_compile_definitions(godot_engine PUBLIC
     $<$<CONFIG:Debug>:
         DEBUG_ENABLED
-		DEBUG_METHODS_ENABLED
+        DEBUG_METHODS_ENABLED
         DEV_ENABLED
     >
     NOMINMAX
@@ -220,9 +236,15 @@ file(GLOB_RECURSE roguelite_sources CONFIGURE_DEPENDS
 # add the gdextension dynamic library
 add_library(${gdextension_lib_name} SHARED ${roguelite_sources})
 
+set(compiler_is_clang "$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:Clang>>")
+set(compiler_is_gnu "$<CXX_COMPILER_ID:GNU>")
+set(compiler_is_msvc "$<CXX_COMPILER_ID:MSVC>")
+
+include("${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-cpp/cmake/GodotCompilerWarnings.cmake")
+
 # set compiler options for the gdextension library
 target_compile_options(${gdextension_lib_name} PUBLIC
-    $<${MSVC}:
+    $<${compiler_is_msvc}:
         /EHsc
         /utf-8
         /Zc:preprocessor
@@ -234,14 +256,18 @@ target_compile_options(${gdextension_lib_name} PUBLIC
             /O2
         >
     >
-    $<$<NOT:${MSVC}>:
+    $<$<NOT:${compiler_is_msvc}>:
         -g
+        -Wno-attributes
+        $<${compiler_is_clang}:
+            "-Wno-unknown-attributes"
+        >
         $<$<CONFIG:Debug>:
-            -fno-omit-frame-pointer
-            -O0
+            "-fno-omit-frame-pointer"
+            "-O0"
         >
         $<$<CONFIG:Release>:
-            -O3
+            "-O3"
         >
     >
 )
@@ -251,11 +277,11 @@ target_include_directories(${gdextension_lib_name} PUBLIC
 )
 
 target_link_options(${gdextension_lib_name} PRIVATE
-	$<$<NOT:${MSVC}>:
-		-static-libgcc
-		-static-libstdc++
-		-Wl,-R,'$$ORIGIN'
-	>
+    $<$<NOT:${compiler_is_msvc}>:
+        -static-libgcc
+        -static-libstdc++
+        -Wl,-R,'$$ORIGIN'
+    >
 )
 
 # =======================================================================
@@ -265,7 +291,7 @@ target_link_options(${gdextension_lib_name} PRIVATE
 # link gdextension to the cpp bindings library
 target_link_libraries(${gdextension_lib_name}
     PUBLIC godot::cpp
-    PRIVATE fmt::fmt 
+    PRIVATE fmt::fmt
     PRIVATE fmt::fmt-header-only
     PRIVATE spdlog::spdlog
 )

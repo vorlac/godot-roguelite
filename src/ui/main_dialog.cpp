@@ -1,5 +1,3 @@
-#pragma once
-
 #include "ui/main_dialog.hpp"
 
 #include "core/level.hpp"
@@ -11,7 +9,6 @@
 #include <godot_cpp/classes/canvas_layer.hpp>
 #include <godot_cpp/classes/control.hpp>
 #include <godot_cpp/classes/node.hpp>
-#include <godot_cpp/classes/rich_text_label.hpp>
 
 namespace rl
 {

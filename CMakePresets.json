@@ -61,6 +61,82 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo"
       }
+    },
+    {
+      "name": "gcc",
+      "inherits": "default",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "displayName": "GCC Debug",
+      "name": "gcc-debug",
+      "inherits": "gcc",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "displayName": "GCC Release",
+      "name": "gcc-release",
+      "inherits": "gcc",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "displayName": "GCC RelWithDebInfo",
+      "name": "gcc-relwdebinfo",
+      "inherits": "gcc",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    },
+    {
+      "name": "clang",
+      "inherits": "default",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "displayName": "Clang Debug",
+      "name": "clang-debug",
+      "inherits": "clang",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "displayName": "Clang Release",
+      "name": "clang-release",
+      "inherits": "clang",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "displayName": "Clang RelWithDebInfo",
+      "name": "clang-relwdebinfo",
+      "inherits": "clang",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
     }
   ]
 }

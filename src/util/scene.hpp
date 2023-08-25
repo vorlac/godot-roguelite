@@ -104,7 +104,7 @@ namespace rl::inline utils
                 if (nm.first == notification)
                     return nm.second;
 
-            return std::string_view(fmt::format("Unknown ({})", notification));
+            return std::string_view(std::move(fmt::format("Unknown ({})", notification)));
         }
     }
 
@@ -180,7 +180,7 @@ namespace rl::inline utils
     {
         namespace loader
         {
-            static inline godot::ResourceLoader* const get()
+            static inline godot::ResourceLoader* get()
             {
                 return godot::ResourceLoader::get_singleton();
             }

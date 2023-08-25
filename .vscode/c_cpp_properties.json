@@ -3,8 +3,7 @@
     "configurations": [
         {
             "name": "GDNative C++",
-            "configurationProvider": "ms-vscode.cmake-tools",
-            "intelliSenseMode": "${default}"
+            "configurationProvider": "ms-vscode.cmake-tools"
         }
     ]
 }

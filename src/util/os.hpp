@@ -6,7 +6,7 @@ namespace rl::inline utils
 {
     struct os
     {
-        static inline godot::OS* const get()
+        static inline godot::OS* get()
         {
             return godot::OS::get_singleton();
         }

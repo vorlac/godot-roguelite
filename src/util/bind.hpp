@@ -16,16 +16,17 @@
 
 namespace rl::inline utils
 {
-    // clang-format off
 
-    // [[node_property]] attribute to make node properties easy spot/find
+#ifdef _WIN32
     #define node_property __declspec(godot_node_property)
-    // [[signal_callback]] attribute to make callback signals easy to spot/find
     #define signal_callback __declspec(godot_signal_callback)
+#elif __linux__
+    #define node_property __attribute__((annotate("godot_node_property")))
+    #define signal_callback __attribute__((annotate("godot_signal_callback")))
+#endif
     // wrapper for simpler signal/slot connections
     #define SignalConnection(signal_name, func_name, ...) std::pair<godot::String, godot::Callable> { signal_name, godot::Callable(this, #func_name __VA_OPT__(,) __VA_ARGS__) }
 
-    // clang-format on
 
     namespace signal
     {
@@ -69,7 +70,6 @@ namespace rl::inline utils
 
     template <typename TGetter, typename TSetter>
     struct PropertyBinding
-
     {
         PropertyBinding(std::tuple<godot::String, godot::String>&& func_names,
                         std::tuple<TGetter, TSetter>&& func_callables,
@@ -83,11 +83,12 @@ namespace rl::inline utils
         {
         }
 
-        godot::String getter_name{};
-        godot::String setter_name{};
-        godot::String property_name{};
+
+        godot::String getter_name;
+        godot::String setter_name;
         TGetter getter_func{ nullptr };
         TSetter setter_func{ nullptr };
+        godot::String property_name;
         godot::Variant::Type property_type{ godot::Variant::NIL };
     };
 }

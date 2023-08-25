@@ -1,14 +1,17 @@
 {
-    "cmake.configureOnOpen": true,
     "cmake.buildBeforeRun": true,
     "cmake.automaticReconfigure": true,
     "editor.formatOnSave": true,
-    "cmake.parallelJobs": 12,
+    "cmake.parallelJobs": 16,
     "editor.formatOnSaveMode": "file",
     "C_Cpp.clang_format_style": "file",
-    "C_Cpp.clang_format_path": "C:/Program Files/LLVM/bin/clang-format.exe",
-    "[cpp]": {
-        "editor.gotoLocation.multipleDeclarations": "goto",
-        "debug.saveBeforeStart": "allEditorsInActiveGroup",
+    "cmake.useCMakePresets": "always",
+    "cmake.languageSupport.enableFileAPI": true,
+    "clang-format.executable": "clang-format",
+    "cmake.debugConfig": {
+        "MIMode": "gdb",
+        "cwd": "${workspaceFolder}/project",
+        "externalConsole": false,
+        "miDebuggerPath": "/usr/bin/gdb"
     }
 }

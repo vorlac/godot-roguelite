@@ -3,34 +3,6 @@
 #include "nodes/character.hpp"
 #include "util/utils.hpp"
 
-#include <cstdint>
-#include <ios>
-#include <iosfwd>
-#include <iostream>
-#include <ostream>
-#include <sstream>
-#include <streambuf>
-#include <string>
-#include <string_view>
-#include <strstream>
-#include <type_traits>
-
-#include <godot_cpp/classes/area2d.hpp>
-#include <godot_cpp/classes/canvas_item.hpp>
-#include <godot_cpp/classes/canvas_layer.hpp>
-#include <godot_cpp/classes/circle_shape2d.hpp>
-#include <godot_cpp/classes/engine_debugger.hpp>
-#include <godot_cpp/classes/node.hpp>
-#include <godot_cpp/classes/object.hpp>
-#include <godot_cpp/classes/os.hpp>
-#include <godot_cpp/classes/ref.hpp>
-#include <godot_cpp/classes/shape_cast2d.hpp>
-#include <godot_cpp/classes/viewport.hpp>
-#include <godot_cpp/core/class_db.hpp>
-#include <godot_cpp/variant/node_path.hpp>
-#include <godot_cpp/variant/rect2.hpp>
-#include <godot_cpp/variant/variant.hpp>
-
 namespace rl
 {
     Main::Main()

@@ -3,8 +3,7 @@
 #include "util/console.hpp"
 
 #include <godot_cpp/classes/panel.hpp>
-
-class godot::RichTextLabel;
+#include <godot_cpp/classes/rich_text_label.hpp>
 
 namespace rl
 {

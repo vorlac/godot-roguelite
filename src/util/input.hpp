@@ -14,40 +14,40 @@ namespace rl::inline utils
     {
         struct map
         {
-            static inline godot::InputMap* const get()
+            static inline godot::InputMap* get()
             {
-                godot::InputMap* const mappings{ godot::InputMap::get_singleton() };
+                godot::InputMap* mappings{ godot::InputMap::get_singleton() };
                 debug::assert(mappings != nullptr);
                 return mappings;
             }
         };
 
-        static inline godot::Input* const get()
+        static inline godot::Input* get()
         {
-            godot::Input* const input{ godot::Input::get_singleton() };
+            godot::Input* input{ godot::Input::get_singleton() };
             debug::assert(input != nullptr);
             return input;
         }
 
-        const static inline void hide_cursor()
+        static inline void hide_cursor()
         {
             godot::Input* const input{ input::get() };
             input->set_mouse_mode(godot::Input::MOUSE_MODE_HIDDEN);
         }
 
-        const static inline void show_cursor()
+        static inline void show_cursor()
         {
             godot::Input* const input{ input::get() };
             input->set_mouse_mode(godot::Input::MOUSE_MODE_VISIBLE);
         }
 
-        const static inline bool cursor_visible()
+        static inline bool cursor_visible()
         {
             godot::Input* const input{ input::get() };
             return input->get_mouse_mode() == godot::Input::MOUSE_MODE_VISIBLE;
         }
 
-        const static inline void load_project_inputs()
+        static inline void load_project_inputs()
         {
             auto input_map{ godot::InputMap::get_singleton() };
             if (input_map != nullptr) [[likely]]
@@ -55,7 +55,7 @@ namespace rl::inline utils
             rl::log::error("godot::Input singleton not intitialized");
         }
 
-        const static inline void use_accumulated_inputs(bool enable)
+        static inline void use_accumulated_inputs(bool enable)
         {
             auto input{ godot::Input::get_singleton() };
             if (input != nullptr) [[likely]]

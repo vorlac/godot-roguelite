@@ -64,7 +64,7 @@ namespace rl
         {
         }
 
-        void _unhandled_input(const godot::Ref<godot::InputEvent>& event)
+        void _unhandled_input(const godot::Ref<godot::InputEvent>& event) override
         {
         }
 

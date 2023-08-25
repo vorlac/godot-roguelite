@@ -7,8 +7,6 @@
 #include <godot_cpp/classes/collision_shape2d.hpp>
 #include <godot_cpp/classes/sprite2d.hpp>
 
-class godot::Input;
-
 namespace rl
 {
     class Character : public godot::CharacterBody2D
