@@ -117,7 +117,7 @@ if(NOT EXISTS "${godot_debug_editor_executable}")
                       optimize=none       \\
                       use_lto=no          \\
                       --clean                 
-        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/godot/engine"
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine"
         COMMAND_ERROR_IS_FATAL ANY
     )
 
