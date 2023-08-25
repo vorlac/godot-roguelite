@@ -5,8 +5,8 @@
 
 if(NOT CMAKE_TOOLCHAIN_FILE)
     # define toolchain file early for vcpkg. only set the variable if the file exists.
-    # if this is the first configuration after a clean clone of this repo, this file 
-    # won't exist until the submodule is initialized below. configuration will fail if this 
+    # if this is the first configuration after a clean clone of this repo, this file
+    # won't exist until the submodule is initialized below. configuration will fail if this
     # is set to a path that doesn't exist, so only set it after the first pass of configuration
     set(toolchain_file_path "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/scripts/buildsystems/vcpkg.cmake")
     if (EXISTS "${toolchain_file_path}")
@@ -27,8 +27,11 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # define output paths for gdextension shared lib and debug symbols
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/project/bin)
-set(CMAKE_PDB_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/project/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/project/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/project/bin")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/project/bin")
+set(CMAKE_PDB_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/project/bin")
+set(CMAKE_COMPILE_PDB_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/project/bin")
 
 # postfix debug binaries with "d"
 set(CMAKE_DEBUG_POSTFIX "d")
@@ -139,15 +142,7 @@ if(NOT EXISTS "${godot_debug_editor_executable}")
     message("Godot engine debug binaries not found, invoking debug build of engine...")
 
     execute_process(
-        COMMAND scons platform=${host_os} \\
-                      arch=x64            \\
-                      target=editor       \\
-                      use_static_cpp=yes  \\
-                      dev_build=yes       \\
-                      debug_symbols=yes   \\
-                      optimize=none       \\
-                      use_lto=no          \\
-                      --clean
+        COMMAND scons platform=${host_os} arch=x64 target=editor use_static_cpp=yes dev_build=yes debug_symbols=yes optimize=none use_lto=no --clean
         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine"
         COMMAND_ERROR_IS_FATAL ANY
     )
@@ -155,14 +150,7 @@ if(NOT EXISTS "${godot_debug_editor_executable}")
     # this build should only ever need to be run once (unless the enging debug binaries
     # are deleted or you want to change the build configuration/command invoked below).
     execute_process(
-        COMMAND scons platform=${host_os} \\
-                      arch=x64            \\
-                      target=editor       \\
-                      use_static_cpp=yes  \\
-                      dev_build=yes       \\
-                      debug_symbols=yes   \\
-                      optimize=none       \\
-                      use_lto=no
+        COMMAND scons platform=${host_os} arch=x64 target=editor use_static_cpp=yes dev_build=yes debug_symbols=yes optimize=none use_lto=no use_lto=no
         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine"
         COMMAND_ERROR_IS_FATAL ANY
     )

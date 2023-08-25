@@ -5,65 +5,64 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "GDExtension: Project",
-      "type": "cppvsdbg",
+      "name": "gdextension (console)",
+      "type": "cppdbg",
       "request": "launch",
-      "cwd": "${workspaceRoot}/project",
-      "program": "${workspaceRoot}/extern/godot-engine/bin/godot.windows.editor.dev.x86_64.exe",
+      "program": "${workspaceFolder}/extern/godot-engine/bin/godot.linuxbsd.editor.dev.x86_64",
       "args": [
         "--debug",
         "--verbose",
         "--path",
-        "${workspaceRoot}/roguelite"
+        "${workspaceFolder}/project",
+        "res://main.tscn"
       ],
-      "windows": {
-        "console": "integratedTerminal",
-        "internalConsoleOptions": "openOnSessionStart",
-        "logging": {
-          "programOutput": true,
-          "exceptions": true,
-          "moduleLoad": true,
-          "trace": true
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/project",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
         },
-        "symbolOptions": {
-          "searchPaths": [
-            "${workspaceFolder}/project/bin",
-            "${workspaceRoot}/extern/godot-engine/bin"
-          ],
-          "searchMicrosoftSymbolServer": true
+        {
+          "description": "Set Disassembly Flavor to AMD",
+          "text": "-gdb-set disassembly-flavor amd",
+          "ignoreFailures": true
         }
-      }
+      ]
     },
     {
-      "name": "GDExtension: Editor",
-      "type": "cppvsdbg",
+      "name": "gdextension (editor)",
+      "type": "cppdbg",
       "request": "launch",
-      "cwd": "${workspaceRoot}/project",
-      "program": "${workspaceRoot}/extern/godot-engine/bin/godot.windows.editor.dev.x86_64.exe",
+      "program": "${workspaceFolder}/extern/godot-engine/bin/godot.linuxbsd.editor.dev.x86_64",
       "args": [
         "--editor",
         "--debug",
         "--verbose",
         "--path",
-        "${workspaceRoot}/roguelite"
+        "${workspaceFolder}/project"
       ],
-      "windows": {
-        "console": "integratedTerminal",
-        "internalConsoleOptions": "openOnSessionStart",
-        "logging": {
-          "programOutput": true,
-          "exceptions": true,
-          "moduleLoad": true,
-          "trace": true
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/project",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
         },
-        "symbolOptions": {
-          "searchPaths": [
-            "${workspaceFolder}/project/bin",
-            "${workspaceRoot}/extern/godot-engine/bin"
-          ],
-          "searchMicrosoftSymbolServer": true
+        {
+          "description": "Set Disassembly Flavor to AMD",
+          "text": "-gdb-set disassembly-flavor amd",
+          "ignoreFailures": true
         }
-      }
+      ]
     }
   ]
 }

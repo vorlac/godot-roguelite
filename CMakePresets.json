@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 5,
   "configurePresets": [
     {
       "name": "default",
@@ -7,7 +7,6 @@
       "generator": "Ninja",
       "installDir": "${sourceDir}/.out/install/${presetName}",
       "binaryDir": "${sourceDir}/.out/build/${presetName}",
-      "toolchainFile": "${sourceDir}/extern/vcpkg/scripts/buildsystems/vcpkg.cmake",
       "architecture": {
         "value": "x64",
         "strategy": "external"
