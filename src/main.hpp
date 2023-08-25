@@ -1,29 +1,25 @@
 #pragma once
 
 #include "core/level.hpp"
-#include "ui/main_interface_diag.hpp"
+#include "ui/main_dialog.hpp"
 
 #include <godot_cpp/classes/canvas_layer.hpp>
-#include <godot_cpp/classes/node2d.hpp>
+#include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/classes/resource.hpp>
 #include <godot_cpp/classes/wrapped.hpp>
 #include <godot_cpp/core/memory.hpp>
 
 namespace rl
 {
-    class Main : public godot::Node2D
+    class Main : public godot::Node
     {
-        GDCLASS(Main, godot::Node2D);
+        GDCLASS(Main, godot::Node);
 
     public:
         Main();
         ~Main();
 
         void _ready() override;
-        void _process(double delta_time) override;
-        void _draw() override;
-
-        void _notification(int notification);
 
     protected:
         void apply_default_settings();
@@ -33,11 +29,8 @@ namespace rl
         }
 
     private:
-        void init();
-        void teardown();
-
-    private:
-        rl::Level* m_level{ memnew(rl::Level) };
-        rl::MainInterfaceDiag* m_debug_overlay{ memnew(rl::MainInterfaceDiag) };
+        rl::Level* m_active_level{ memnew(rl::Level) };
+        godot::CanvasLayer* m_canvas_layer{ nullptr };
+        rl::MainDialog* m_main_dialog{ nullptr };
     };
 }

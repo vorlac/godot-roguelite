@@ -5,7 +5,7 @@
 #include "main.hpp"
 #include "nodes/camera.hpp"
 #include "nodes/character.hpp"
-#include "ui/main_interface_diag.hpp"
+#include "ui/main_dialog.hpp"
 
 #include <gdextension_interface.h>
 
@@ -16,7 +16,7 @@ namespace godot
         if (init_level != MODULE_INITIALIZATION_LEVEL_SCENE)
             return;
 
-        ClassDB::register_class<rl::MainInterfaceDiag>();
+        ClassDB::register_class<rl::MainDialog>();
         ClassDB::register_class<rl::Camera>();
         ClassDB::register_class<rl::Projectile>();
         ClassDB::register_class<rl::ProjectileSpawner>();

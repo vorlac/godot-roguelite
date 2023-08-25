@@ -12,15 +12,16 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3pq1m"]
 
-[node name="MainInterfaceDiagnostic" type="MainInterfaceDiag"]
+[node name="MainDialog" type="MainDialog"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_stretch_ratio = 0.0
+mouse_filter = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="TopVerticalLayout" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -28,7 +29,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="FileMenu" type="MarginContainer" parent="VBoxContainer"]
+[node name="FileMenuContainer" type="MarginContainer" parent="TopVerticalLayout"]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.0
@@ -38,11 +39,11 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/FileMenu"]
+[node name="FileMenuHorizontalLayout" type="HBoxContainer" parent="TopVerticalLayout/FileMenuContainer"]
 layout_mode = 2
 mouse_filter = 0
 
-[node name="MenuButton2" type="MenuButton" parent="VBoxContainer/FileMenu/HBoxContainer"]
+[node name="FileMenuButton" type="MenuButton" parent="TopVerticalLayout/FileMenuContainer/FileMenuHorizontalLayout"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -55,36 +56,38 @@ popup/item_1/id = 1
 popup/item_2/text = "SubOpt3"
 popup/item_2/id = 2
 
-[node name="Button1" type="Button" parent="VBoxContainer/FileMenu/HBoxContainer"]
+[node name="OptionsButton" type="Button" parent="TopVerticalLayout/FileMenuContainer/FileMenuHorizontalLayout"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 text = "Options"
 
-[node name="Button2" type="Button" parent="VBoxContainer/FileMenu/HBoxContainer"]
+[node name="DebugButton" type="Button" parent="TopVerticalLayout/FileMenuContainer/FileMenuHorizontalLayout"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 text = "Debug"
 
-[node name="Test" type="Button" parent="VBoxContainer/FileMenu/HBoxContainer"]
+[node name="TestButton" type="Button" parent="TopVerticalLayout/FileMenuContainer/FileMenuHorizontalLayout"]
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 0
 text = "Test"
 
-[node name="Control" type="MarginContainer" parent="VBoxContainer"]
+[node name="OuterDialogMargin" type="MarginContainer" parent="TopVerticalLayout"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
 
-[node name="VSplitContainer" type="VSplitContainer" parent="VBoxContainer/Control"]
+[node name="VerticalSplit" type="VSplitContainer" parent="TopVerticalLayout/OuterDialogMargin"]
 layout_mode = 2
 theme_override_constants/separation = 0
 theme_override_constants/minimum_grab_thickness = 1
 theme_override_constants/autohide = 1
 split_offset = 250
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="VBoxContainer/Control/VSplitContainer"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit"]
 custom_minimum_size = Vector2(512, 256)
 layout_mode = 2
 size_flags_vertical = 3
@@ -94,7 +97,7 @@ localize_numeral_system = false
 theme = ExtResource("1_lp5so")
 stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="VBoxContainer/Control/VSplitContainer/SubViewportContainer"]
+[node name="MainSubViewport" type="SubViewport" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit/SubViewportContainer"]
 disable_3d = true
 handle_input_locally = false
 audio_listener_enable_2d = true
@@ -102,15 +105,14 @@ physics_object_picking = true
 physics_object_picking_sort = true
 gui_disable_input = true
 gui_embed_subwindows = true
-size = Vector2i(1920, 895)
+size = Vector2i(512, 256)
 render_target_update_mode = 4
 
-[node name="MainCanvasLayer" type="CanvasLayer" parent="VBoxContainer/Control/VSplitContainer/SubViewportContainer/SubViewport"]
+[node name="MainCanvasLayer" type="CanvasLayer" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit/SubViewportContainer/MainSubViewport"]
+unique_name_in_owner = true
 follow_viewport_enabled = true
 
-[node name="Main" type="Main" parent="VBoxContainer/Control/VSplitContainer/SubViewportContainer/SubViewport/MainCanvasLayer"]
-
-[node name="PanelContainer" type="VBoxContainer" parent="VBoxContainer/Control/VSplitContainer"]
+[node name="LowerDialogVertLayout" type="VBoxContainer" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit"]
 clip_contents = true
 custom_minimum_size = Vector2(640, 100)
 layout_mode = 2
@@ -119,24 +121,21 @@ localize_numeral_system = false
 mouse_filter = 0
 theme = ExtResource("2_jha0r")
 
-[node name="Panel" type="MarginContainer" parent="VBoxContainer/Control/VSplitContainer/PanelContainer"]
+[node name="ConsoleMarginContainer" type="MarginContainer" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit/LowerDialogVertLayout"]
 clip_contents = true
 custom_minimum_size = Vector2(0, 110)
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("1_lp5so")
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 0
+theme_override_constants/margin_bottom = -2
 
-[node name="ConsolePanel" type="RichTextLabel" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/Panel"]
+[node name="ConsolePanel" type="RichTextLabel" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit/LowerDialogVertLayout/ConsoleMarginContainer"]
 unique_name_in_owner = true
-clip_contents = false
 layout_mode = 2
 size_flags_vertical = 3
 auto_translate = false
 localize_numeral_system = false
+focus_mode = 2
 theme = ExtResource("2_jha0r")
 theme_override_colors/default_color = Color(0.792157, 0.768627, 0.756863, 1)
 theme_override_colors/font_selected_color = Color(0.929412, 0.929412, 0.929412, 1)
@@ -159,7 +158,7 @@ selection_enabled = true
 deselect_on_focus_loss_enabled = false
 text_direction = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Control/VSplitContainer/PanelContainer"]
+[node name="BottomToolbarHorizLayout" type="HBoxContainer" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit/LowerDialogVertLayout"]
 clip_contents = true
 custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
@@ -167,7 +166,7 @@ size_flags_vertical = 0
 mouse_force_pass_scroll_events = false
 theme = ExtResource("7_hq11r")
 
-[node name="CheckBox" type="CheckBox" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
+[node name="ToggleConsoleCB" type="CheckBox" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit/LowerDialogVertLayout/BottomToolbarHorizLayout"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 size_flags_horizontal = 2
@@ -177,12 +176,12 @@ theme = ExtResource("1_lp5so")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_e6l8c")
 text = "Toggle Console"
 
-[node name="VSeparator" type="VSeparator" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit/LowerDialogVertLayout/BottomToolbarHorizLayout"]
 layout_mode = 2
 size_flags_horizontal = 10
 theme_override_constants/separation = 12
 
-[node name="Label1" type="Label" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
+[node name="DebugLabel1" type="Label" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit/LowerDialogVertLayout/BottomToolbarHorizLayout"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -197,7 +196,7 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_3pq1m")
 text = "Label1 =>"
 vertical_alignment = 2
 
-[node name="Val1" type="Label" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
+[node name="DebugValue1" type="Label" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit/LowerDialogVertLayout/BottomToolbarHorizLayout"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 size_flags_horizontal = 2
@@ -210,12 +209,12 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_3pq1m")
 text = "Val1"
 vertical_alignment = 2
 
-[node name="VSeparator2" type="VSeparator" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
+[node name="VSeparator2" type="VSeparator" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit/LowerDialogVertLayout/BottomToolbarHorizLayout"]
 layout_mode = 2
 size_flags_horizontal = 10
 theme_override_constants/separation = 12
 
-[node name="Label2" type="Label" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
+[node name="DebugLabel2" type="Label" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit/LowerDialogVertLayout/BottomToolbarHorizLayout"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -230,7 +229,7 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_3pq1m")
 text = "Label2 =>"
 vertical_alignment = 2
 
-[node name="Val2" type="Label" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
+[node name="DebugValue2" type="Label" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit/LowerDialogVertLayout/BottomToolbarHorizLayout"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 size_flags_horizontal = 2
@@ -243,12 +242,12 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_3pq1m")
 text = "Val2"
 vertical_alignment = 2
 
-[node name="VSeparator3" type="VSeparator" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
+[node name="VSeparator3" type="VSeparator" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit/LowerDialogVertLayout/BottomToolbarHorizLayout"]
 layout_mode = 2
 size_flags_horizontal = 10
 theme_override_constants/separation = 12
 
-[node name="Label3" type="Label" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
+[node name="DebugLabel3" type="Label" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit/LowerDialogVertLayout/BottomToolbarHorizLayout"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -263,7 +262,7 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_3pq1m")
 text = "Label3 =>"
 vertical_alignment = 2
 
-[node name="Val3" type="Label" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
+[node name="DebugValue3" type="Label" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit/LowerDialogVertLayout/BottomToolbarHorizLayout"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 size_flags_horizontal = 2
@@ -276,12 +275,12 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_3pq1m")
 text = "Val3"
 vertical_alignment = 2
 
-[node name="VSeparator4" type="VSeparator" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
+[node name="VSeparator4" type="VSeparator" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit/LowerDialogVertLayout/BottomToolbarHorizLayout"]
 layout_mode = 2
 size_flags_horizontal = 10
 theme_override_constants/separation = 12
 
-[node name="Label4" type="Label" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
+[node name="DebugLabel4" type="Label" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit/LowerDialogVertLayout/BottomToolbarHorizLayout"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -296,7 +295,7 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_3pq1m")
 text = "Label4 =>"
 vertical_alignment = 2
 
-[node name="Val4" type="Label" parent="VBoxContainer/Control/VSplitContainer/PanelContainer/HBoxContainer"]
+[node name="DebugValue4" type="Label" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit/LowerDialogVertLayout/BottomToolbarHorizLayout"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 size_flags_horizontal = 2

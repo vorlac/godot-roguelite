@@ -17,6 +17,7 @@
 
 #include <godot_cpp/classes/area2d.hpp>
 #include <godot_cpp/classes/canvas_item.hpp>
+#include <godot_cpp/classes/canvas_layer.hpp>
 #include <godot_cpp/classes/circle_shape2d.hpp>
 #include <godot_cpp/classes/engine_debugger.hpp>
 #include <godot_cpp/classes/node.hpp>
@@ -35,12 +36,14 @@ namespace rl
     Main::Main()
     {
         this->set_name("Main");
+
+        resource::preload::scene<rl::MainDialog> dialog{ path::ui::MainDialog };
+        m_main_dialog = dialog.instantiate();
+        debug::assert(m_main_dialog != nullptr);
     }
 
     Main::~Main()
     {
-        if (!this->is_queued_for_deletion())
-            this->queue_free();
     }
 
     void Main::apply_default_settings()
@@ -49,51 +52,27 @@ namespace rl
         input::use_accumulated_inputs(false);
 
         if (not engine::editor_active())
-        {
             engine::root_window()->set_size({ 1920, 1080 });
-            input::hide_cursor(true);
-        }
     }
 
     void Main::_ready()
     {
         this->apply_default_settings();
-        this->add_child(m_debug_overlay);
-        this->add_child(m_level);
-    }
 
-    void Main::_process(double delta_time)
-    {
-        if constexpr (diag::is_enabled(diag::RootProcess))
-            this->queue_redraw();
-    }
-
-    void Main::_notification(int notification)
-    {
-        switch (notification)
+        debug::assert(m_main_dialog != nullptr);
+        if (m_main_dialog != nullptr)
         {
-            case godot::Control::NOTIFICATION_MOUSE_ENTER:
-            {
-                input::hide_cursor(true);
-                break;
-            }
-            case godot::Control::NOTIFICATION_MOUSE_EXIT:
-            {
-                input::hide_cursor(false);
-                break;
-            }
-        }
-    }
+            m_canvas_layer = rl::as<godot::CanvasLayer>(
+                m_main_dialog->find_child("MainCanvasLayer", true, false));
 
-    void Main::_draw()
-    {
-        if constexpr (diag::is_enabled(diag::RootProcess))
-        {
-            if (input::cursor_visible())
-                return;
+            debug::assert(m_canvas_layer != nullptr);
+            debug::assert(m_active_level != nullptr);
 
-            godot::Point2 mouse_pos{ this->get_global_mouse_position() };
-            this->draw_circle(mouse_pos, 10, { "DARK_CYAN" });
+            if (m_active_level != nullptr && m_canvas_layer != nullptr)
+                m_canvas_layer->add_child(m_active_level);
+
+            if (m_main_dialog != nullptr)
+                this->add_child(m_main_dialog);
         }
     }
 }

@@ -3,6 +3,7 @@
 #include "core/projectile_spawner.hpp"
 #include "nodes/character.hpp"
 
+#include <atomic>
 #include <utility>
 #include <vector>
 
@@ -23,12 +24,24 @@ namespace rl
 
         void _ready() override;
         void _draw() override;
+        void _process(double delta_time) override;
+
+        inline void activate(bool active = true)
+        {
+            m_active = active;
+        }
+
+        inline bool active() const
+        {
+            return m_active;
+        }
 
     protected:
         [[signal_callback]]
         void on_position_changed(const godot::Object* const obj, godot::Vector2 location) const;
+
         [[signal_callback]]
-        void on_shoot_projectile(godot::Object* const obj);
+        void on_shoot_projectile(godot::Node* obj);
 
         static void _bind_methods()
         {
@@ -45,5 +58,6 @@ namespace rl
         rl::ProjectileSpawner* m_projectile_spawner{ memnew(rl::ProjectileSpawner) };
         godot::Sprite2D* m_background{ memnew(godot::Sprite2D) };
         rl::Character* m_player{ memnew(rl::Character) };
+        std::atomic<bool> m_active{ false };
     };
 }

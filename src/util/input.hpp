@@ -29,11 +29,16 @@ namespace rl::inline utils
             return input;
         }
 
-        const static inline void hide_cursor(bool hide = true)
+        const static inline void hide_cursor()
         {
             godot::Input* const input{ input::get() };
-            input->set_mouse_mode(hide ? godot::Input::MOUSE_MODE_HIDDEN :
-                                         godot::Input::MOUSE_MODE_VISIBLE);
+            input->set_mouse_mode(godot::Input::MOUSE_MODE_HIDDEN);
+        }
+
+        const static inline void show_cursor()
+        {
+            godot::Input* const input{ input::get() };
+            input->set_mouse_mode(godot::Input::MOUSE_MODE_VISIBLE);
         }
 
         const static inline bool cursor_visible()

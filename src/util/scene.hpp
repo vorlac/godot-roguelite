@@ -6,6 +6,8 @@
 #include <concepts>
 #include <fmt/compile.h>
 #include <fmt/format.h>
+#include <string>
+#include <string_view>
 #include <type_traits>
 #include <utility>
 
@@ -17,25 +19,19 @@
 #include <godot_cpp/classes/resource.hpp>
 #include <godot_cpp/classes/resource_loader.hpp>
 #include <godot_cpp/classes/scene_tree.hpp>
+#include <godot_cpp/classes/viewport.hpp>
 #include <godot_cpp/classes/window.hpp>
 
 namespace rl::inline utils
 {
-
-    enum class Translation
-    {
-        Notification
-    };
-
-    template <Translation T>
-        requires(T == Translation::Notification)
-    static constexpr inline std::string_view to_string(int notification)
+    namespace notification
     {
         using godot::CanvasItem;
         using godot::Control;
         using godot::Node;
         using godot::Object;
-        static constexpr std::array notification_map =
+
+        static constexpr inline std::array str_map =
             std::to_array<std::pair<int, std::string_view>>({
                 { Object::NOTIFICATION_POSTINITIALIZE, "Object::POSTINITIALIZE" },
                 { Object::NOTIFICATION_PREDELETE, "Object::PREDELETE" },
@@ -102,19 +98,22 @@ namespace rl::inline utils
                 { CanvasItem::NOTIFICATION_WORLD_2D_CHANGED, "CanvasItem::WORLD_2D_CHANGED" },
             });
 
-        for (auto&& nm : notification_map)
-            if (nm.first == notification)
-                return nm.second;
+        static constexpr inline auto to_string(int notification)
+        {
+            for (auto&& nm : notification::str_map)
+                if (nm.first == notification)
+                    return nm.second;
 
-        return fmt::to_string(fmt::format("Unknown ({})", notification));
-    };
+            return std::string_view(fmt::format("Unknown ({})", notification));
+        }
+    }
 
     template <typename TOut, typename TIn = godot::Node>
-        requires std::derived_from<TOut, TIn>
-    [[nodiscard]] static inline constexpr TOut* const as(TIn* const node)
+        requires std::derived_from<std::type_identity_t<TOut>, std::type_identity_t<TIn>>
+    [[nodiscard]] static inline constexpr TOut* as(std::type_identity_t<TIn>* node)
     {
         debug::assert(node != nullptr);
-        TOut* const ret{ godot::Object::cast_to<std::type_identity_t<TOut>>(node) };
+        TOut* ret{ godot::Object::cast_to<std::type_identity_t<TOut>>(node) };
         debug::assert(ret != nullptr);
         return ret;
     }
@@ -141,9 +140,7 @@ namespace rl::inline utils
             return edited_root;
         }
 
-        template <typename TNode, typename TRootNode = godot::Node>
-            requires std::derived_from<TNode, godot::Node>
-        static inline TRootNode* const root_node(TNode* node)
+        static inline godot::Node* root_node(godot::Node* node)
         {
             godot::SceneTree* scene_tree{ tree::get(node) };
             debug::assert(scene_tree != nullptr);
@@ -151,8 +148,9 @@ namespace rl::inline utils
             godot::Window* root_window{ scene_tree->get_root() };
             debug::assert(root_window != nullptr);
 
-            TRootNode* root_node{ godot::Object::cast_to<TRootNode>(root_window) };
+            godot::Node* root_node{ rl::as<godot::Node>(root_window) };
             debug::assert(root_node != nullptr);
+
             return root_node;
         }
     }
@@ -170,6 +168,11 @@ namespace rl::inline utils
         namespace scene
         {
             inline constexpr auto Bullet{ "res://assets/scenes/projectiles/bullet.tscn" };
+        }
+
+        namespace ui
+        {
+            inline constexpr auto MainDialog{ "res://assets/scenes/ui/dialogs/main_dialog.tscn" };
         }
     }
 

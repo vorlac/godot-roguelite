@@ -4,6 +4,7 @@
 #include "util/scene.hpp"
 #include "util/utils.hpp"
 
+#include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/classes/node2d.hpp>
 #include <godot_cpp/variant/callable.hpp>
 #include <godot_cpp/variant/rect2.hpp>
@@ -24,6 +25,7 @@ namespace rl
         m_background->set_z_index(-100);
 
         this->set_name("Level");
+        this->activate(true);
     }
 
     Level::~Level()
@@ -60,6 +62,19 @@ namespace rl
         }
     }
 
+    void Level::_process(double delta_time)
+    {
+        if (engine::editor_active())
+            return;
+
+        if (this->active() && input::cursor_visible()) [[unlikely]]
+            input::hide_cursor();
+        if (!this->active() && !input::cursor_visible()) [[unlikely]]
+            input::show_cursor();
+
+        this->queue_redraw();
+    }
+
     void Level::_draw()
     {
         if constexpr (diag::is_enabled(diag::LevelProcess))
@@ -67,22 +82,28 @@ namespace rl
             const godot::Rect2 level_bounds{ this->m_background->get_rect() };
             this->draw_rect(level_bounds, { "RED" }, false, 5.0);
         }
+
+        if (this->active()) [[unlikely]]
+        {
+            godot::Point2 mouse_pos{ this->get_global_mouse_position() };
+            this->draw_circle(mouse_pos, 10, { "DARK_CYAN" });
+        }
     }
 }
 
 namespace rl
 {
     [[signal_callback]]
-    void Level::on_shoot_projectile(godot::Object* const obj)
+    void Level::on_shoot_projectile(godot::Node* obj)
     {
-        godot::Node2D* const node{ rl::as<godot::Node2D>(obj) };
+        godot::Node2D* node{ rl::as<godot::Node2D>(obj) };
         debug::assert(node != nullptr);
 
-        rl::Projectile* const proj{ m_projectile_spawner->spawn_projectile() };
+        rl::Projectile* proj{ m_projectile_spawner->spawn_projectile() };
         proj->set_position(node->get_global_position());
         proj->set_rotation(node->get_rotation() - math::deg_to_rad(45.0));
 
-        rl::Character* const character{ rl::as<rl::Character>(node) };
+        rl::Character* character{ rl::as<rl::Character>(node) };
         if (character != nullptr)
             proj->set_velocity(godot::Vector2{ 0, -1 }.rotated(character->get_global_rotation()));
 

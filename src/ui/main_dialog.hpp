@@ -8,14 +8,16 @@ class godot::RichTextLabel;
 
 namespace rl
 {
-    class MainInterfaceDiag : public godot::Panel
-    {
-        GDCLASS(MainInterfaceDiag, godot::Panel)
-    public:
-        MainInterfaceDiag();
-        ~MainInterfaceDiag();
+    class Level;
 
-        void _ready();
+    class MainDialog : public godot::Panel
+    {
+        GDCLASS(MainDialog, godot::Panel)
+    public:
+        MainDialog();
+        ~MainDialog();
+
+        void _ready() override;
         void _notification(int notification);
 
         static void _bind_methods()
@@ -24,6 +26,7 @@ namespace rl
 
     protected:
         rl::utils::console m_console{};
+        rl::Level* m_level{ nullptr };
         godot::RichTextLabel* m_console_label{ nullptr };
     };
 }

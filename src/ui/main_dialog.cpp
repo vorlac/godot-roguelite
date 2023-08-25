@@ -1,30 +1,37 @@
 #pragma once
 
-#include "ui/main_interface_diag.hpp"
+#include "ui/main_dialog.hpp"
 
+#include "core/level.hpp"
 #include "util/utils.hpp"
 
 #include <fmt/core.h>
 #include <fmt/format.h>
 
 #include <godot_cpp/classes/canvas_layer.hpp>
+#include <godot_cpp/classes/control.hpp>
+#include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/classes/rich_text_label.hpp>
 
 namespace rl
 {
-    MainInterfaceDiag::MainInterfaceDiag()
+    MainDialog::MainDialog()
+    {
+        this->set_name("MainDialog");
+    }
+
+    MainDialog::~MainDialog()
     {
     }
 
-    MainInterfaceDiag::~MainInterfaceDiag()
+    void MainDialog::_ready()
     {
-    }
+        m_level = rl::as<rl::Level>(this->find_child("Level", true, false));
+        debug::assert(m_level != nullptr);
 
-    void MainInterfaceDiag::_ready()
-    {
         if (m_console_label == nullptr)
         {
-            auto scene_root{ scene::tree::root_node(this) };
+            godot::Node* scene_root{ scene::tree::root_node(this) };
             m_console_label = rl::as<godot::RichTextLabel>(
                 scene_root->find_child("ConsolePanel", true, false));
 
@@ -34,7 +41,7 @@ namespace rl
         }
     }
 
-    void MainInterfaceDiag::_notification(int notification)
+    void MainDialog::_notification(int notification)
     {
         switch (notification)
         {
@@ -48,17 +55,18 @@ namespace rl
             }
             case Control::NOTIFICATION_MOUSE_ENTER:
             {
-                input::hide_cursor(true);
+                debug::assert(m_level != nullptr);
+                m_level->activate(true);
                 break;
             }
             case Control::NOTIFICATION_MOUSE_EXIT:
             {
-                input::hide_cursor(false);
+                debug::assert(m_level != nullptr);
+                m_level->activate(false);
                 break;
             }
         }
 
-        m_console.print("notification: {}\n",
-                        rl::to_string<Translation::Notification>(notification));
+        m_console.print("notification: {}\n", notification::to_string(notification));
     }
 }

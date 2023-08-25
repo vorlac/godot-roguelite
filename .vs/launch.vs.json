@@ -26,7 +26,7 @@
         "--verbose",
         "--path",
         "${workspaceRoot}/project",
-        "res://main_window.tscn"
+        "res://main.tscn"
       ],
       "project": "CMakeLists.txt",
       "name": "gdextension (console)"
