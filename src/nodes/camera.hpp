@@ -1,6 +1,7 @@
 #pragma once
 
 #include <godot_cpp/classes/camera2d.hpp>
+#include <godot_cpp/classes/wrapped.hpp>
 
 namespace rl
 {

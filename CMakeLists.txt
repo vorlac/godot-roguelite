@@ -23,8 +23,10 @@ set(VCPKG_TARGET_TRIPLET "x64-${host_os}-static")
 # needs to be >= C++17
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_COLOR_DIAGNOSTICS ON)
 
 # define output paths for gdextension shared lib and debug symbols
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/project/bin")
@@ -260,7 +262,10 @@ target_compile_options(${gdextension_lib_name} PUBLIC
     >
     $<$<NOT:${compiler_is_msvc}>:
         -g
-        -Wno-attributes
+        -Wno-unused-value
+        $<${compiler_is_gnu}:
+            -Wno-attributes=rl::
+        >
         $<${compiler_is_clang}:
             -Wno-unknown-attributes
         >
@@ -295,7 +300,7 @@ target_link_libraries(${gdextension_lib_name}
     PUBLIC godot::cpp
     PRIVATE fmt::fmt
     PRIVATE fmt::fmt-header-only
-    PRIVATE spdlog::spdlog
+    PRIVATE spdlog::spdlog_header_only
 )
 
 # =======================================================================

@@ -1,22 +1,30 @@
 #include "core/level.hpp"
 
 #include "nodes/character.hpp"
+#include "singletons/console.hpp"
+#include "util/constants.hpp"
+#include "util/debug.hpp"
+#include "util/engine.hpp"
+#include "util/input.hpp"
+#include "util/io.hpp"
 #include "util/scene.hpp"
-#include "util/utils.hpp"
 
 #include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/classes/node2d.hpp>
+#include <godot_cpp/classes/ref.hpp>
+#include <godot_cpp/classes/resource.hpp>
+#include <godot_cpp/classes/resource_loader.hpp>
+#include <godot_cpp/core/math.hpp>
 #include <godot_cpp/variant/callable.hpp>
 #include <godot_cpp/variant/rect2.hpp>
 
 namespace rl
 {
-    namespace gd = ::godot;
-
     Level::Level()
     {
-        gd::ResourceLoader* resource_loader{ resource::loader::get() };
-        gd::Ref<gd::Resource> background_texture{ resource_loader->load(path::sprite::Background) };
+        godot::ResourceLoader* resource_loader{ resource::loader::get() };
+        godot::Ref<godot::Resource> background_texture{ resource_loader->load(
+            path::sprite::Background) };
 
         m_background->set_name("BackgroundTexture");
         m_background->set_texture(background_texture);
@@ -97,11 +105,11 @@ namespace rl
     void Level::on_shoot_projectile(godot::Node* obj)
     {
         godot::Node2D* node{ rl::as<godot::Node2D>(obj) };
-        debug::assert(node != nullptr);
+        debug::runtime_assert(node != nullptr);
 
         rl::Projectile* proj{ m_projectile_spawner->spawn_projectile() };
         proj->set_position(node->get_global_position());
-        proj->set_rotation(node->get_rotation() - math::deg_to_rad(45.0));
+        proj->set_rotation(node->get_rotation() - godot::Math::deg_to_rad(45.0));
 
         rl::Character* character{ rl::as<rl::Character>(node) };
         if (character != nullptr)
@@ -113,7 +121,7 @@ namespace rl
     [[signal_callback]]
     void Level::on_position_changed(const godot::Object* const node, godot::Vector2 location) const
     {
-        debug::assert(node != nullptr);
+        debug::runtime_assert(node != nullptr);
         log::info(node->get_class() + " location: " + location);
     }
 }

@@ -4,6 +4,8 @@
 
 namespace godot
 {
+    void initialize_singletons();
+    void teardown_singletons();
     void initialize_extension_module(ModuleInitializationLevel init_level);
     void uninitialize_extension_module(ModuleInitializationLevel init_level);
 

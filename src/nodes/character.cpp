@@ -2,16 +2,21 @@
 
 #include "nodes/camera.hpp"
 #include "util/bind.hpp"
-#include "util/utils.hpp"
+#include "util/engine.hpp"
+#include "util/input.hpp"
+#include "util/io.hpp"
 
 #include <array>
 #include <tuple>
 #include <vector>
 
+#include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/rectangle_shape2d.hpp>
 #include <godot_cpp/classes/ref.hpp>
 #include <godot_cpp/classes/resource_loader.hpp>
+#include <godot_cpp/core/math.hpp>
 #include <godot_cpp/variant/color.hpp>
+#include <godot_cpp/variant/typed_array.hpp>
 #include <godot_cpp/variant/vector2.hpp>
 
 namespace rl
@@ -64,7 +69,7 @@ namespace rl
         if (engine::editor_active())
             return;
 
-        godot::Input* const input_handler{ input::get() };
+        godot::Input* input_handler{ input::get() };
         if (input_handler != nullptr)
         {
             this->process_movement_input(input_handler, delta_time);
@@ -143,7 +148,7 @@ namespace rl
             {
                 godot::TypedArray<int32_t> controllers{ input->get_connected_joypads() };
                 if (controllers.is_empty())
-                    rl::log::warning("InputMode = Controller, but no controllers detected");
+                    log::warning("InputMode = Controller, but no controllers detected");
                 else
                 {
                     godot::Vector2 target_rotation{ input->get_vector("rotate_left", "rotate_right",
@@ -210,38 +215,32 @@ namespace rl
         }
     }
 
-    [[node_property]]
-    double Character::get_movement_speed() const
+    [[node_property]] double Character::get_movement_speed() const
     {
         return m_movement_speed;
     }
 
-    [[node_property]]
-    void Character::set_movement_speed(const double move_speed)
+    [[node_property]] void Character::set_movement_speed(const double move_speed)
     {
         m_movement_speed = move_speed;
     }
 
-    [[node_property]]
-    double Character::get_movement_friction() const
+    [[node_property]] double Character::get_movement_friction() const
     {
         return m_movement_friction;
     }
 
-    [[node_property]]
-    void Character::set_movement_friction(const double move_friction)
+    [[node_property]] void Character::set_movement_friction(const double move_friction)
     {
         m_movement_friction = move_friction;
     }
 
-    [[node_property]]
-    double Character::get_rotation_speed() const
+    [[node_property]] double Character::get_rotation_speed() const
     {
         return m_rotation_speed;
     }
 
-    [[node_property]]
-    void Character::set_rotation_speed(const double rotation_speed)
+    [[node_property]] void Character::set_rotation_speed(const double rotation_speed)
     {
         m_rotation_speed = rotation_speed;
     }

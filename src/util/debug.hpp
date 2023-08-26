@@ -1,17 +1,13 @@
 #pragma once
 
-#include "util/bind.hpp"
-
-#include <array>
+#include <cstdint>
 #include <tuple>
-#include <type_traits>
-#include <utility>
 
 #include <godot_cpp/core/error_macros.hpp>
 
 namespace rl::inline utils::debug
 {
-    static inline constexpr void assert(const bool cond)
+    static constexpr void runtime_assert(const bool cond)
     {
         DEV_ASSERT(cond);
     }
@@ -34,7 +30,7 @@ namespace rl::inline utils::diag
 
     using optval_t = std::pair<Option, bool>;
     static constexpr inline auto DebugSettings{
-        std::to_array<optval_t>({
+        std::to_array<std::type_identity_t<optval_t>>({
             { Option::All, false },
             { Option::RootProcess, true },
             { Option::RootPhysics, true },
@@ -47,7 +43,7 @@ namespace rl::inline utils::diag
         }),
     };
 
-    static constexpr inline bool is_enabled(const Option diag_type)
+    static constexpr inline bool is_enabled(const Option& diag_type)
     {
         for (auto&& [opt, val] : DebugSettings)
         {

@@ -1,7 +1,10 @@
 #include "main.hpp"
 
 #include "nodes/character.hpp"
-#include "util/utils.hpp"
+#include "util/debug.hpp"
+#include "util/engine.hpp"
+#include "util/input.hpp"
+#include "util/scene.hpp"
 
 namespace rl
 {
@@ -11,7 +14,7 @@ namespace rl
 
         resource::preload::scene<rl::MainDialog> dialog{ path::ui::MainDialog };
         m_main_dialog = dialog.instantiate();
-        debug::assert(m_main_dialog != nullptr);
+        debug::runtime_assert(m_main_dialog != nullptr);
     }
 
     Main::~Main()
@@ -31,14 +34,14 @@ namespace rl
     {
         this->apply_default_settings();
 
-        debug::assert(m_main_dialog != nullptr);
+        debug::runtime_assert(m_main_dialog != nullptr);
         if (m_main_dialog != nullptr)
         {
             m_canvas_layer = rl::as<godot::CanvasLayer>(
                 m_main_dialog->find_child("MainCanvasLayer", true, false));
 
-            debug::assert(m_canvas_layer != nullptr);
-            debug::assert(m_active_level != nullptr);
+            debug::runtime_assert(m_canvas_layer != nullptr);
+            debug::runtime_assert(m_active_level != nullptr);
 
             if (m_active_level != nullptr && m_canvas_layer != nullptr)
                 m_canvas_layer->add_child(m_active_level);

@@ -1,12 +1,15 @@
 #pragma once
 
-#include "util/utils.hpp"
+#include "util/bind.hpp"
 
 #include <godot_cpp/classes/area2d.hpp>
-#include <godot_cpp/classes/path2d.hpp>
-#include <godot_cpp/classes/ref.hpp>
-#include <godot_cpp/classes/tween.hpp>
-#include <godot_cpp/variant/vector2.hpp>
+
+// #include <godot_cpp/variant/vector2.hpp>
+
+namespace godot
+{
+    struct Vector2;
+}
 
 namespace rl
 {
@@ -48,7 +51,5 @@ namespace rl
 
     protected:
         godot::Vector2 m_start_pos{ 0.0, 0.0 };
-        godot::Ref<godot::Tween> m_tween{};
-        godot::Path2D* m_path{ nullptr };
     };
 }

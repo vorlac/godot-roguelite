@@ -1,11 +1,14 @@
 #pragma once
 
 #include "nodes/projectile.hpp"
-#include "util/utils.hpp"
+#include "util/constants.hpp"
+#include "util/scene.hpp"
 
 #include <godot_cpp/classes/node2d.hpp>
+#include <godot_cpp/classes/object.hpp>
+#include <godot_cpp/classes/packed_scene.hpp>
 #include <godot_cpp/classes/resource.hpp>
-#include <godot_cpp/core/class_db.hpp>
+#include <godot_cpp/classes/wrapped.hpp>
 
 namespace rl
 {
@@ -18,7 +21,6 @@ namespace rl
         virtual ~ProjectileSpawner();
 
         rl::Projectile* spawn_projectile();
-
 
     protected:
         static void _bind_methods()

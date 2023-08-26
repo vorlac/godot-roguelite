@@ -2,10 +2,19 @@
 
 #include "core/projectile_spawner.hpp"
 #include "nodes/camera.hpp"
+#include "util/bind.hpp"
 
 #include <godot_cpp/classes/character_body2d.hpp>
 #include <godot_cpp/classes/collision_shape2d.hpp>
 #include <godot_cpp/classes/sprite2d.hpp>
+#include <godot_cpp/core/memory.hpp>
+
+namespace godot
+{
+    class Input;
+    class CollisionShape2D;
+    class Sprite2D;
+}
 
 namespace rl
 {

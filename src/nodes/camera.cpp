@@ -1,5 +1,7 @@
 #include "nodes/camera.hpp"
 
+#include <godot_cpp/classes/camera2d.hpp>
+
 namespace rl
 {
     Camera::Camera()

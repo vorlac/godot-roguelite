@@ -17,12 +17,17 @@
 namespace rl::inline utils
 {
 
-#ifdef _WIN32
-  #define node_property   __declspec("godot_node_property")
-  #define signal_callback __declspec("godot_signal_callback")
-#elif __linux__
-  #define node_property   __attribute__((annotate("godot_node_property")))
-  #define signal_callback __attribute__((annotate("godot_signal_callback")))
+#if defined(_MSC_VER)
+    // MSVC doesn't have a clean way to ignore custom
+    // attributes within a namespace like clang or gcc
+  #define node_property
+  #define signal_callback
+#elif defined(__GNUG__) || defined(__clang__)
+    // these macros are used to define custom attributes to label signal functions.
+    // they don't do anything other than making it easier to spot these functions
+    // when reading the code or searching for them in an IDE.
+  #define node_property   rl::godot_node_property
+  #define signal_callback rl::godot_signal_callback
 #endif
 
 // wrapper for simpler signal/slot connections
@@ -34,20 +39,11 @@ namespace rl::inline utils
 
     namespace signal
     {
-
         template <typename T>
             requires std::derived_from<godot::Node, std::type_identity_t<T>>
         using params_t = std::vector<T>;
 
         using callback_connection_t = std::pair<godot::String, godot::Callable>;
-
-        struct name
-        {
-            static constexpr inline auto position_changed{ "position_changed" };
-            static constexpr inline auto entered_area{ "entered_area" };
-            static constexpr inline auto exited_area{ "exited_area" };
-            static constexpr inline auto shoot_projectile{ "shoot_projectile" };
-        };
 
         template <typename TNode>
             requires std::derived_from<TNode, godot::Node>

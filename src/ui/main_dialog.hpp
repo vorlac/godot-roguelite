@@ -1,7 +1,5 @@
 #pragma once
 
-#include "util/console.hpp"
-
 #include <godot_cpp/classes/panel.hpp>
 #include <godot_cpp/classes/rich_text_label.hpp>
 
@@ -24,7 +22,6 @@ namespace rl
         }
 
     protected:
-        rl::utils::console m_console{};
         rl::Level* m_level{ nullptr };
         godot::RichTextLabel* m_console_label{ nullptr };
     };

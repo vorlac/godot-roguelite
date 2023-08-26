@@ -14,6 +14,7 @@
         "vadimcn.vscode-lldb",
         "calro.vscode-theme-one-dark-muted",
         "jeff-hykin.better-cpp-syntax",
-        "mitaki28.vscode-clang"
+        "mitaki28.vscode-clang",
+        "ibm.output-colorizer"
     ]
 }
