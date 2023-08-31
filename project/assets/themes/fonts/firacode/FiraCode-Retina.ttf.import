@@ -2,7 +2,7 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://v5wr18kf7fst"
+uid="uid://87atl2gx7ih"
 path="res://.godot/imported/FiraCode-Retina.ttf-cec5070c7a270ee3b23bbbc1f2d6bd68.fontdata"
 
 [deps]
@@ -26,7 +26,7 @@ oversampling=0.0
 Fallbacks=null
 fallbacks=[]
 Compress=null
-compress=true
+compress=false
 preload=[]
 language_support={}
 script_support={}

@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <tuple>
+#include <type_traits>
 
 #include <godot_cpp/core/error_macros.hpp>
 

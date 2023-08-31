@@ -3,13 +3,7 @@
 #include "util/bind.hpp"
 
 #include <godot_cpp/classes/area2d.hpp>
-
-// #include <godot_cpp/variant/vector2.hpp>
-
-namespace godot
-{
-    struct Vector2;
-}
+#include <godot_cpp/variant/vector2.hpp>
 
 namespace rl
 {
@@ -24,8 +18,6 @@ namespace rl
         void _ready() override;
         void _process(double delta_time) override;
 
-        static void _bind_methods();
-
         [[node_property]] double get_movement_speed() const;
         [[node_property]] double get_time_to_live() const;
         [[node_property]] double get_max_travel_dist() const;
@@ -36,6 +28,9 @@ namespace rl
         [[node_property]] void set_max_travel_dist(const double dist);
         [[node_property]] void set_acceleration(const double acceleration);
         [[node_property]] void set_velocity(const godot::Vector2& velocity);
+
+    protected:
+        static void _bind_methods();
 
     protected:
         // projectile movement velocity (pixels)

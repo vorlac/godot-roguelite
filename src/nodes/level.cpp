@@ -1,22 +1,13 @@
-#include "core/level.hpp"
+#include "nodes/level.hpp"
 
 #include "nodes/character.hpp"
-#include "singletons/console.hpp"
-#include "util/constants.hpp"
+#include "util/bind.hpp"
 #include "util/debug.hpp"
 #include "util/engine.hpp"
 #include "util/input.hpp"
 #include "util/io.hpp"
-#include "util/scene.hpp"
 
-#include <godot_cpp/classes/node.hpp>
-#include <godot_cpp/classes/node2d.hpp>
-#include <godot_cpp/classes/ref.hpp>
-#include <godot_cpp/classes/resource.hpp>
-#include <godot_cpp/classes/resource_loader.hpp>
-#include <godot_cpp/core/math.hpp>
-#include <godot_cpp/variant/callable.hpp>
-#include <godot_cpp/variant/rect2.hpp>
+#include <godot_cpp/variant/vector2.hpp>
 
 namespace rl
 {
@@ -38,35 +29,31 @@ namespace rl
 
     Level::~Level()
     {
-        if (!this->is_queued_for_deletion())
-            this->queue_free();
-
         for (const auto& conn : m_signal_connections)
         {
-            const auto& [signal, slot] = conn;
-            if (m_player->has_signal(signal))
-                m_player->disconnect(signal, slot);
+            const auto& [signal_owner, sig, slot] = conn;
+            if (signal_owner->has_signal(sig))
+                signal_owner->disconnect(sig, slot);
         }
     }
 
     void Level::_ready()
     {
         this->add_child(m_player);
-        this->add_child(m_background);
         this->add_child(m_projectile_spawner);
+        this->add_child(m_background);
 
-        if (m_signal_connections.empty())
+        m_signal_connections = {
+            SignalConnection(m_player, signal::name::position_changed, this,
+                             on_character_position_changed),
+            SignalConnection(m_player, signal::name::spawn_projectile, this,
+                             on_character_spawn_projectile),
+        };
+
+        for (const auto& conn : m_signal_connections)
         {
-            m_signal_connections = {
-                SignalConnection(signal::name::position_changed, on_position_changed),
-                SignalConnection(signal::name::shoot_projectile, on_shoot_projectile),
-            };
-
-            for (const auto& conn : m_signal_connections)
-            {
-                const auto& [signal, slot] = conn;
-                m_player->connect(signal, slot);
-            }
+            auto& [signal_owner, sig, slot] = conn;
+            signal_owner->connect(sig, slot);
         }
     }
 
@@ -97,12 +84,9 @@ namespace rl
             this->draw_circle(mouse_pos, 10, { "DARK_CYAN" });
         }
     }
-}
 
-namespace rl
-{
     [[signal_callback]]
-    void Level::on_shoot_projectile(godot::Node* obj)
+    void Level::on_character_spawn_projectile(godot::Node* obj)
     {
         godot::Node2D* node{ rl::as<godot::Node2D>(obj) };
         debug::runtime_assert(node != nullptr);
@@ -119,9 +103,16 @@ namespace rl
     }
 
     [[signal_callback]]
-    void Level::on_position_changed(const godot::Object* const node, godot::Vector2 location) const
+    void Level::on_character_position_changed(const godot::Object* const node,
+                                              godot::Vector2 location) const
     {
         debug::runtime_assert(node != nullptr);
         log::info(node->get_class() + " location: " + location);
+    }
+
+    void Level::_bind_methods()
+    {
+        add_method_binding(Level, on_character_position_changed);
+        add_method_binding(Level, on_character_spawn_projectile);
     }
 }

@@ -1,10 +1,11 @@
-#include "api/module_interface.hpp"
+#include "api/extension_interface.hpp"
 
-#include "core/level.hpp"
-#include "core/projectile_spawner.hpp"
+#include "nodes/level.hpp"
+#include "nodes/projectile_spawner.hpp"
 #include "main.hpp"
 #include "nodes/camera.hpp"
 #include "nodes/character.hpp"
+#include "nodes/player_controller.hpp"
 #include "singletons/console.hpp"
 #include "ui/main_dialog.hpp"
 #include "util/engine.hpp"
@@ -37,14 +38,15 @@ namespace godot
         if (init_level != MODULE_INITIALIZATION_LEVEL_SCENE)
             return;
 
-        ClassDB::register_class<rl::MainDialog>();
-        ClassDB::register_class<rl::Camera>();
+        ClassDB::register_class<rl::Console<RichTextLabel>>();
         ClassDB::register_class<rl::Projectile>();
         ClassDB::register_class<rl::ProjectileSpawner>();
+        ClassDB::register_class<rl::PlayerController>();
+        ClassDB::register_class<rl::Camera>();
         ClassDB::register_class<rl::Character>();
         ClassDB::register_class<rl::Level>();
+        ClassDB::register_class<rl::MainDialog>();
         ClassDB::register_class<rl::Main>();
-        ClassDB::register_class<rl::Console<RichTextLabel>>();
 
         initialize_singletons();
     }

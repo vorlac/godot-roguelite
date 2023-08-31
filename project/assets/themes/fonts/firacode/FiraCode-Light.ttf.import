@@ -2,7 +2,7 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://8hh8pdgtjxxd"
+uid="uid://c4stugtpbu883"
 path="res://.godot/imported/FiraCode-Light.ttf-4d1b0d35a359512a881f2baed7fd295b.fontdata"
 
 [deps]
@@ -26,7 +26,7 @@ oversampling=0.0
 Fallbacks=null
 fallbacks=[]
 Compress=null
-compress=true
+compress=false
 preload=[]
 language_support={}
 script_support={}

@@ -2,7 +2,7 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://dloiaphksafst"
+uid="uid://dbinrxod16epq"
 path="res://.godot/imported/FiraCode-Bold.ttf-0e49f09a9488cd682eac6a4180351d02.fontdata"
 
 [deps]
@@ -26,7 +26,7 @@ oversampling=0.0
 Fallbacks=null
 fallbacks=[]
 Compress=null
-compress=true
+compress=false
 preload=[]
 language_support={}
 script_support={}

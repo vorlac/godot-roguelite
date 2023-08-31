@@ -1,13 +1,10 @@
 #pragma once
 
-#include "core/level.hpp"
+#include "nodes/level.hpp"
 #include "ui/main_dialog.hpp"
 
 #include <godot_cpp/classes/canvas_layer.hpp>
 #include <godot_cpp/classes/node.hpp>
-#include <godot_cpp/classes/resource.hpp>
-#include <godot_cpp/classes/wrapped.hpp>
-#include <godot_cpp/core/memory.hpp>
 
 namespace rl
 {
