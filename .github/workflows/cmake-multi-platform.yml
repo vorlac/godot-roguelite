@@ -9,7 +9,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  setup-windows:
+  setup-windows-latest:
     runs-on: windows-latest
     steps:
       - uses: actions/setup-python@v2
@@ -20,7 +20,7 @@ jobs:
       - name: windows-latest-setup
         run: pip3 install --user scons
   
-  setup-linux:
+  setup-linux-latest:
     runs-on: ubuntu-latest
     steps:
       - name: linux-latest-setup
@@ -63,7 +63,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-
+    - uses: setup-${{matrix.os}}
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
       id: strings
