@@ -22,7 +22,7 @@ The overall node heirarchy:
 │   │   └── <a href="./src/nodes/character.cpp" title="title">CollisionShape2D</a>
 │   ├── <a href="./src/core/projectile_spawner.hpp" title="title">Projectile Spawner</a>
 │   │   └── <a href="./src/nodes/projectile.cpp" title="title">Projectile</a>
-│   ├── <a href="./src/core/level.hpp" title="title">Sprite2D (Background)</a>
+│   └── <a href="./src/core/level.hpp" title="title">Sprite2D (Background)</a>
 └── <a href="./src/core/main.hpp" title="title">Main Canvas Layer (reference to Canvas Layer in MainDialog)</a>
 </p>
 <a href="./src/singletons/console.hpp" title="title">Console (Singleton)</a>
