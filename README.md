@@ -7,7 +7,7 @@
 
 The project's [main scene](./project/main.tscn) consists of a single `Main` node. The `Main` node is intended to handle all high level game management (level loading, scene swaps, saving, loading, UI, input handling, menus, signal propigation, etc)
 
-The overall node heirarchy:
+The overall node hierarchy:
 
 <div class="highlight highlight-html"> <pre>
 <a href="./src/main.hpp" title="title">Main</a>
