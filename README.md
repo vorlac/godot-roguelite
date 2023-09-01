@@ -1,98 +1,33 @@
-# TODO
+# Godot 4.1 GDExtension C++ Prototype
+ This project is a rough prototype focusing on understanding how to implement most of the core logic of a game in C++ using GDExtension. Everything is done in the code aside from UI/dialog/menu design, and scene file generation. The current focus is just learning more about how to implement certain features / funtionality in the GDExtension library so there isn't much game logic. Since the documentation is very sparse when it comes to pure native development, a lot of what is implemnted in this side project is mostly focused on providing examples for a variety of misc functionality. Game logic will become a focus when most of the essentials are figured out through misc features/functionality.
 
-### Console / Stats / Resource Monitoring
-* print resource usage (fps, frametime, object count, etc) in UI labels.
-* make `rl::utils::console` generic so it can write to any widget type
-    * register any number of any widget type as a "console" object
-* make `rl::utils::console` static initialized and threaded.
-* add support for formatted/colored text & fixed width text style for console widgets
-* truncate text output once it exceeds ~1024 lines.
+***Disclaimer:*** I am very new to godot, I've only been using it for about 6 weeks at the time of writing this. There's a very good chance some of the design/implementation approaches used in this project are completely wrong. I just work through most feature additions until something works and stick with that until I find a better/cleaner way.
 
-### Resource loading
-* look into common vulkan/shader exceptions on startup
-    * related to resources built on different machines? different builds of editor?
-* see if loading from path can be default rather than loading precached binary resource file.
+# High Level Project Structure
 
-### Level Creation
-* look into procedural level generation
-    * completely dynamic? pieced together using prebuilt scene chunks?
+The project's main scene consists of a single `Main` node. The `Main` node is intended to handle all high level game management (level loading, scene swaps, saving, loading, UI, input handling, menus, signal propigation, etc)
 
-### Enemies
-* implement placeholer dynamic enemy spawns
- * health
- * movement
- * attacks
- * weapons
+The overall node heirarchy:
 
-### Projectiles
-* design dynamic projectile system
-    * custom paths
-    * tweening
-    * speed
-    * size
-    * acceleration
-    * TTL
-    * distance
-    * auto tracking
-    * rayscan / lazer
-    * pattern
-    * accuracy / randomness in spray
+<div class="highlight highlight-html"> <pre>
+<a href="./src/main.hpp" title="title">Main</a>
+├── <a href="./src/ui/main_dialog.hpp" title="title">MainDialog</a>
+│   ├── <a href="./project/assets/scenes/ui/dialogs/main_dialog.tscn" title="title">RichTextLabel (In-Game Console)</a>
+│   └── <a href="./project/assets/scenes/ui/dialogs/main_dialog.tscn" title="title">MainSubViewport (Primary Game Viewport)</a>
+│       └── <a href="./project/assets/scenes/ui/dialogs/main_dialog.tscn" title="title">Canvas Layer</a>
+├── <a href="./src/core/level.hpp" title="title">Level</a>
+│   ├── <a href="./src/nodes/character.cpp" title="title">Character</a>
+│   │   ├── <a href="./src/nodes/camera.cpp" title="title">Camera</a>
+│   │   ├── <a href="./src/nodes/character.cpp" title="title">Sprite2D</a>
+│   │   └── <a href="./src/nodes/character.cpp" title="title">CollisionShape2D</a>
+│   ├── <a href="./src/core/projectile_spawner.hpp" title="title">Projectile Spawner</a>
+│   │   └── <a href="./src/nodes/projectile.cpp" title="title">Projectile</a>
+│   ├── <a href="./src/core/level.hpp" title="title">Sprite2D (Background)</a>
+└── <a href="./src/core/main.hpp" title="title">Main Canvas Layer (reference to Canvas Layer in MainDialog)</a>
+</p>
+<a href="./src/main.hpp" title="title">Console (Singleton)</a>
+└── <a href="./project/assets/scenes/ui/dialogs/main_dialog.tscn" title="title">RichTextLabel (Reference from MainDialog)</a>
+</pre> </div>
 
-### Weapons
-* implement weapon inventory
-    * weapon swapping
-    * weapon pickups / replacement
-    * randomized properties?
-
-### Items
-* implement basic item pickup system
-    * usable items
-    * passive modifiers
-
-### Score / Stats tracking
-* player health
-* score / kills
-* survival time
-* dungeon depth
-* rooms cleared per dungeon / floor
-* currency
-    * apply toward perstent upgrades / weapons / skill tree
-
-### Player Character
-##### Inputs / Movement
-* refine controls
-##### Animations
-* implement basic animations for movement / state change
-
-### Graphics
-* Look into shaders
-* particle effects (projectiles? dashing?)
-
-# Resources
-### Editor Plugin
-* https://docs.godotengine.org/en/stable/tutorials/plugins/editor/making_main_screen_plugins.html
-
-### Handle inputs properly while the editor is running and standalone
-* https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-property-gui-disable-input
-* https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-property-handle-input-locally
-* https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-property-gui-disable-input
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-property-exclusive
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-property-mouse-passthrough
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-property-mouse-passthrough-polygon
-
-### Window / viewport configuration
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-method-grab-focus
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-method-has-focus
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-method-is-embedded
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-property-min-size
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-property-size
-* https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-property-world-2d
-* https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-method-get-camera-2d
-* https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-method-push-input
-* https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-method-push-unhandled-input
-
-# In game menu UI
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-property-wrap-controls
-
-# Editor mode enhancements:
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-property-transient
+# Project Configuration
+See the [wiki](https://github.com/vorlac/godot-roguelite/wiki) for development/tooling setup instructions

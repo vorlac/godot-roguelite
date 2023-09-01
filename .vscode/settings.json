@@ -101,5 +101,8 @@
     "workbench.editor.highlightModifiedTabs": true,
     "workbench.editor.untitled.labelFormat": "name",
     "workbench.list.smoothScrolling": true,
-    "workbench.tree.renderIndentGuides": "always"
+    "workbench.tree.renderIndentGuides": "always",
+    "[shellscript]": {
+        "editor.defaultFormatter": "foxundermoon.shell-format"
+    }
 }
