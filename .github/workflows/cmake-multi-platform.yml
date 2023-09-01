@@ -19,7 +19,7 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
       - name: windows-latest-setup
         run: pip3 install --user scons
-  
+
   setup-linux:
     runs-on: ubuntu-latest
     steps:
@@ -28,6 +28,7 @@ jobs:
      
   build:
     runs-on: ${{ matrix.os }}
+    needs: [setup-linux, setup-windows]
 
     strategy:
       # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
@@ -63,7 +64,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: ${{matrix.os}}-setup
+     
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
       id: strings
