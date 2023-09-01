@@ -31,5 +31,5 @@ jobs:
           -S ${{ github.workspace }}
       
       - name: Build (Linux)
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Debug
+        run: cmake --build ${{ github.workspace }}/.out --config Debug
         
