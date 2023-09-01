@@ -25,7 +25,7 @@ The overall node heirarchy:
 │   ├── <a href="./src/core/level.hpp" title="title">Sprite2D (Background)</a>
 └── <a href="./src/core/main.hpp" title="title">Main Canvas Layer (reference to Canvas Layer in MainDialog)</a>
 </p>
-<a href="./src/main.hpp" title="title">Console (Singleton)</a>
+<a href="./src/singletons/console.hpp" title="title">Console (Singleton)</a>
 └── <a href="./project/assets/scenes/ui/dialogs/main_dialog.tscn" title="title">RichTextLabel (Reference from MainDialog)</a>
 </pre> </div>
 
