@@ -9,6 +9,23 @@ on:
     branches: [ "main" ]
 
 jobs:
+  setup-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+          architecture: "x64"
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: windows-latest-setup
+        run: pip3 install --user scons
+  
+  setup-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: linux-latest-setup
+        run: pip3 install --user scons
+     
   build:
     runs-on: ${{ matrix.os }}
 
