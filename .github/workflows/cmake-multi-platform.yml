@@ -25,7 +25,7 @@ jobs:
       - name: Configure (Linux)
         run: >    
           cmake -B ${{ github.workspace }}/.out 
-          -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} 
+          -DCMAKE_CXX_COMPILER=g++
           -DCMAKE_C_COMPILER=gcc 
           -DCMAKE_BUILD_TYPE=Debug 
           -S ${{ github.workspace }}
