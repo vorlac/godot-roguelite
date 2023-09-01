@@ -29,8 +29,7 @@ jobs:
           -DCMAKE_C_COMPILER=gcc 
           -DCMAKE_BUILD_TYPE=Debug 
           -S ${{ github.workspace }}
-          --parallel $(nproc)
       
       - name: Build (Linux)
-        run: cmake --build ${{ github.workspace }}/.out --config Debug
+        run: cmake --build ${{ github.workspace }}/.out --config Debug --parallel $(nproc)
         
