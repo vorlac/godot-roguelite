@@ -3,14 +3,38 @@
 ## Uncomment to output a dump of every CMake variable
 # set(CMAKE_MESSAGE_LOG_LEVEL DEBUG)
 
+# =======================================================================
+# VCPKG submodule init/update. Needs to happen before anything else
+# because this submodule contains a toolchain file needed for the 
+# main project configuration, which must set before project() is called
+# =======================================================================
+
+# confirm we found the vcpkg submodule ports dir.
+# if the sources list is empty, the submodule probably
+# hasn't been initialized or updated yet.
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/ports")
+    message(NOTICE "VCPKG package manager sources not found")
+    message(NOTICE "initializing/updating the vcpkg submodule...")
+
+    # update the vcpkg submodule to populate it with the code necessary
+    # to grab all dependencies needed for the gdextension library build
+    execute_process(
+        COMMAND git submodule update --init extern/vcpkg
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND_ERROR_IS_FATAL ANY
+    )
+endif()
+
+# define toolchain file early for vcpkg. only set the variable if the file exists.
+# if this is the first configuration after a clean clone of this repo, this file
+# won't exist until the submodule is initialized below. configuration will fail if this
+# is set to a path that doesn't exist, so only set it after the first pass of configuration
 if(NOT CMAKE_TOOLCHAIN_FILE)
-    # define toolchain file early for vcpkg. only set the variable if the file exists.
-    # if this is the first configuration after a clean clone of this repo, this file
-    # won't exist until the submodule is initialized below. configuration will fail if this
-    # is set to a path that doesn't exist, so only set it after the first pass of configuration
     set(toolchain_file_path "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/scripts/buildsystems/vcpkg.cmake")
     if (EXISTS "${toolchain_file_path}")
         set(CMAKE_TOOLCHAIN_FILE "${toolchain_file_path}")
+    else()
+        message(WARNING "VCPKG toolchain file not found: ${toolchain_file_path}")
     endif()
 endif()
 
@@ -38,6 +62,57 @@ set(CMAKE_COMPILE_PDB_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/project/bin"
 # postfix debug binaries with "d"
 set(CMAKE_DEBUG_POSTFIX "d")
 
+# confirm we found the godot engine source files.
+# if the sources list is empty, the submodule probably
+# hasn't been initialized or updated yet.
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/core")
+    message(NOTICE "Godot engine sources not found")
+    message(NOTICE "initializing/updating the engine submodule...")
+
+    # update the engine submodule to populate it with the
+    # code necessary to build a debug version of the editor that
+    # can be easily debugged along with the gdextension library
+    execute_process(
+        COMMAND git submodule update --init extern/godot-engine
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+        COMMAND_ERROR_IS_FATAL ANY
+    )
+endif()
+
+# =======================================================================
+# VCPKG bootstrap / initialization.
+# Only happens once, when vcpkg executable is missing.
+# =======================================================================
+
+set(vcpkg_executable "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/vcpkg${CMAKE_EXECUTABLE_SUFFIX}")
+
+if(EXISTS "${vcpkg_executable}")
+    message(NOTICE "Found VCPKG Executable: ${vcpkg_executable}")
+else()
+    message(NOTICE "Could not find VCPKG Executable: ${vcpkg_executable}")
+    message(NOTICE "Calling VCPKG bootstrap scripts.")
+    # bootstrap vcpkg to configured and install
+
+    if(WIN32)
+        execute_process(
+            COMMAND ps -c "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/bootstrap-vcpkg.bat"
+            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+            COMMAND_ERROR_IS_FATAL ANY
+        )
+    elseif(UNIX)
+        execute_process(
+            COMMAND bash "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/bootstrap-vcpkg.sh"
+            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+            COMMAND_ERROR_IS_FATAL ANY
+        )
+    endif()
+
+    # fail out if vcpkg isn't found after setup
+    if(NOT EXISTS "${vcpkg_executable}")
+        message(FATAL_ERROR "ERROR: '${vcpkg_executable}' not found!")
+    endif()
+endif()
+
 # =======================================================================
 # Godot Engine and C++ bindings submodule management
 # =======================================================================
@@ -56,73 +131,6 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-cpp/src")
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         COMMAND_ERROR_IS_FATAL ANY
     )
-endif()
-
-# confirm we found the godot engine source files.
-# if the sources list is empty, the submodule probably
-# hasn't been initialized or updated yet.
-if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/core")
-    message(NOTICE "Godot engine sources not found")
-    message(NOTICE "initializing/updating the engine submodule...")
-
-    # update the engine submodule to populate it with the
-    # code necessary to build a debug version of the editor that
-    # can be easily debugged along with the gdextension library
-    execute_process(
-        COMMAND git submodule update --init extern/godot-engine
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND_ERROR_IS_FATAL ANY
-    )
-endif()
-
-# confirm we found the vcpkg submodule ports dir.
-# if the sources list is empty, the submodule probably
-# hasn't been initialized or updated yet.
-if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/ports")
-    message(NOTICE "VCPKG package manager sources not found")
-    message(NOTICE "initializing/updating the vcpkg submodule...")
-
-    # update the vcpkg submodule to populate it with the code necessary
-    # to grab all dependencies needed for the gdextension library build
-    execute_process(
-        COMMAND git submodule update --init extern/vcpkg
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMAND_ERROR_IS_FATAL ANY
-    )
-endif()
-
-# =======================================================================
-# VCPKG bootstrap / initialization.
-# Only happens once, when vcpkg.exe is missing.
-# =======================================================================
-
-set(vcpkg_executable "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/vcpkg${CMAKE_EXECUTABLE_SUFFIX}")
-
-if(EXISTS "${vcpkg_executable}")
-    message(NOTICE "Found VCPKG Executable: ${vcpkg_executable}")
-else()
-    message(NOTICE "Could not find VCPKG Executable: ${vcpkg_executable}")
-    message(NOTICE "Calling VCPKG bootstrap scripts.")
-    # bootstrap vcpkg to configured and install
-
-    if(WIN32)
-        execute_process(
-            COMMAND ps -c "./extern/vcpkg/bootstrap-vcpkg.bat"
-            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-            COMMAND_ERROR_IS_FATAL ANY
-        )
-    elseif(UNIX)
-        execute_process(
-            COMMAND bash "./extern/vcpkg/bootstrap-vcpkg.sh"
-            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-            COMMAND_ERROR_IS_FATAL ANY
-        )
-    endif()
-
-    # fail out if vcpkg isn't found after setup
-    if(NOT EXISTS "${vcpkg_executable}")
-        message(FATAL_ERROR "ERROR: '${vcpkg_executable}' not found!")
-    endif()
 endif()
 
 # =======================================================================
