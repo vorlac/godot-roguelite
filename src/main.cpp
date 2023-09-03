@@ -1,6 +1,5 @@
 #include "main.hpp"
 
-#include "nodes/character.hpp"
 #include "util/debug.hpp"
 #include "util/engine.hpp"
 #include "util/input.hpp"

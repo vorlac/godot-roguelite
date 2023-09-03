@@ -97,7 +97,6 @@
         }
     },
     "terminal.integrated.scrollback": 100000,
-    "window.zoomLevel": 1,
     "workbench.editor.highlightModifiedTabs": true,
     "workbench.editor.untitled.labelFormat": "name",
     "workbench.list.smoothScrolling": true,

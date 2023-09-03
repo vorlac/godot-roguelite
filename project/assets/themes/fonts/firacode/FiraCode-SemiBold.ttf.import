@@ -2,7 +2,7 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://ugchhridqx8s"
+uid="uid://cf1ksjl1s6ogv"
 path="res://.godot/imported/FiraCode-SemiBold.ttf-00d34393e48eb9f8fca5dd4ad6bd8fa1.fontdata"
 
 [deps]
@@ -26,7 +26,7 @@ oversampling=0.0
 Fallbacks=null
 fallbacks=[]
 Compress=null
-compress=true
+compress=false
 preload=[]
 language_support={}
 script_support={}

@@ -25,6 +25,11 @@ window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/extend_to_title=true
 
+[editor]
+
+import/reimport_missing_imported_files=false
+export/convert_text_resources_to_binary=false
+
 [filesystem]
 
 import/blender/enabled=false

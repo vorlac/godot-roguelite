@@ -1,7 +1,4 @@
-#include "core/projectile_spawner.hpp"
-
-#include "nodes/projectile.hpp"
-#include "util/scene.hpp"
+#include "nodes/projectile_spawner.hpp"
 
 namespace rl
 {
@@ -14,7 +11,8 @@ namespace rl
     {
     }
 
-    [[nodiscard]] rl::Projectile* ProjectileSpawner::spawn_projectile()
+    [[nodiscard]]
+    rl::Projectile* ProjectileSpawner::spawn_projectile()
     {
         rl::Projectile* projectile{ m_scene.instantiate() };
         return projectile;

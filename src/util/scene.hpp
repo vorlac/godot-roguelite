@@ -10,20 +10,12 @@
 #include <godot_cpp/classes/control.hpp>
 #include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/classes/object.hpp>
+#include <godot_cpp/classes/packed_scene.hpp>
 #include <godot_cpp/classes/ref.hpp>
+#include <godot_cpp/classes/resource.hpp>
 #include <godot_cpp/classes/resource_loader.hpp>
 #include <godot_cpp/classes/scene_tree.hpp>
 #include <godot_cpp/classes/window.hpp>
-
-// namespace godot
-// {
-//     class PackedScene;
-//     class ResourceLoader;
-//     class Resource;
-//     class SceneTree;
-//     class Window;
-//     class Node;
-// }
 
 namespace rl::inline utils
 {
@@ -168,7 +160,8 @@ namespace rl::inline utils
                     m_packed_resource = resource_loader->load(resource_path);
                 }
 
-                [[nodiscard]] auto instantiate() -> TObj*
+                [[nodiscard]]
+                auto instantiate() -> TObj*
                 {
                     TObj* ret{ rl::as<TObj>(m_packed_resource->instantiate()) };
                     return ret;

@@ -1,7 +1,5 @@
 #include "nodes/projectile.hpp"
 
-#include <godot_cpp/variant/vector2.hpp>
-
 namespace rl
 {
     Projectile::Projectile()
@@ -45,42 +43,50 @@ namespace rl
         }
     }
 
-    [[node_property]] double Projectile::get_movement_speed() const
+    [[node_property]]
+    double Projectile::get_movement_speed() const
     {
         return m_movement_speed;
     }
 
-    [[node_property]] double Projectile::get_time_to_live() const
+    [[node_property]]
+    double Projectile::get_time_to_live() const
     {
         return m_time_to_live;
     }
 
-    [[node_property]] double Projectile::get_max_travel_dist() const
+    [[node_property]]
+    double Projectile::get_max_travel_dist() const
     {
         return godot::Math::sqrt(m_max_travel_dist);
     }
 
-    [[node_property]] godot::Vector2 Projectile::get_velocity() const
+    [[node_property]]
+    godot::Vector2 Projectile::get_velocity() const
     {
         return m_velocity;
     }
 
-    [[node_property]] void Projectile::set_movement_speed(const double speed)
+    [[node_property]]
+    void Projectile::set_movement_speed(const double speed)
     {
         m_movement_speed = speed;
     }
 
-    [[node_property]] void Projectile::set_time_to_live(const double ttl)
+    [[node_property]]
+    void Projectile::set_time_to_live(const double ttl)
     {
         m_time_to_live = ttl;
     }
 
-    [[node_property]] void Projectile::set_max_travel_dist(const double dist)
+    [[node_property]]
+    void Projectile::set_max_travel_dist(const double dist)
     {
         m_max_travel_dist = { dist * dist };
     }
 
-    [[node_property]] void Projectile::set_velocity(const godot::Vector2& velocity)
+    [[node_property]]
+    void Projectile::set_velocity(const godot::Vector2& velocity)
     {
         m_velocity = velocity;
     }

@@ -1,16 +1,13 @@
 #include "ui/main_dialog.hpp"
 
-#include "core/level.hpp"
+#include "nodes/level.hpp"
 #include "singletons/console.hpp"
 #include "util/debug.hpp"
 
-#include <fmt/core.h>
 #include <fmt/format.h>
 
 #include <godot_cpp/classes/canvas_layer.hpp>
 #include <godot_cpp/classes/control.hpp>
-#include <godot_cpp/classes/node.hpp>
-#include <godot_cpp/classes/rich_text_label.hpp>
 
 namespace rl
 {

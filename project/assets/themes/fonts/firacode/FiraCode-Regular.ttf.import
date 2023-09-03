@@ -2,7 +2,7 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://3s8bciw30ers"
+uid="uid://lji1chr0mml6"
 path="res://.godot/imported/FiraCode-Regular.ttf-1500755a2584dbc1ef9bd1a3b2d91daf.fontdata"
 
 [deps]
@@ -26,7 +26,7 @@ oversampling=0.0
 Fallbacks=null
 fallbacks=[]
 Compress=null
-compress=true
+compress=false
 preload=[]
 language_support={}
 script_support={}

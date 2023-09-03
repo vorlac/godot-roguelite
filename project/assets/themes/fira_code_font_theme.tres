@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://gpigx47yvww1"]
+[gd_resource type="Theme" load_steps=3 format=3]
 
 [ext_resource type="StyleBox" uid="uid://bvq32p3ma4dum" path="res://assets/themes/console_text_box.tres" id="1_aav67"]
 [ext_resource type="FontFile" uid="uid://v5wr18kf7fst" path="res://assets/themes/fonts/firacode/FiraCode-Retina.ttf" id="1_vpb72"]

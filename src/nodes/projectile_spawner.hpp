@@ -5,10 +5,6 @@
 #include "util/scene.hpp"
 
 #include <godot_cpp/classes/node2d.hpp>
-#include <godot_cpp/classes/object.hpp>
-#include <godot_cpp/classes/packed_scene.hpp>
-#include <godot_cpp/classes/resource.hpp>
-#include <godot_cpp/classes/wrapped.hpp>
 
 namespace rl
 {
