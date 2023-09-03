@@ -148,10 +148,12 @@ namespace rl::inline utils
 
                 static void bind(std::string_view&& func_name)
                 {
-                    static constexpr std::size_t tup_size = std::tuple_size_v<traits_t::args_tuple>;
+                    static constexpr std::size_t tup_size =
+                        std::tuple_size_v<typename traits_t::args_tuple>;
+
                     if constexpr (tup_size > 0)
                     {
-                        const traits_t::args_tuple func_args{};
+                        const typename traits_t::args_tuple func_args{};
                         std::vector<godot::String> vec_strs = to_arg_vec(func_args);
                         std::tuple arg_types_str{ std::move(arg_vec_to_tuple<tup_size>(vec_strs)) };
 
@@ -182,7 +184,7 @@ namespace rl::inline utils
                             using godot::ClassDB;
                             using godot::MethodInfo;
 
-                            static inline auto class_name{
+                            const auto class_name{
                                 std::type_identity<TNode>::type::get_class_static()
                             };
 
