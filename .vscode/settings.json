@@ -26,7 +26,7 @@
     "cmake.languageSupport.enableFileAPI": true,
     "cmake.launchBehavior": "breakAndReuseTerminal",
     "cmake.outputLogEncoding": "utf-8",
-    "cmake.parallelJobs": 42,
+    "cmake.parallelJobs": 0,
     "cmake.parseBuildDiagnostics": true,
     "cmake.useCMakePresets": "always",
     "debug.autoExpandLazyVariables": true,
