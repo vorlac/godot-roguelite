@@ -26,11 +26,6 @@
           "description": "Enable pretty-printing for gdb",
           "text": "-enable-pretty-printing",
           "ignoreFailures": true
-        },
-        {
-          "description": "Set Disassembly Flavor to AMD",
-          "text": "-gdb-set disassembly-flavor amd",
-          "ignoreFailures": true
         }
       ]
     },
@@ -55,11 +50,6 @@
         {
           "description": "Enable pretty-printing for gdb",
           "text": "-enable-pretty-printing",
-          "ignoreFailures": true
-        },
-        {
-          "description": "Set Disassembly Flavor to AMD",
-          "text": "-gdb-set disassembly-flavor amd",
           "ignoreFailures": true
         }
       ]

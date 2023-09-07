@@ -1,5 +1,6 @@
 #pragma once
 
+#include <concepts>
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -124,24 +125,25 @@ namespace rl::inline utils
             template <typename = void>
             struct method_traits;
 
-            template <typename Return, typename Object, typename... Args>
-            struct method_traits<Return (Object::*)(Args...)>
+            template <typename TRet, typename TClass, typename... TArgs>
+            struct method_traits<TRet (TClass::*)(TArgs...)>
             {
-                using return_type = Return;
-                using class_type = Object;
-                using args_tuple = std::tuple<Args...>;
+                using return_type = TRet;
+                using class_type = TClass;
+                using arg_types = std::tuple<TArgs...>;
                 inline static const std::string_view class_name{ typeid(class_type).name() };
-                static constexpr size_t arg_count = sizeof...(Args);
+                static constexpr size_t arg_count = sizeof...(TArgs);
             };
 
-            template <typename Return, typename Object, typename... Args>
-            struct method_traits<Return (Object::*)(Args...) const>
-                : method_traits<Return (Object::*)(Args...)>
+            template <typename TRet, typename TClass, typename... TArgs>
+            struct method_traits<TRet (TClass::*)(TArgs...) const>
+                : method_traits<TRet (TClass::*)(TArgs...)>
             {
-                using class_type = const Object;
+                using class_type = const TClass;
             };
 
             template <auto Method>
+                requires std::is_member_function_pointer_v<decltype(Method)>
             struct method_bind : public method_traits<decltype(Method)>
             {
                 using traits_t = method_traits<decltype(Method)>;
@@ -149,13 +151,13 @@ namespace rl::inline utils
                 static void bind(std::string_view&& func_name)
                 {
                     static constexpr std::size_t tup_size =
-                        std::tuple_size_v<typename traits_t::args_tuple>;
+                        std::tuple_size_v<typename traits_t::arg_types>;
 
                     if constexpr (tup_size > 0)
                     {
-                        const typename traits_t::args_tuple func_args{};
+                        const typename traits_t::arg_types func_args{};
                         std::vector<godot::String> vec_strs = to_arg_vec(func_args);
-                        std::tuple arg_types_str{ std::move(arg_vec_to_tuple<tup_size>(vec_strs)) };
+                        std::tuple arg_types_str{ arg_vec_to_tuple<tup_size>(vec_strs) };
 
                         std::apply(
                             [&](auto&&... args) {

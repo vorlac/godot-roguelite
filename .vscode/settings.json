@@ -13,8 +13,11 @@
     "C_Cpp.default.enableConfigurationSquiggles": true,
     "C_Cpp.enhancedColorization": "enabled",
     "C_Cpp.formatting": "clangFormat",
+    "clang-format.language.cpp.enable": true,
+    "clang-format.language.cpp.style": "file",
+    "clang-format.assumeFilename": ".clangformat",
     "C_Cpp.workspaceParsingPriority": "high",
-    //"clang-format.executable": "/opt/clang-format-static/clang-format-16",
+    "clang-format.executable": "/usr/bin/clang-format",
     "cmake.automaticReconfigure": true,
     "cmake.buildBeforeRun": true,
     "cmake.buildTask": false,
@@ -23,7 +26,7 @@
     "cmake.languageSupport.enableFileAPI": true,
     "cmake.launchBehavior": "breakAndReuseTerminal",
     "cmake.outputLogEncoding": "utf-8",
-    //"cmake.parallelJobs": 12,
+    "cmake.parallelJobs": 42,
     "cmake.parseBuildDiagnostics": true,
     "cmake.useCMakePresets": "always",
     "debug.autoExpandLazyVariables": true,
@@ -40,7 +43,6 @@
     "diffEditor.experimental.showMoves": true,
     "diffEditor.experimental.useVersion2": true,
     "docsView.documentationView.updateMode": "sticky",
-    "dotnet.defaultSolution": "disable",
     "editor.autoClosingBrackets": "beforeWhitespace",
     "editor.bracketPairColorization.enabled": false,
     "editor.codeLens": false,
@@ -78,7 +80,6 @@
     "search.maxResults": null,
     "search.showLineNumbers": true,
     "search.useIgnoreFiles": false,
-    "telemetry.telemetryLevel": "off",
     "terminal.integrated.automationProfile.linux": {
         "path": "/usr/bin/bash"
     },
@@ -101,7 +102,4 @@
     "workbench.editor.untitled.labelFormat": "name",
     "workbench.list.smoothScrolling": true,
     "workbench.tree.renderIndentGuides": "always",
-    "[shellscript]": {
-        "editor.defaultFormatter": "foxundermoon.shell-format"
-    }
 }
