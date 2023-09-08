@@ -29,12 +29,6 @@ namespace rl
 
     Level::~Level()
     {
-        for (const auto& conn : m_signal_connections)
-        {
-            const auto& [signal_owner, sig, slot] = conn;
-            if (signal_owner->has_signal(sig))
-                signal_owner->disconnect(sig, slot);
-        }
     }
 
     void Level::_ready()

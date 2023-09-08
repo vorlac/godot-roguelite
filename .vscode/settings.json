@@ -100,4 +100,5 @@
     "workbench.editor.untitled.labelFormat": "name",
     "workbench.list.smoothScrolling": true,
     "workbench.tree.renderIndentGuides": "always",
+    "dotnet.defaultSolution": "disable",
 }
