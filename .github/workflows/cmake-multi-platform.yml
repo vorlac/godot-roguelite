@@ -18,18 +18,24 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
-      
+
       #- name: Install dependencies
       #  run: pip install --user scons
-      
-      - name: Configure (Linux)
-        run: >    
-          cmake -B ${{ github.workspace }}/.out 
+
+      - name:  cmake - delete cache (linux | debug | gcc)
+        run: rm -rf ${{ github.workspace }}/.out/*
+
+      - name: cmake - configure (linux | debug | gcc)
+        run: >
+          cmake -B ${{ github.workspace }}/.out
           -DCMAKE_CXX_COMPILER=g++
-          -DCMAKE_C_COMPILER=gcc 
-          -DCMAKE_BUILD_TYPE=Debug 
+          -DCMAKE_C_COMPILER=gcc
+          -DCMAKE_BUILD_TYPE=Debug
           -S ${{ github.workspace }}
-      
-      - name: Build (Linux)
-        run: cmake --build ${{ github.workspace }}/.out --config Debug --parallel $(nproc)
-        
+          -G Ninja
+
+      - name: rebuild - clean (linux)
+        run: cmake --build ${{ github.workspace }}/.out --config Debug --target clean --parallel $(nproc)
+
+      - name: rebuild - build (linux)
+        run: cmake --build ${{ github.workspace }}/.out --config Debug --target roguelite --parallel $(nproc)

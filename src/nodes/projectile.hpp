@@ -1,36 +1,38 @@
 #pragma once
 
-#include "util/bind.hpp"
+#include "util/attributes.hpp"
 
 #include <godot_cpp/classes/area2d.hpp>
 #include <godot_cpp/variant/vector2.hpp>
 
-namespace rl
+namespace rl::inline node
 {
     class Projectile : public godot::Area2D
     {
         GDCLASS(Projectile, godot::Area2D);
 
     public:
-        Projectile();
-        virtual ~Projectile();
+        Projectile() = default;
+        virtual ~Projectile() = default;
 
         void _ready() override;
         void _process(double delta_time) override;
 
-        [[node_property]] double get_movement_speed() const;
-        [[node_property]] double get_time_to_live() const;
-        [[node_property]] double get_max_travel_dist() const;
-        [[node_property]] double get_acceleration() const;
-        [[node_property]] godot::Vector2 get_velocity() const;
-        [[node_property]] void set_movement_speed(const double speed);
-        [[node_property]] void set_time_to_live(const double ttl);
-        [[node_property]] void set_max_travel_dist(const double dist);
-        [[node_property]] void set_acceleration(const double acceleration);
-        [[node_property]] void set_velocity(const godot::Vector2& velocity);
+        [[property]] double get_movement_speed() const;
+        [[property]] double get_time_to_live() const;
+        [[property]] double get_max_travel_dist() const;
+        [[property]] double get_acceleration() const;
+        [[property]] godot::Vector2 get_velocity() const;
+        [[property]] void set_movement_speed(const double speed);
+        [[property]] void set_time_to_live(const double ttl);
+        [[property]] void set_max_travel_dist(const double dist);
+        [[property]] void set_acceleration(const double acceleration);
+        [[property]] void set_velocity(const godot::Vector2& velocity);
 
     protected:
-        static void _bind_methods();
+        static void _bind_methods()
+        {
+        }
 
     protected:
         // projectile movement velocity (pixels)

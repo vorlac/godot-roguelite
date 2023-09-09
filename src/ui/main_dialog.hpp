@@ -1,18 +1,19 @@
 #pragma once
 
+#include "nodes/level.hpp"
+
 #include <godot_cpp/classes/panel.hpp>
 #include <godot_cpp/classes/rich_text_label.hpp>
 
-namespace rl
+namespace rl::inline ui
 {
-    class Level;
-
     class MainDialog : public godot::Panel
     {
-        GDCLASS(MainDialog, godot::Panel)
+        GDCLASS(MainDialog, godot::Panel);
+
     public:
-        MainDialog();
-        ~MainDialog();
+        MainDialog() = default;
+        ~MainDialog() = default;
 
         void _ready() override;
         void _notification(int notification);

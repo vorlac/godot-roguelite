@@ -2,7 +2,7 @@
 
 #include <godot_cpp/classes/camera2d.hpp>
 
-namespace rl
+namespace rl::inline node
 {
     class Camera : public godot::Camera2D
     {
@@ -10,10 +10,7 @@ namespace rl
 
     public:
         Camera();
-        ~Camera();
-
-        void _ready() override;
-        void _draw() override;
+        ~Camera() = default;
 
     protected:
         static void _bind_methods()

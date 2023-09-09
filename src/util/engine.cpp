@@ -6,9 +6,8 @@
 #include <godot_cpp/classes/scene_tree.hpp>
 #include <godot_cpp/classes/window.hpp>
 
-namespace rl
+namespace rl::inline utils
 {
-
     godot::Engine* engine::get()
     {
         godot::Engine* engine{ godot::Engine::get_singleton() };

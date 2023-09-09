@@ -1,21 +1,11 @@
 #include "nodes/projectile_spawner.hpp"
 
-namespace rl
+namespace rl::inline node
 {
-    ProjectileSpawner::ProjectileSpawner()
-    {
-        this->set_name("Projectile");
-    }
-
-    ProjectileSpawner::~ProjectileSpawner()
-    {
-    }
-
     [[nodiscard]]
-    rl::Projectile* ProjectileSpawner::spawn_projectile()
+    Projectile* ProjectileSpawner::spawn_projectile()
     {
-        rl::Projectile* projectile{ m_scene.instantiate() };
+        Projectile* projectile{ m_scene.instantiate() };
         return projectile;
     }
-
 }

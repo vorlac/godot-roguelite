@@ -1,210 +1,198 @@
 #pragma once
 
-#include <concepts>
-#include <tuple>
+#include "util/assert.hpp"
+#include "util/concepts.hpp"
+#include "util/conversions.hpp"
+#include "util/function_traits.hpp"
+#include "util/variant.hpp"
+
+#include <string>
+#include <string_view>
 #include <type_traits>
-#include <utility>
 #include <vector>
 
-#include <gdextension_interface.h>
-#include <godot_cpp/classes/node.hpp>
+#include <godot_cpp/classes/object.hpp>
 #include <godot_cpp/core/class_db.hpp>
-#include <godot_cpp/core/property_info.hpp>
+#include <godot_cpp/variant/callable.hpp>
 #include <godot_cpp/variant/string.hpp>
-#include <godot_cpp/variant/variant.hpp>
+#include <godot_cpp/variant/string_name.hpp>
 
 namespace rl::inline utils
 {
-
-#if defined(_MSC_VER)
-    // MSVC doesn't have a clean way to ignore custom
-    // attributes within a namespace like clang or gcc
-  #define node_property
-  #define signal_callback
-#elif defined(__GNUG__) || defined(__clang__)
-    // these macros are used to define custom attributes to label godot signal callbacks
-    // and node properties. they don't do anything other than making it easier to spot
-    // these functions when reading the code or searching for them in an IDE.
-  #define node_property   rl::godot_node_property
-  #define signal_callback rl::godot_signal_callback
-#endif
-
-    /**
-     * @brief macro to simplify and clarify the GDCLASS methods that are being binded.
-     * class_name technically isn't needed since that's already deduced in detail::method_bind<>,
-     * but it's more explicit this way and should help avoid mistakes by using this macro outside
-     * of the method's class scope.
-     *
-     * @param class_name  The name of the method's class (not a string literal, must be unquoted)
-     * @param func_name   The name of the member function being added to the bindings (not a string
-     * literal, must be unquoted)
-     */
-#define add_method_binding(class_name, func_name) \
-    signal::detail::method_bind<&class_name::func_name>::bind(#func_name)
-
-    /**
-     * @brief Container that holds onto all objects needed for signal connections
-     * @brief using: @code{.cpp} std::tuple<godot::Object*, godot::String, godot::Callable>
-     */
-#define SignalConnection(signal_owner_obj, signal_name, callback_owner_obj, callback_func_name) \
-    signal::connection                                                                          \
-    {                                                                                           \
-        signal_owner_obj, signal_name, godot::Callable                                          \
-        {                                                                                       \
-            callback_owner_obj, #callback_func_name                                             \
-        }                                                                                       \
-    }
-
-#define BindSignals(signal_list)                                                            \
-    do                                                                                      \
-    {                                                                                       \
-        for (auto&& sig : signal_list)                                                      \
-        {                                                                                   \
-            godot::ClassDB::add_signal(                                                     \
-                get_class_static(),                                                         \
-                godot::MethodInfo(sig.first, std::forward<signal::args_list>(sig.second))); \
-        }                                                                                   \
-    }                                                                                       \
-    while (false)
-
-    namespace signal
+    template <auto Method>
+        requires std::is_member_function_pointer_v<decltype(Method)>
+    struct method : public function_traits<decltype(Method)>
     {
-        // the container type that holds all objects required for a signal connection
-        using connection = std::tuple<godot::Object*, godot::String, godot::Callable>;
-        // the container type that holds a signal's argument properties
-        using args_list = std::vector<godot::PropertyInfo>;
-        // the container type that holds all properties of a given signal
-        using properties = std::pair<godot::String, args_list>;
-        // the container type that holds all signal info needed to bind them for a single class
-        using bindings = std::vector<signal::properties>;
+        using traits_t = function_traits<decltype(Method)>;
 
-        namespace detail
+        static constexpr void bind(std::string_view&& func_name)
         {
-            template <typename H>
-            void to_arg_vec_impl(std::vector<godot::String>& s, H&& h)
+            static constexpr std::size_t tup_size = std::tuple_size_v<typename traits_t::arg_types>;
+            if constexpr (tup_size == 0)
+                godot::ClassDB::bind_method(godot::D_METHOD(func_name.data()), Method);
+            else
             {
-                s.push_back(typeid(decltype(h)).name());
+                const typename traits_t::arg_types func_args{};
+                std::vector<godot::String> vec_strs = rl::detail::to_arg_vec(func_args);
+                std::tuple arg_types_str{ detail::arg_vec_to_tuple<tup_size>(vec_strs) };
+
+                std::apply(
+                    [&](auto&&... args) {
+                        godot::ClassDB::bind_method(godot::D_METHOD(func_name.data()), Method,
+                                                    args...);
+                    },
+                    arg_types_str);
             }
+        }
+    };
 
-            template <typename H, typename... T>
-            void to_arg_vec_impl(std::vector<godot::String>& s, H&& h, T&&... t)
+    template <auto Function>
+    struct callback_func : public function_traits<decltype(Function)>
+    {
+        using traits_t = function_traits<decltype(Function)>;
+
+        static void bind(std::string_view&& func_name)
+        {
+            auto class_name = godot::StringName("Main");
+            static constexpr std::size_t tup_size = std::tuple_size_v<typename traits_t::arg_types>;
+            if constexpr (tup_size == 0)
+                godot::ClassDB::bind_static_method(class_name, godot::D_METHOD(func_name.data()),
+                                                   Function);
+            else
             {
-                s.push_back(typeid(decltype(h)).name());
-                to_arg_vec_impl(s, std::forward<T>(t)...);
+                const typename traits_t::arg_types func_args{};
+                std::vector<godot::String> vec_strs = rl::detail::to_arg_vec(func_args);
+                std::tuple arg_types_str{ detail::arg_vec_to_tuple<tup_size>(vec_strs) };
+
+                std::apply(
+                    [&](auto&&... args) {
+                        godot::ClassDB::bind_static_method(
+                            class_name, godot::D_METHOD(func_name.data()), Function, args...);
+                    },
+                    func_args);
             }
+        }
+    };
 
-            template <typename... TupleTypes, std::size_t... Idx>
-            std::vector<godot::String> to_arg_vec(const std::tuple<TupleTypes...>& tup,
-                                                  std::integer_sequence<std::size_t, Idx...>)
+    struct signal_registry
+    {
+        using signal_name_t = std::string;
+        using signal_args_t = std::vector<godot::PropertyInfo>;
+        using signal_properties_t = std::pair<signal_name_t, signal_args_t>;
+        using signal_info_vec_t = std::vector<signal_properties_t>;
+        using class_signal_map_t = std::unordered_map<std::string, signal_info_vec_t>;
+
+        static inline class_signal_map_t class_bindings = {};
+    };
+
+    template <GDObjectDerived TObject, auto& SignalName>
+    class signal_binding
+    {
+    public:
+        using object_t = std::type_identity_t<TObject>;
+        using signal_t = signal_binding<object_t, SignalName>;
+        static inline constexpr std::string_view signal_name{ SignalName };
+        static inline std::vector<godot::PropertyInfo> signal_params{};
+
+        // even though we know what TObject is here (the class type adding the signal binding)
+        // we can't call TObject::get_class_static() yet since this struct is instantiated before
+        // the bindings library initializes the gdextension library, which will just lead to a
+        // crash. this will just be set with the class name at runtime when signal_binding::add() is
+        // invoked.
+        static inline std::string class_name{};
+
+    public:
+        template <typename... TArgs>
+        struct add
+        {
+            using arg_types = std::tuple<TArgs...>;
+            static constexpr inline size_t arg_count{ std::tuple_size_v<arg_types> };
+
+            add()
             {
-                std::vector<godot::String> result = {};
-                to_arg_vec_impl(result, std::get<Idx>(tup)...);
-                return result;
-            }
-
-            template <typename... TupleTypes>
-            std::vector<godot::String> to_arg_vec(const std::tuple<TupleTypes...>& tup)
-            {
-                static constexpr size_t arg_count = sizeof...(TupleTypes);
-                return to_arg_vec(tup, std::make_index_sequence<arg_count>());
-            }
-
-            template <std::size_t... Indexes>
-            auto arg_vec_to_tuple(const std::vector<godot::String>& v,
-                                  std::index_sequence<Indexes...>)
-            {
-                return std::make_tuple(v[Indexes]...);
-            }
-
-            template <std::size_t N>
-            auto arg_vec_to_tuple(const std::vector<godot::String>& v)
-            {
-                return arg_vec_to_tuple(v, std::make_index_sequence<N>());
-            }
-
-            template <typename = void>
-            struct method_traits;
-
-            template <typename TRet, typename TClass, typename... TArgs>
-            struct method_traits<TRet (TClass::*)(TArgs...)>
-            {
-                using return_type = TRet;
-                using class_type = TClass;
-                using arg_types = std::tuple<TArgs...>;
-                inline static const std::string_view class_name{ typeid(class_type).name() };
-                static constexpr size_t arg_count = sizeof...(TArgs);
-            };
-
-            template <typename TRet, typename TClass, typename... TArgs>
-            struct method_traits<TRet (TClass::*)(TArgs...) const>
-                : method_traits<TRet (TClass::*)(TArgs...)>
-            {
-                using class_type = const TClass;
-            };
-
-            template <auto Method>
-                requires std::is_member_function_pointer_v<decltype(Method)>
-            struct method_bind : public method_traits<decltype(Method)>
-            {
-                using traits_t = method_traits<decltype(Method)>;
-
-                static void bind(std::string_view&& func_name)
+                if (class_name.empty())
+                    class_name = rl::to<std::string>(object_t::get_class_static());
+                else
                 {
-                    static constexpr std::size_t tup_size =
-                        std::tuple_size_v<typename traits_t::arg_types>;
+                    std::string temp_name = rl::to<std::string>(object_t::get_class_static());
+                    runtime_assert(class_name == temp_name);
+                }
 
-                    if constexpr (tup_size > 0)
-                    {
-                        const typename traits_t::arg_types func_args{};
-                        std::vector<godot::String> vec_strs = to_arg_vec(func_args);
-                        std::tuple arg_types_str{ arg_vec_to_tuple<tup_size>(vec_strs) };
+                if constexpr (arg_count == 0)
+                    godot::ClassDB::add_signal(class_name.data(),
+                                               godot::MethodInfo(signal_name.data()));
+                else
+                {
+                    arg_types signal_args{};
 
-                        std::apply(
-                            [&](auto&&... args) {
-                                godot::ClassDB::bind_method(godot::D_METHOD(func_name.data()),
-                                                            Method, args...);
-                            },
-                            arg_types_str);
-                    }
-                    else
+                    std::apply(
+                        [&](auto&&... arg) {
+                            signal_params = {
+                                variant_traits<decltype(arg)>::type_info::get_class_info()...
+                            };
+                        },
+                        signal_args);
+
+                    godot::ClassDB::add_signal(
+                        class_name.data(),
+                        godot::MethodInfo(signal_name.data(),
+                                          std::forward<decltype(signal_params)>(signal_params)));
+                }
+
+                signal_registry::class_bindings[class_name].emplace_back(signal_name,
+                                                                         signal_params);
+                runtime_assert(signal_params.size() == arg_count);
+            }
+        };
+    };
+
+    template <auto&& SignalName>
+    struct signal
+    {
+        static inline constexpr std::string_view signal_name{ SignalName };
+
+        template <GDObjectDerived TOwnerObj>
+        struct connect
+        {
+            static inline TOwnerObj* signal_owner{ nullptr };
+
+            explicit connect(TOwnerObj* owner)
+            {
+                static_assert(std::is_same_v<decltype(owner), decltype(signal_owner)>);
+                signal_owner = owner;
+
+                bool found_binding{ false };
+                const std::string class_name{
+                    godot::String(TOwnerObj::get_class_static()).ascii().ptr()
+                };
+                const auto& class_signals = signal_registry::class_bindings[class_name];
+                for (const auto& sig : class_signals)
+                {
+                    if (sig.first == signal_name)
                     {
-                        godot::ClassDB::bind_method(godot::D_METHOD(func_name.data()), Method);
+                        found_binding = true;
+                        break;
                     }
                 }
-            };
-        }
 
-        namespace todo
-        {
-            // TODO: use for propery bindings and remove the PropertyBinding struct below
-            template <typename TNode, typename TTuple>
-            int add_bindings(TTuple&& signal_bindings)
-            {
-                std::apply(
-                    [&](auto&&... signal_info_elem) {
-                        static auto func = [&](auto& signal_info...) {
-                            using godot::ClassDB;
-                            using godot::MethodInfo;
-
-                            const auto class_name{
-                                std::type_identity<TNode>::type::get_class_static()
-                            };
-
-                            auto signal_name = std::get<0>(signal_info);
-                            auto signal_params = std::get<1>(signal_info);
-                            ClassDB::add_signal(class_name, MethodInfo(signal_name, signal_params));
-                        };
-
-                        (func(signal_info_elem), ...);
-                    },
-                    signal_bindings);
+                runtime_assert(found_binding);
             }
-        }
-    }
+
+            auto operator<=>(godot::Callable&& callback)
+            {
+                // add_lambda_binding(func);
+
+                // TODO: compare and validate the arg count, raw types, and variant conversions
+                // between the matching signal binding record and the callback being connected.
+                return signal_owner->connect(signal_name.data(), callback);
+            }
+        };
+    };
 
     // TODO: get rid of this
     template <typename TGetter, typename TSetter>
     struct PropertyBinding
+
     {
         PropertyBinding(std::tuple<godot::String, godot::String>&& func_names,
                         std::tuple<TGetter, TSetter>&& func_callables,
@@ -225,4 +213,8 @@ namespace rl::inline utils
         godot::String property_name;
         godot::Variant::Type property_type{ godot::Variant::NIL };
     };
+
+#define bind_member_function(class_name, func_name) method<&class_name::func_name>::bind(#func_name)
+#define slot(slot_owner, slot_callback)             godot::Callable(slot_owner, #slot_callback)
+
 }

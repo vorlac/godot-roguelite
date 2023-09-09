@@ -1,39 +1,29 @@
 #include "ui/main_dialog.hpp"
 
-#include "nodes/level.hpp"
 #include "singletons/console.hpp"
-#include "util/debug.hpp"
+#include "util/assert.hpp"
+#include "util/conversions.hpp"
 
 #include <fmt/format.h>
 
 #include <godot_cpp/classes/canvas_layer.hpp>
 #include <godot_cpp/classes/control.hpp>
 
-namespace rl
+namespace rl::inline ui
 {
-    MainDialog::MainDialog()
-    {
-        this->set_name("MainDialog");
-    }
-
-    MainDialog::~MainDialog()
-    {
-    }
-
     void MainDialog::_ready()
     {
-        m_level = rl::as<rl::Level>(this->find_child("Level", true, false));
-        debug::runtime_assert(m_level != nullptr);
+        m_level = gdcast<rl::Level>(this->find_child("Level", true, false));
+        runtime_assert(m_level != nullptr);
 
         if (m_console_label == nullptr)
         {
             godot::Node* scene_root{ scene::tree::root_node(this) };
-            m_console_label = rl::as<godot::RichTextLabel>(
+            m_console_label = gdcast<godot::RichTextLabel>(
                 scene_root->find_child("ConsolePanel", true, false));
-
-            debug::runtime_assert(m_console_label != nullptr);
+            runtime_assert(m_console_label != nullptr);
             auto console{ Console<godot::RichTextLabel>::get() };
-            debug::runtime_assert(console != nullptr);
+            runtime_assert(console != nullptr);
             console->set_context(m_console_label);
         }
     }
@@ -52,13 +42,13 @@ namespace rl
             }
             case Control::NOTIFICATION_MOUSE_ENTER:
             {
-                debug::runtime_assert(m_level != nullptr);
+                runtime_assert(m_level != nullptr);
                 m_level->activate(true);
                 break;
             }
             case Control::NOTIFICATION_MOUSE_EXIT:
             {
-                debug::runtime_assert(m_level != nullptr);
+                runtime_assert(m_level != nullptr);
                 m_level->activate(false);
                 break;
             }

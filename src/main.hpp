@@ -14,7 +14,7 @@ namespace rl
 
     public:
         Main();
-        ~Main();
+        ~Main() = default;
 
         void _ready() override;
 
@@ -26,8 +26,8 @@ namespace rl
         }
 
     private:
-        rl::Level* m_active_level{ memnew(rl::Level) };
+        Level* m_active_level{ memnew(Level) };
         godot::CanvasLayer* m_canvas_layer{ nullptr };
-        rl::MainDialog* m_main_dialog{ nullptr };
+        MainDialog* m_main_dialog{ nullptr };
     };
 }

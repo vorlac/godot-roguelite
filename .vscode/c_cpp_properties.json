@@ -5,21 +5,21 @@
             "name": "GDNative C++ (GCC)",
             "configurationProvider": "ms-vscode.cmake-tools",
             "intelliSenseMode": "linux-gcc-x64",
-            "cppStandard": "gnu++20",
+            "cppStandard": "gnu++23",
             "compilerPath": "/usr/bin/g++"
         },
         {
             "name": "GDNative C++ (Clang)",
             "configurationProvider": "ms-vscode.cmake-tools",
             "intelliSenseMode": "linux-clang-x64",
-            "cppStandard": "gnu++20",
+            "cppStandard": "gnu++23",
             "compilerPath": "/usr/bin/clang++"
         },
         {
             "name": "GDNative C++ (MSVC)",
             "configurationProvider": "ms-vscode.cmake-tools",
             "intelliSenseMode": "windows-msvc-x64",
-            "cppStandard": "c++20",
+            "cppStandard": "c++23",
             "compilerPath": "cl"
         }
     ]

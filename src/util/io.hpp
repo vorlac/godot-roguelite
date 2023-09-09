@@ -1,13 +1,31 @@
 #pragma once
 
+#include <concepts>
+#include <locale>
+#include <memory>
+#include <span>
 #include <spdlog/spdlog.h>
+#include <string>
 #include <type_traits>
-
-#include <godot_cpp/core/error_macros.hpp>
-#include <godot_cpp/variant/string.hpp>
 
 namespace rl::inline utils
 {
+    namespace io
+    {
+
+        constexpr std::string to_lowercase(std::string str) noexcept
+        {
+            std::span<char> sp{ str.begin(), str.end() };
+            std::transform(sp.begin(), sp.end(), sp.begin(), [](char c) -> char {
+                if (c >= 'A' && c <= 'Z')
+                    return c - 32;
+                return c;
+            });
+            return std::string{ sp.data() };
+        }
+
+    }
+
     struct log
     {
         enum DetailLevel : uint_fast8_t

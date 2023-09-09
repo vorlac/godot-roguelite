@@ -5,18 +5,19 @@
 #include "util/scene.hpp"
 
 #include <godot_cpp/classes/node2d.hpp>
+#include <godot_cpp/variant/typed_array.hpp>
 
-namespace rl
+namespace rl::inline node
 {
     class ProjectileSpawner : public godot::Node2D
     {
         GDCLASS(ProjectileSpawner, godot::Node2D);
 
     public:
-        ProjectileSpawner();
-        virtual ~ProjectileSpawner();
+        ProjectileSpawner() = default;
+        virtual ~ProjectileSpawner() = default;
 
-        rl::Projectile* spawn_projectile();
+        Projectile* spawn_projectile();
 
     protected:
         static void _bind_methods()
@@ -24,6 +25,6 @@ namespace rl
         }
 
     protected:
-        resource::preload::scene<rl::Projectile> m_scene{ path::scene::Bullet };
+        resource::preload::scene<Projectile> m_scene{ path::scene::Bullet };
     };
 }
