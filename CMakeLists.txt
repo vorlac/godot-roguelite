@@ -5,7 +5,7 @@
 
 # =======================================================================
 # VCPKG submodule init/update. Needs to happen before anything else
-# because this submodule contains a toolchain file needed for the 
+# because this submodule contains a toolchain file needed for the
 # main project configuration, which must set before project() is called
 # =======================================================================
 
@@ -45,7 +45,7 @@ string(TOLOWER "${CMAKE_SYSTEM_NAME}" host_os)
 set(VCPKG_TARGET_TRIPLET "x64-${host_os}-static")
 
 # needs to be >= C++17
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -272,9 +272,11 @@ target_compile_options(${gdextension_lib_name} PUBLIC
         -g
         -Wno-unused-value
         $<${compiler_is_gnu}:
+            -Wno-attributes
             -Wno-attributes=rl::
         >
         $<${compiler_is_clang}:
+            -Wno-ignored-attributes
             -Wno-unknown-attributes
         >
         $<$<CONFIG:Debug>:

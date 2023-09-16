@@ -1,17 +1,13 @@
 #pragma once
 
 #include <chrono>
-#include <concepts>
-#include <memory>
 #include <spdlog/sinks/callback_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
-#include <type_traits>
+#include <string>
 
 #include <godot_cpp/classes/object.hpp>
-#include <godot_cpp/classes/rich_text_effect.hpp>
 #include <godot_cpp/classes/rich_text_label.hpp>
-#include <godot_cpp/core/class_db.hpp>
 
 namespace rl
 {
@@ -70,8 +66,7 @@ namespace rl
             callbk_sink->set_level(spdlog::level::debug);
 
             m_logger = std::unique_ptr<spdlog::logger>(
-                new spdlog::logger{ "custom_callback_logger",
-                                    { stdout_sink, stderr_sink, callbk_sink } });
+                new spdlog::logger{ "custom_callback_logger", { stdout_sink, stderr_sink, callbk_sink } });
 
             m_logger->info("some info log");
             m_logger->error("critical issue");  // will notify you

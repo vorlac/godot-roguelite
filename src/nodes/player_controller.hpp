@@ -3,15 +3,15 @@
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/node2d.hpp>
 
-namespace rl
+namespace rl::inline node
 {
     class PlayerController : public godot::Node2D
     {
         GDCLASS(PlayerController, godot::Node2D);
 
     public:
-        PlayerController();
-        ~PlayerController();
+        PlayerController() = default;
+        ~PlayerController() = default;
 
         void _process(double delta_time) override;
 
@@ -29,7 +29,6 @@ namespace rl
         InputMode get_input_mode(godot::Input* const input);
 
         static void _bind_methods();
-        static void bind_signals();
 
     protected:
         // the active input mode for character controls

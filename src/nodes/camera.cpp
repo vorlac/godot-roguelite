@@ -2,7 +2,7 @@
 
 #include <godot_cpp/classes/camera2d.hpp>
 
-namespace rl
+namespace rl::inline node
 {
     Camera::Camera()
     {
@@ -10,17 +10,5 @@ namespace rl
         this->set_margin_drawing_enabled(true);
         auto anchor{ AnchorMode::ANCHOR_MODE_DRAG_CENTER };
         this->set_anchor_mode(anchor);
-    }
-
-    Camera::~Camera()
-    {
-    }
-
-    void Camera::_ready()
-    {
-    }
-
-    void Camera::_draw()
-    {
     }
 }

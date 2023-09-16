@@ -1,11 +1,11 @@
 #include "api/extension_interface.hpp"
 
-#include "nodes/level.hpp"
-#include "nodes/projectile_spawner.hpp"
 #include "main.hpp"
 #include "nodes/camera.hpp"
 #include "nodes/character.hpp"
+#include "nodes/level.hpp"
 #include "nodes/player_controller.hpp"
+#include "nodes/projectile_spawner.hpp"
 #include "singletons/console.hpp"
 #include "ui/main_dialog.hpp"
 #include "util/engine.hpp"
@@ -21,13 +21,13 @@ namespace godot
 {
     static inline rl::Console<RichTextLabel>* console_singleton{ nullptr };
 
-    void initialize_singletons()
+    void initialize_static_objects()
     {
         console_singleton = memnew(rl::Console<RichTextLabel>);
         rl::engine::get()->register_singleton("Console", rl::Console<RichTextLabel>::get());
     }
 
-    void teardown_singletons()
+    void teardown_static_objects()
     {
         rl::engine::get()->unregister_singleton("Console");
         memdelete(console_singleton);
@@ -48,7 +48,7 @@ namespace godot
         ClassDB::register_class<rl::MainDialog>();
         ClassDB::register_class<rl::Main>();
 
-        initialize_singletons();
+        initialize_static_objects();
     }
 
     void uninitialize_extension_module(ModuleInitializationLevel init_level)
@@ -56,7 +56,7 @@ namespace godot
         if (init_level != MODULE_INITIALIZATION_LEVEL_SCENE)
             return;
 
-        teardown_singletons();
+        teardown_static_objects();
     }
 
     extern "C"

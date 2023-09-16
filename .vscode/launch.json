@@ -14,6 +14,10 @@
         "program": "${workspaceFolder}/extern/godot-engine/bin/godot.linuxbsd.editor.dev.x86_64",
         "miDebuggerPath": "/usr/bin/gdb"
       },
+      "windows": {
+        "program": "${workspaceFolder}/extern/godot-engine/bin/godot.windows.editor.dev.x86_64.exe",
+        "miDebuggerPath": "C:\\tools\\mingw64\\bin\\gdb.exe"
+      },
       "args": [
         "--debug",
         "--verbose",

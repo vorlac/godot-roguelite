@@ -1,20 +1,9 @@
 #include "nodes/projectile.hpp"
 
-namespace rl
+#include <godot_cpp/variant/vector2.hpp>
+
+namespace rl::inline node
 {
-    Projectile::Projectile()
-    {
-        this->set_name("Projectile");
-    }
-
-    Projectile::~Projectile()
-    {
-    }
-
-    void Projectile::_bind_methods()
-    {
-    }
-
     void Projectile::_ready()
     {
         m_start_pos = this->get_global_position();
@@ -43,49 +32,49 @@ namespace rl
         }
     }
 
-    [[node_property]]
+    [[property]]
     double Projectile::get_movement_speed() const
     {
         return m_movement_speed;
     }
 
-    [[node_property]]
+    [[property]]
     double Projectile::get_time_to_live() const
     {
         return m_time_to_live;
     }
 
-    [[node_property]]
+    [[property]]
     double Projectile::get_max_travel_dist() const
     {
         return godot::Math::sqrt(m_max_travel_dist);
     }
 
-    [[node_property]]
+    [[property]]
     godot::Vector2 Projectile::get_velocity() const
     {
         return m_velocity;
     }
 
-    [[node_property]]
+    [[property]]
     void Projectile::set_movement_speed(const double speed)
     {
         m_movement_speed = speed;
     }
 
-    [[node_property]]
+    [[property]]
     void Projectile::set_time_to_live(const double ttl)
     {
         m_time_to_live = ttl;
     }
 
-    [[node_property]]
+    [[property]]
     void Projectile::set_max_travel_dist(const double dist)
     {
         m_max_travel_dist = { dist * dist };
     }
 
-    [[node_property]]
+    [[property]]
     void Projectile::set_velocity(const godot::Vector2& velocity)
     {
         m_velocity = velocity;
