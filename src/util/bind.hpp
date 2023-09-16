@@ -17,6 +17,9 @@
 #include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/string_name.hpp>
 
+#define bind_member_function(class_name, func_name) method<&class_name::func_name>::bind(#func_name)
+#define slot(slot_owner, slot_callback)             godot::Callable(slot_owner, #slot_callback)
+
 namespace rl::inline utils
 {
     template <auto Method>
@@ -149,22 +152,24 @@ namespace rl::inline utils
     template <auto&& SignalName>
     struct signal
     {
+    public:
         static inline constexpr std::string_view signal_name{ SignalName };
 
+    public:
         template <GDObjectDerived TOwnerObj>
         struct connect
         {
+        public:
             static inline TOwnerObj* signal_owner{ nullptr };
 
+        public:
             explicit connect(TOwnerObj* owner)
             {
                 static_assert(std::is_same_v<decltype(owner), decltype(signal_owner)>);
-                signal_owner = owner;
 
+                signal_owner = owner;
                 bool found_binding{ false };
-                const std::string class_name{
-                    godot::String(TOwnerObj::get_class_static()).ascii().ptr()
-                };
+                const std::string class_name = rl::to<std::string>(TOwnerObj::get_class_static());
                 const auto& class_signals = signal_registry::class_bindings[class_name];
                 for (const auto& sig : class_signals)
                 {
@@ -180,8 +185,6 @@ namespace rl::inline utils
 
             auto operator<=>(godot::Callable&& callback)
             {
-                // add_lambda_binding(func);
-
                 // TODO: compare and validate the arg count, raw types, and variant conversions
                 // between the matching signal binding record and the callback being connected.
                 return signal_owner->connect(signal_name.data(), callback);
@@ -213,8 +216,4 @@ namespace rl::inline utils
         godot::String property_name;
         godot::Variant::Type property_type{ godot::Variant::NIL };
     };
-
-#define bind_member_function(class_name, func_name) method<&class_name::func_name>::bind(#func_name)
-#define slot(slot_owner, slot_callback)             godot::Callable(slot_owner, #slot_callback)
-
 }

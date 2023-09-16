@@ -34,6 +34,7 @@
       while (false)
 
   #define runtime_assert(condition) assertion(condition, "validation check failed")
+
 #else
   //
   // In release mode the macro does nothing ((void)0), including
