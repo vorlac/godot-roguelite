@@ -5,7 +5,6 @@
 #include <string_view>
 #include <type_traits>
 
-#include <godot_cpp/classes/ref.hpp>
 #include <godot_cpp/core/object.hpp>
 #include <godot_cpp/variant/char_string.hpp>
 #include <godot_cpp/variant/string.hpp>
@@ -21,32 +20,38 @@ namespace rl::inline utils
     }
 
     template <typename TOut>
-    inline auto to(auto in) -> TOut
+    inline auto to(const auto& in) -> TOut
     {
         return TOut(in);
     }
 
     template <>
-    inline auto to(godot::String in) -> std::string
+    inline auto to(const godot::String& in) -> std::string
     {
+        static_assert(std::is_same_v<godot::String, std::remove_cvref_t<decltype(in)>>);
         return std::string(in.ascii().ptr());
     }
 
     template <>
-    inline auto to(godot::String in) -> std::string_view
+    inline auto to(const godot::String& in) -> std::string_view
     {
+        static_assert(std::is_same_v<godot::String, std::remove_cvref_t<decltype(in)>>);
         return std::string_view(in.ascii().ptr());
     }
 
     template <>
-    inline auto to(godot::StringName in) -> std::string
+    inline auto to(const godot::StringName& in) -> std::string
     {
-        return std::string(godot::String(in).ascii().ptr());
+        static_assert(std::is_same_v<godot::StringName, std::remove_cvref_t<decltype(in)>>);
+        godot::String tmp(in);
+        return std::string(tmp.ascii().ptr());
     }
 
     template <>
-    inline auto to(godot::StringName in) -> std::string_view
+    inline auto to(const godot::StringName& in) -> std::string_view
     {
-        return std::string_view(godot::String(in).ascii().ptr());
+        static_assert(std::is_same_v<godot::StringName, std::remove_cvref_t<decltype(in)>>);
+        godot::String tmp(in);
+        return std::string_view(tmp.ascii().ptr());
     }
 }

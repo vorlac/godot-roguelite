@@ -35,6 +35,7 @@ namespace rl::inline node
         }
 
     protected:
+        godot::Vector2 m_start_pos{ 0.0, 0.0 };
         // projectile movement velocity (pixels)
         godot::Vector2 m_velocity{ 1.0, 1.0 };
         // projectile movement speed (pixels/s)
@@ -45,8 +46,5 @@ namespace rl::inline node
         double m_time_to_live{ 1.0 };
         // max travel distance (pixels) - uint32_t?
         double m_max_travel_dist{ 1000.0 * 1000.0 };
-
-    protected:
-        godot::Vector2 m_start_pos{ 0.0, 0.0 };
     };
 }

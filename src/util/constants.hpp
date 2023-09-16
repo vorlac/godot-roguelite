@@ -32,7 +32,7 @@ namespace rl::inline constants
 
         namespace ui
         {
-            static constexpr auto MainDialog{ "res://assets/scenes/ui/dialogs/main_dialog.tscn" };
+            constexpr inline auto MainDialog{ "res://assets/scenes/ui/dialogs/main_dialog.tscn" };
         }
     }
 }
