@@ -30,7 +30,7 @@ namespace rl::inline utils
 
         static constexpr void bind(std::string_view&& func_name)
         {
-            static constexpr std::size_t tup_size = std::tuple_size_v<typename traits_t::arg_types>;
+            constexpr std::size_t tup_size = std::tuple_size_v<typename traits_t::arg_types>;
             if constexpr (tup_size == 0)
                 godot::ClassDB::bind_method(godot::D_METHOD(func_name.data()), Method);
             else

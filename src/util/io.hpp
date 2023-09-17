@@ -1,29 +1,33 @@
 #pragma once
 
+#include <algorithm>
 #include <concepts>
+#include <functional>
 #include <locale>
 #include <memory>
+#include <ranges>
 #include <span>
 #include <spdlog/spdlog.h>
 #include <string>
+#include <string_view>
 #include <type_traits>
 
 namespace rl::inline utils
 {
     namespace io
     {
+        // inline constexpr auto to_lowercase(std::string_view str) noexcept
+        //{
+        //     std::span<char> sp{ str.begin(), str.end() };
+        //     std::transform(sp.begin(), sp.end(), sp.begin(), [](char c) -> char {
+        //         if (c >= 'A' && c <= 'Z')
+        //             return c - 32;
+        //         return c;
+        //     });
+        //     return str.data();
+        // }
 
-        constexpr std::string to_lowercase(std::string str) noexcept
-        {
-            std::span<char> sp{ str.begin(), str.end() };
-            std::transform(sp.begin(), sp.end(), sp.begin(), [](char c) -> char {
-                if (c >= 'A' && c <= 'Z')
-                    return c - 32;
-                return c;
-            });
-            return std::string{ sp.data() };
-        }
-
+        // constexpr const char* test{ std::move(to_lowercase("ASDF")) };
     }
 
     struct log

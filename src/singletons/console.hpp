@@ -1,6 +1,8 @@
 #pragma once
 
 #include <chrono>
+#include <fmt/chrono.h>
+#include <fmt/core.h>
 #include <spdlog/sinks/callback_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
@@ -56,8 +58,14 @@ namespace rl
                         if (m_gui_console == nullptr)
                             return;
 
-                        std::string tmp{ msg.payload.begin(), msg.payload.end() };
-                        m_gui_console->append_text(tmp.c_str());
+                        using duration_t = std::chrono::duration<double>;
+                        const duration_t elapsed{ clock_t::now() - m_start_time };
+
+                        m_gui_console->append_text(
+                            fmt::format("{:5} [{:>7.2}] [b]=>[/b] [color=yellow]{}[/color]",
+                                        m_line_num.fetch_add(1, std::memory_order_relaxed), elapsed,
+                                        msg.payload)
+                                .c_str());
                     }
                 }) };
 
@@ -66,10 +74,8 @@ namespace rl
             callbk_sink->set_level(spdlog::level::debug);
 
             m_logger = std::unique_ptr<spdlog::logger>(
-                new spdlog::logger{ "custom_callback_logger", { stdout_sink, stderr_sink, callbk_sink } });
-
-            m_logger->info("some info log");
-            m_logger->error("critical issue");  // will notify you
+                new spdlog::logger{ "custom_callback_logger",
+                                    { stdout_sink, stderr_sink, callbk_sink } });
 
             using namespace std::chrono_literals;
             spdlog::flush_every(0.25s);
@@ -93,7 +99,11 @@ namespace rl
     private:
         std::unique_ptr<spdlog::logger> m_logger{ nullptr };
         std::atomic<bool> m_stop{ false };
+        std::atomic<uint32_t> m_line_num{ 0 };
         TContext* m_gui_console{ nullptr };
+
+        using clock_t = std::chrono::high_resolution_clock;
+        const clock_t::time_point m_start_time{ clock_t::now() };
 
     private:
         static inline rl::Console<TContext>* m_static_inst{ nullptr };

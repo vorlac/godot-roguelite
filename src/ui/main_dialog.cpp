@@ -55,6 +55,6 @@ namespace rl::inline ui
         }
 
         Console<godot::RichTextLabel>::get()->info_msg(
-            fmt::format("=> notification: {}\n", notification));
+            fmt::format("notification: {}\n", notification));
     }
 }
