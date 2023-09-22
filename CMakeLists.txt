@@ -135,8 +135,11 @@ endif()
 # Godot editor/engine debug build
 # =======================================================================
 
+# define variable to be used in the engine build when specifying platform.
 set(host_os_engine "${host_os}")
 if(UNIX)
+    # the scons build expects linuxbsd to be passed in as the platform 
+    # when building on linux, so just append bsd to CMAKE_SYSTEM_NAME
     set(host_os_engine "${host_os}bsd")
 endif()
 
@@ -146,6 +149,8 @@ set(godot_debug_editor_executable
 
 message(NOTICE "godot_debug_editor_executable = ${godot_debug_editor_executable}")
 
+# if the engine/editor executable isn't found in the
+# engine's submodule bin folder, invoke the scons build.
 if(NOT EXISTS "${godot_debug_editor_executable}")
     message("Godot engine debug binaries not found, invoking debug build of engine...")
 
@@ -196,8 +201,18 @@ file(GLOB_RECURSE godot_engine_sources CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/*.[hc]pp"
 )
 
-# add the engine sources as a library so intellisense actually works
+# add the engine sources as a library so intellisense works in VS and VSCode 
+# (and any other IDEs that support CMake in a way where the information from 
+# the CMake build is fed into the IDE for additional context about the code 
+# when browsing/debugging). even though the engine is being added as a library here, 
+# the EXCLUDE_FROM_ALL option will prevent it from compiling. This is done 
+# purely for IDE integration so it's able to properly navigate the engine
+# source code using features like "go do definition", or typical tooltips.
 add_library(godot_engine EXCLUDE_FROM_ALL ${godot_engine_sources})
+
+# this is just a handful of additional include directories used by the engine.
+# this isn't a complete list, I just add them as needed whenever I venture into 
+# code where the IDE can't find certain header files during engine source browsing.
 target_include_directories(godot_engine PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine"
     "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/platform/windows"
@@ -208,7 +223,9 @@ target_include_directories(godot_engine PUBLIC
 )
 
 # define a bunch of the same symbol definitions
-# used when the engine was build using scons
+# used when by the scons engine build. These build 
+# flags can differen based on the engine's build for 
+# you system. Update as needed for your setup.
 target_compile_definitions(godot_engine PUBLIC
     $<$<CONFIG:Debug>:
         DEBUG_ENABLED
@@ -237,7 +254,10 @@ target_compile_definitions(godot_engine PUBLIC
 # GDExtension dynamic library setup/configuration
 # =======================================================================
 
-# create gdextension dynamic lib from the project src
+# create gdextension dynamic lib from the project sources.
+# CONFIGURE_DEPENDS here will forcefully invoke a reconfiguration
+# of the project any time the GLOB call results in a different
+# files listing of all sources present within the src/ directory.
 file(GLOB_RECURSE roguelite_sources CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.[hc]"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.[hc]pp"
@@ -246,13 +266,17 @@ file(GLOB_RECURSE roguelite_sources CONFIGURE_DEPENDS
 # add the gdextension dynamic library
 add_library(${gdextension_lib_name} SHARED ${roguelite_sources})
 
+# used below to conditionally set certain compile options depending on the toolset used.
+# taken from godot-cpp's cmakelists.txt for consistency (along with some of the compiler 
+# options defined in target_compile_options() below).
 set(compiler_is_clang "$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:Clang>>")
 set(compiler_is_gnu "$<CXX_COMPILER_ID:GNU>")
 set(compiler_is_msvc "$<CXX_COMPILER_ID:MSVC>")
 
+# import the same compiler warning settings that the bindings library uses
 include("${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-cpp/cmake/GodotCompilerWarnings.cmake")
 
-# set compiler options for the gdextension library
+# set compiler options for the gdextension library based on the compiler being used
 target_compile_options(${gdextension_lib_name} PUBLIC
     $<${compiler_is_msvc}:
         /EHsc
@@ -287,10 +311,13 @@ target_compile_options(${gdextension_lib_name} PUBLIC
     >
 )
 
+# define include directories for the gdextension library
 target_include_directories(${gdextension_lib_name} PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
 )
 
+# linker options for the gdextension library, also taken 
+# from godot-cpp's cmakelists.txt for consistency
 target_link_options(${gdextension_lib_name} PRIVATE
     $<$<NOT:${compiler_is_msvc}>:
         -static-libgcc
@@ -303,7 +330,8 @@ target_link_options(${gdextension_lib_name} PRIVATE
 # Dependency linkage
 # =======================================================================
 
-# link gdextension to the cpp bindings library
+# link gdextension to the cpp bindings library 
+# and all 3rd pary libs brought in by vcpkg
 target_link_libraries(${gdextension_lib_name}
     PUBLIC godot::cpp
     PRIVATE fmt::fmt
@@ -315,5 +343,7 @@ target_link_libraries(${gdextension_lib_name}
 # Print configuration report
 # =======================================================================
 
+# include utility script that prints a handful of 
+# useful build/configuration cmake variables
 include(${CMAKE_SOURCE_DIR}/scripts/cmake/utils.cmake)
 print_project_variables()
