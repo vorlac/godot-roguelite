@@ -1,10 +1,10 @@
 [gd_scene load_steps=10 format=3 uid="uid://3d84gof8ehwq"]
 
-[ext_resource type="Theme" path="res://assets/scenes/ui/themes/ui_theme.tres" id="1_lp5so"]
+[ext_resource type="Theme" uid="uid://bjiaijiglw4a3" path="res://assets/themes/ui_theme.tres" id="1_lp5so"]
 [ext_resource type="Theme" path="res://assets/themes/fira_code_font_theme.tres" id="2_jha0r"]
-[ext_resource type="FontFile" path="res://assets/themes/fonts/firacode/FiraCode-Regular.ttf" id="3_rno71"]
-[ext_resource type="FontFile" path="res://assets/themes/fonts/firacode/FiraCode-Bold.ttf" id="4_l2181"]
-[ext_resource type="FontFile" path="res://assets/themes/fonts/firacode/FiraCode-Retina.ttf" id="5_gla07"]
+[ext_resource type="FontFile" uid="uid://lji1chr0mml6" path="res://assets/themes/fonts/firacode/FiraCode-Regular.ttf" id="3_rno71"]
+[ext_resource type="FontFile" uid="uid://dbinrxod16epq" path="res://assets/themes/fonts/firacode/FiraCode-Bold.ttf" id="4_l2181"]
+[ext_resource type="FontFile" uid="uid://87atl2gx7ih" path="res://assets/themes/fonts/firacode/FiraCode-Retina.ttf" id="5_gla07"]
 [ext_resource type="StyleBox" path="res://assets/themes/console_text_box.tres" id="5_k0ydj"]
 [ext_resource type="Theme" path="res://assets/themes/default.tres" id="7_hq11r"]
 
