@@ -10,7 +10,7 @@
 # =======================================================================
 
 # confirm we found the vcpkg submodule ports dir.
-# if the sources list is empty, the submodule probably
+# if the ports dir isn't found, the submodule probably
 # hasn't been initialized or updated yet.
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/ports")
     message(NOTICE "VCPKG package manager sources not found")
@@ -25,10 +25,8 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/ports")
     )
 endif()
 
-# define toolchain file early for vcpkg. only set the variable if the file exists.
-# if this is the first configuration after a clean clone of this repo, this file
-# won't exist until the submodule is initialized below. configuration will fail if this
-# is set to a path that doesn't exist, so only set it after the first pass of configuration
+# define toolchain file early for vcpkg. 
+# this will be pulled in by the vcpkg submodule initialized above
 if(NOT CMAKE_TOOLCHAIN_FILE)
     set(toolchain_file_path "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/scripts/buildsystems/vcpkg.cmake")
     if (EXISTS "${toolchain_file_path}")
