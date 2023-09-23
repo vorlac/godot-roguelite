@@ -54,6 +54,11 @@ namespace rl::inline node
             }();
     }
 
+    PlayerController* Character::get_controller() const
+    {
+        return m_player_controller;
+    }
+
     [[signal_slot]]
     void Character::on_player_movement(godot::Vector2 movement_velocity, double delta_time)
     {

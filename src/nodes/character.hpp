@@ -21,6 +21,9 @@ namespace rl::inline node
 
         void _ready() override;
 
+        PlayerController* get_controller() const;
+
+    protected:
         [[property]] double get_movement_speed() const;
         [[property]] double get_movement_friction() const;
         [[property]] double get_rotation_speed() const;
@@ -30,8 +33,7 @@ namespace rl::inline node
 
         [[signal_slot]] void on_player_shoot();
         [[signal_slot]] void on_player_rotate(double rotation_angle, double delta_time);
-        [[signal_slot]] void on_player_movement(godot::Vector2 movement_velocity,
-                                                double delta_time);
+        [[signal_slot]] void on_player_movement(godot::Vector2 movement_velocity, double delta_time);
 
     protected:
         static void _bind_methods();

@@ -1,4 +1,5 @@
 #include "nodes/player_controller.hpp"
+
 #include "util/bind.hpp"
 #include "util/constants.hpp"
 #include "util/engine.hpp"
@@ -94,7 +95,7 @@ namespace rl::inline node
                     godot::Vector2 target_rotation{ input->get_vector("rotate_left", "rotate_right",
                                                                       "rotate_up", "rotate_down") };
                     if (!target_rotation.is_zero_approx())
-                        m_rotation_angle = godot::Vector2{ 0, 0 }.angle_to_point(target_rotation) +
+                        m_rotation_angle = godot::Vector2(0, 0).angle_to_point(target_rotation) +
                                            godot::Math::deg_to_rad(90.0);
                 }
                 break;
@@ -109,5 +110,6 @@ namespace rl::inline node
         signal_binding<PlayerController, event::player_move>::add<godot::Vector2, double>();
         signal_binding<PlayerController, event::player_rotate>::add<double, double>();
         signal_binding<PlayerController, event::player_shoot>::add<godot::Object*>();
+        signal_binding<PlayerController, event::position_changed>::add<godot::Object*, godot::Vector2>();
     }
 }

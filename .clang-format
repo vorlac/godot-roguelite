@@ -123,8 +123,8 @@ PenaltyBreakComment: 50
 PenaltyBreakFirstLessLess: 120
 PenaltyBreakOpenParenthesis: 10
 PenaltyBreakString: 1000
-PenaltyBreakTemplateDeclaration: 10
-PenaltyExcessCharacter: 1000000
+PenaltyBreakTemplateDeclaration: 1000
+PenaltyExcessCharacter: 10
 PenaltyReturnTypeOnItsOwnLine: 100
 PenaltyIndentedWhitespace: 0
 PointerAlignment: Left

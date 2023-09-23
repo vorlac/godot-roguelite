@@ -1,14 +1,19 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://csam3a1tugjo4"]
 
-[ext_resource type="Texture2D" path="res://assets/art/topdown/tanks_redux/projectiles/bulletdark1_outline.png" id="1_sadn1"]
+[ext_resource type="Texture2D" uid="uid://cbx5pr44nef0m" path="res://assets/art/topdown/tanks_redux/projectiles/bulletdark1_outline.png" id="1_sadn1"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_70ybn"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_i8hct"]
+radius = 10.0
+height = 35.0
 
 [node name="Projectile" type="Projectile"]
-
-[node name="Bullet" type="Sprite2D" parent="."]
-texture = ExtResource("1_sadn1")
+scale = Vector2(0.5, 0.5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2(0.8, 0.8)
-shape = SubResource("CircleShape2D_70ybn")
+rotation = 0.785398
+scale = Vector2(0.75, 0.75)
+shape = SubResource("CapsuleShape2D_i8hct")
+
+[node name="Bullet" type="Sprite2D" parent="CollisionShape2D"]
+scale = Vector2(1.33333, 1.33333)
+texture = ExtResource("1_sadn1")

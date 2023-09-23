@@ -1,5 +1,7 @@
 #include "nodes/projectile.hpp"
 
+#include "util/engine.hpp"
+
 #include <godot_cpp/variant/vector2.hpp>
 
 namespace rl::inline node
@@ -11,6 +13,9 @@ namespace rl::inline node
 
     void Projectile::_process(double delta_time)
     {
+        if (engine::editor_active())
+            return;
+
         godot::Vector2 position{ this->get_position() };
         position += m_velocity * m_movement_speed * delta_time;
         this->set_position(position);

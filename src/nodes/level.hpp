@@ -1,7 +1,10 @@
 #pragma once
 
+#include "nodes/character.hpp"
 #include "nodes/projectile_spawner.hpp"
 #include "util/bind.hpp"
+#include "util/constants.hpp"
+#include "util/scene.hpp"
 
 #include <atomic>
 #include <vector>
@@ -37,7 +40,8 @@ namespace rl::inline node
 
     private:
         std::atomic<bool> m_active{ false };
+        resource::preload::scene<Character> player_scene{ path::scene::Player };
+        ProjectileSpawner* m_projectile_spawner{ memnew(rl::ProjectileSpawner) };
         Character* m_player{ nullptr };
-        ProjectileSpawner* m_projectile_spawner{ nullptr };
     };
 }

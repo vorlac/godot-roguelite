@@ -1,6 +1,7 @@
 #include "nodes/level.hpp"
 
 #include "nodes/character.hpp"
+#include "singletons/console.hpp"
 #include "util/bind.hpp"
 #include "util/conversions.hpp"
 #include "util/debug.hpp"
@@ -14,6 +15,7 @@
 namespace rl::inline node
 {
     Level::Level()
+        : m_player{ player_scene.instantiate() }
     {
         // TODO: kill magic string
         scene::node::set_unique_name(this, "Level1");
@@ -22,20 +24,14 @@ namespace rl::inline node
 
     void Level::_ready()
     {
-        resource::preload::scene<Character> player_scene{ path::scene::Player };
-        m_player = player_scene.instantiate();
-        m_projectile_spawner = memnew(rl::ProjectileSpawner);
-
         this->add_child(m_player);
         this->add_child(m_projectile_spawner);
 
-        signal<event::position_changed>::connect<Character>(m_player) <=> [this]() {
-            return slot(this, on_character_position_changed);
-        }();
+        signal<event::position_changed>::connect<PlayerController>(m_player->get_controller()) <=>
+            slot(this, on_character_position_changed);
 
-        signal<event::spawn_projectile>::connect<Character>(m_player) <=> [this]() {
-            return slot(this, on_character_spawn_projectile);
-        }();
+        signal<event::spawn_projectile>::connect<Character>(m_player) <=>
+            slot(this, on_character_spawn_projectile);
     }
 
     void Level::_process(double delta_time)
@@ -43,9 +39,9 @@ namespace rl::inline node
         if (engine::editor_active())
             return;
 
-        if (this->active() && input::cursor_visible()) [[unlikely]]
+        if (this->active() && input::cursor_visible()) [[likely]]
             input::hide_cursor();
-        if (!this->active() && !input::cursor_visible()) [[unlikely]]
+        else if (!this->active() && !input::cursor_visible()) [[unlikely]]
             input::show_cursor();
 
         this->queue_redraw();
@@ -91,7 +87,9 @@ namespace rl::inline node
                                               godot::Vector2 location) const
     {
         runtime_assert(node != nullptr);
-        log::info(node->get_class() + " location: " + location);
+        auto console{ Console<godot::RichTextLabel>::get() };
+        console->print("{} ({},{})\n", io::green(to<std::string>(node->get_class()) + " location: "),
+                       io::orange(location.x), io::orange(location.y));
     }
 
     void Level::_bind_methods()
