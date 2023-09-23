@@ -15,25 +15,19 @@ namespace rl::inline node
 {
     Level::Level()
     {
-        godot::ResourceLoader* resource_loader{ resource::loader::get() };
-        godot::Ref<godot::Resource> background_texture{ resource_loader->load(
-            path::sprite::Background) };
-
-        m_background->set_name("BackgroundTexture");
-        m_background->set_texture(background_texture);
-        m_background->set_global_position({ 0, 0 });
-        m_background->set_centered(true);
-        m_background->set_z_index(-100);
-
-        this->set_name("Level");
+        // TODO: kill magic string
+        scene::node::set_unique_name(this, "Level1");
         this->activate(true);
     }
 
     void Level::_ready()
     {
+        resource::preload::scene<Character> player_scene{ path::scene::Player };
+        m_player = player_scene.instantiate();
+        m_projectile_spawner = memnew(rl::ProjectileSpawner);
+
         this->add_child(m_player);
         this->add_child(m_projectile_spawner);
-        this->add_child(m_background);
 
         signal<event::position_changed>::connect<Character>(m_player) <=> [this]() {
             return slot(this, on_character_position_changed);
@@ -59,12 +53,6 @@ namespace rl::inline node
 
     void Level::_draw()
     {
-        if constexpr (diag::is_enabled(diag::LevelProcess))
-        {
-            const godot::Rect2 level_bounds{ this->m_background->get_rect() };
-            this->draw_rect(level_bounds, { "RED" }, false, 5.0);
-        }
-
         if (this->active()) [[likely]]
         {
             godot::Point2 mouse_pos{ this->get_global_mouse_position() };

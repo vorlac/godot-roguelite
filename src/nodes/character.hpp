@@ -3,6 +3,7 @@
 #include "nodes/camera.hpp"
 #include "nodes/player_controller.hpp"
 #include "util/attributes.hpp"
+#include "util/scene.hpp"
 
 #include <godot_cpp/classes/character_body2d.hpp>
 #include <godot_cpp/classes/collision_shape2d.hpp>
@@ -37,16 +38,6 @@ namespace rl::inline node
         static void bind_properties();
 
     protected:
-        // the player character camera
-        Camera* m_camera{ memnew(Camera) };
-        // the player character's texture
-        godot::Sprite2D* m_sprite{ memnew(godot::Sprite2D) };
-        // the player character's collision area geometry
-        godot::CollisionShape2D* m_collision_shape{ memnew(godot::CollisionShape2D) };
-        // handles all input related player controls
-        PlayerController* m_player_controller{ memnew(PlayerController) };
-
-    protected:
         // Rate of acceleration/deceleration (unit/s/s)
         double m_movement_friction{ 5.0 };
         // Rate of rotational acceleration/deceleration (unit/s/s)
@@ -55,5 +46,10 @@ namespace rl::inline node
         double m_movement_speed{ 500.0 };
         // target facing angle (radians)
         double m_rotation_angle{ 0.0 };
+
+        // the player character camera
+        Camera* m_camera{ memnew(Camera) };
+        // handles all input related player controls
+        PlayerController* m_player_controller{ memnew(PlayerController) };
     };
 }

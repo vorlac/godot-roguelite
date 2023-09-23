@@ -15,8 +15,9 @@ namespace rl::inline node
 
     public:
         ProjectileSpawner() = default;
-        virtual ~ProjectileSpawner() = default;
+        ~ProjectileSpawner() = default;
 
+        void _ready() override;
         Projectile* spawn_projectile();
 
     protected:
@@ -25,6 +26,6 @@ namespace rl::inline node
         }
 
     protected:
-        resource::preload::scene<Projectile> m_scene{ path::scene::Bullet };
+        resource::preload::scene<Projectile> m_scene;
     };
 }

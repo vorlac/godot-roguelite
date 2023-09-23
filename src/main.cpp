@@ -9,24 +9,19 @@ namespace rl
 {
     Main::Main()
     {
-        this->set_name("Main");
-
-        resource::preload::scene<rl::MainDialog> dialog{ path::ui::MainDialog };
-        m_main_dialog = dialog.instantiate();
-        runtime_assert(m_main_dialog != nullptr);
-    }
-
-    void Main::apply_default_settings()
-    {
-        engine::set_fps(60);
-        input::use_accumulated_inputs(false);
-
-        if (not engine::editor_active())
-            engine::root_window()->set_size({ 1920, 1080 });
+        scene::node::set_unique_name(this, "Main");
     }
 
     void Main::_ready()
     {
+        resource::preload::scene<Level> level{ path::scene::Level1 };
+        m_active_level = level.instantiate();
+        runtime_assert(m_active_level != nullptr);
+
+        resource::preload::scene<MainDialog> dialog{ path::ui::MainDialog };
+        m_main_dialog = dialog.instantiate();
+        runtime_assert(m_main_dialog != nullptr);
+
         this->apply_default_settings();
 
         runtime_assert(m_main_dialog != nullptr);
@@ -44,5 +39,14 @@ namespace rl
             if (m_main_dialog != nullptr)
                 this->add_child(m_main_dialog);
         }
+    }
+
+    void Main::apply_default_settings()
+    {
+        engine::set_fps(60);
+        input::use_accumulated_inputs(false);
+
+        if (not engine::editor_active())
+            engine::root_window()->set_size({ 1920, 1080 });
     }
 }

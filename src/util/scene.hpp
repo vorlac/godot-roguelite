@@ -1,9 +1,12 @@
 #pragma once
 
+#include "util/assert.hpp"
 #include "util/conversions.hpp"
 
 #include <concepts>
 
+#include <godot_cpp/classes/dir_access.hpp>
+#include <godot_cpp/classes/file_access.hpp>
 #include <godot_cpp/classes/packed_scene.hpp>
 #include <godot_cpp/classes/resource.hpp>
 #include <godot_cpp/classes/resource_loader.hpp>
@@ -12,6 +15,17 @@
 
 namespace rl::inline utils
 {
+    namespace scene::node
+    {
+        template <typename TNode>
+            requires std::derived_from<TNode, godot::Node>
+        static inline void set_unique_name(TNode* node, const char* name)
+        {
+            node->set_name(name);
+            node->set_unique_name_in_owner(true);
+        }
+    }
+
     namespace scene::tree
     {
         template <typename TNode>
@@ -59,25 +73,51 @@ namespace rl::inline utils
             class scene
             {
             public:
-                using scene_t = typename std::type_identity_t<TScene>;
-                using object_t = typename std::type_identity_t<TObj>;
+                using scene_t = TScene;
+                using object_t = TObj;
 
             public:
-                scene(const char* const resource_path)
+                scene() = default;
+
+                scene(const char* resource_path)
                 {
-                    godot::ResourceLoader* resource_loader{ resource::loader::get() };
-                    m_packed_resource = resource_loader->load(resource_path);
+                    this->set_path(resource_path);
+                }
+
+                void set_path(const char* resource_path)
+                {
+                    if (initialized)
+                        error_msg("preload::scene already initalized");
+                    else
+                    {
+                        auto fh{ godot::FileAccess::open(resource_path, godot::FileAccess::READ) };
+                        bool file_access_success{ !fh.is_null() };
+                        runtime_assert(file_access_success);
+
+                        if (file_access_success)
+                        {
+                            godot::ResourceLoader* resource_loader{ resource::loader::get() };
+                            m_packed_resource = resource_loader->load(resource_path);
+                            initialized = m_packed_resource.is_valid();
+                        }
+                    }
                 }
 
                 [[nodiscard]]
                 auto instantiate() -> TObj*
                 {
-                    TObj* ret{ gdcast<TObj>(m_packed_resource->instantiate()) };
-                    return ret;
+                    assertion(initialized, "instantiation invoked from uninitialized scene loader");
+                    if (!initialized) [[unlikely]]
+                        return nullptr;
+
+                    TObj* obj{ gdcast<TObj>(m_packed_resource->instantiate()) };
+                    runtime_assert(obj != nullptr);
+                    return obj;
                 }
 
             private:
-                godot::Ref<TScene> m_packed_resource{};
+                godot::Ref<scene_t> m_packed_resource{};
+                bool initialized{ false };
             };
         }
     }

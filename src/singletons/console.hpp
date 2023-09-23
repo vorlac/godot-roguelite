@@ -81,9 +81,10 @@ namespace rl
             spdlog::flush_every(0.25s);
         }
 
-        void info_msg(std::string&& msg)
+        template <typename... TArgs>
+        void print(fmt::format_string<TArgs...> format_str, TArgs&&... args)
         {
-            m_logger->info(std::forward<std::string>(msg));
+            m_logger->info(fmt::format(format_str, std::forward<TArgs...>(args...)));
         }
 
         static inline rl::Console<TContext>* get()
