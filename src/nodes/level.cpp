@@ -52,7 +52,7 @@ namespace rl::inline node
         if (this->active()) [[likely]]
         {
             godot::Point2 mouse_pos{ this->get_global_mouse_position() };
-            this->draw_circle(mouse_pos, 10, { "DARK_CYAN" });
+            this->draw_circle(mouse_pos, 5, { "DARK_CYAN" });
         }
     }
 
@@ -70,16 +70,21 @@ namespace rl::inline node
     void Level::on_character_spawn_projectile(godot::Node* obj)
     {
         godot::Node2D* node{ gdcast<godot::Node2D>(obj) };
-        rl::Projectile* proj{ m_projectile_spawner->spawn_projectile() };
+        Projectile* projectile{ m_projectile_spawner->spawn_projectile() };
+        if (projectile != nullptr)
+        {
+            projectile->set_position(node->get_global_position());
+            projectile->set_rotation(node->get_rotation() - godot::Math::deg_to_rad(45.0));
 
-        proj->set_position(node->get_global_position());
-        proj->set_rotation(node->get_rotation() - godot::Math::deg_to_rad(45.0));
+            Character* character{ gdcast<Character>(node) };
+            if (character != nullptr)
+            {
+                projectile->set_velocity(
+                    godot::Vector2(0, -1).rotated(character->get_global_rotation()));
+            }
 
-        rl::Character* character{ gdcast<rl::Character>(node) };
-        if (character != nullptr)
-            proj->set_velocity(godot::Vector2{ 0, -1 }.rotated(character->get_global_rotation()));
-
-        this->add_child(proj);
+            this->add_child(projectile);
+        }
     }
 
     [[signal_slot]]
