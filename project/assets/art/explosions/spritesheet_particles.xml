@@ -1,0 +1,19 @@
+<TextureAtlas imagePath="sheet.png">
+	<SubTexture name="burst.png" x="0" y="0" width="171" height="175"/>
+	<SubTexture name="greyCloud1.png" x="0" y="175" width="96" height="92"/>
+	<SubTexture name="greyCloud2.png" x="96" y="267" width="93" height="102"/>
+	<SubTexture name="greyCloud4.png" x="189" y="369" width="88" height="94"/>
+	<SubTexture name="greyCloudw3.png" x="282" y="258" width="82" height="82"/>
+	<SubTexture name="orangeCloud1.png" x="0" y="267" width="96" height="92"/>
+	<SubTexture name="orangeCloud2.png" x="96" y="369" width="93" height="102"/>
+	<SubTexture name="orangeCloud3.png" x="280" y="176" width="82" height="82"/>
+	<SubTexture name="orangeCloud4.png" x="264" y="0" width="88" height="94"/>
+	<SubTexture name="redCloud1.png" x="96" y="175" width="96" height="92"/>
+	<SubTexture name="redCloud2.png" x="189" y="267" width="93" height="102"/>
+	<SubTexture name="redCloud3.png" x="352" y="0" width="82" height="82"/>
+	<SubTexture name="redCloud4.png" x="277" y="369" width="88" height="94"/>
+	<SubTexture name="yellowCloud1.png" x="0" y="359" width="96" height="92"/>
+	<SubTexture name="yellowCloud2.png" x="171" y="0" width="93" height="102"/>
+	<SubTexture name="yellowCloud3.png" x="280" y="94" width="82" height="82"/>
+	<SubTexture name="yellowCloud4.png" x="192" y="102" width="88" height="94"/>
+</TextureAtlas>

@@ -29,5 +29,14 @@ The overall node hierarchy:
 └── <a href="./project/assets/scenes/ui/dialogs/main_dialog.tscn" title="title">RichTextLabel (Reference from MainDialog)</a>
 </pre> </div>
 
-# Project Configuration
+# Development Setup
 See the [wiki](https://github.com/vorlac/godot-roguelite/wiki) for development/tooling setup instructions
+
+# Licensing
+#### Code
+* All code in this project is licensed as [MIT](./LICENSE)
+#### Assets
+* All art assets (`project/assets/art/*`) are licensed as [Creative Commons Zero, CC0](./project/assets/art/LICENSE)
+* All audio assets (`project/assets/audio/*`) are licensed as [Creative Commons Zero, CC0](./project/assets/audio/LICENSE)
+* Art & audio assets credit: [Kenney](www.kenney.nl)
+* Asset pack purchase link: [All-in-1 Asset Pack](https://kenney.itch.io/kenney-game-assets)

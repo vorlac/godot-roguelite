@@ -1,0 +1,11 @@
+<TextureAtlas imagePath="sheet.png">
+	<SubTexture name="simpleExplosion00.png" x="0" y="0" width="186" height="186"/>
+	<SubTexture name="simpleExplosion01.png" x="155" y="345" width="152" height="150"/>
+	<SubTexture name="simpleExplosion02.png" x="307" y="357" width="90" height="91"/>
+	<SubTexture name="simpleExplosion03.png" x="307" y="260" width="97" height="97"/>
+	<SubTexture name="simpleExplosion04.png" x="302" y="135" width="125" height="125"/>
+	<SubTexture name="simpleExplosion05.png" x="186" y="0" width="135" height="135"/>
+	<SubTexture name="simpleExplosion06.png" x="159" y="186" width="143" height="143"/>
+	<SubTexture name="simpleExplosion07.png" x="0" y="345" width="155" height="154"/>
+	<SubTexture name="simpleExplosion08.png" x="0" y="186" width="159" height="159"/>
+</TextureAtlas>
