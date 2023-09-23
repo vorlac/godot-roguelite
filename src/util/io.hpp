@@ -1,33 +1,78 @@
 #pragma once
 
-#include <algorithm>
-#include <concepts>
+#include "util/concepts.hpp"
+
+#include <fmt/compile.h>
+#include <fmt/core.h>
+#include <fmt/format-inl.h>
+#include <fmt/format.h>
 #include <functional>
-#include <locale>
 #include <memory>
-#include <ranges>
-#include <span>
 #include <spdlog/spdlog.h>
 #include <string>
 #include <string_view>
+#include <tuple>
 #include <type_traits>
+#include <utility>
 
 namespace rl::inline utils
 {
     namespace io
     {
-        // inline constexpr auto to_lowercase(std::string_view str) noexcept
-        //{
-        //     std::span<char> sp{ str.begin(), str.end() };
-        //     std::transform(sp.begin(), sp.end(), sp.begin(), [](char c) -> char {
-        //         if (c >= 'A' && c <= 'Z')
-        //             return c - 32;
-        //         return c;
-        //     });
-        //     return str.data();
-        // }
+        static inline auto white(auto&& val)
+        {
+            return fmt::format(FMT_COMPILE("[color=white]{}[/color]"),
+                               std::forward<decltype(val)>(val));
+        }
 
-        // constexpr const char* test{ std::move(to_lowercase("ASDF")) };
+        static inline auto gray(auto&& val)
+        {
+            return fmt::format(FMT_COMPILE("[color=gray]{}[/color]"),
+                               std::forward<decltype(val)>(val));
+        }
+
+        static inline auto black(auto&& val)
+        {
+            return fmt::format(FMT_COMPILE("[color=black]{}[/color]"),
+                               std::forward<decltype(val)>(val));
+        }
+
+        static inline auto red(auto&& val)
+        {
+            return fmt::format(FMT_COMPILE("[color=red]{}[/color]"),
+                               std::forward<decltype(val)>(val));
+        }
+
+        static inline auto orange(auto&& val)
+        {
+            return fmt::format(FMT_COMPILE("[color=orange]{}[/color]"),
+                               std::forward<decltype(val)>(val));
+        }
+
+        static inline auto yellow(auto&& val)
+        {
+            return fmt::format(FMT_COMPILE("[color=yellow]{}[/color]"),
+                               std::forward<decltype(val)>(val));
+        }
+
+        static inline auto green(auto&& val)
+        {
+            return fmt::format(FMT_COMPILE("[color=green]{}[/color]"),
+                               std::forward<decltype(val)>(val));
+        }
+
+        static inline auto blue(auto&& val)
+        {
+            return fmt::format(FMT_COMPILE("[color=blue]{}[/color]"),
+                               std::forward<decltype(val)>(val));
+        }
+
+        static inline auto purple(auto&& val)
+        {
+            return fmt::format(FMT_COMPILE("[color=purple]{}[/color]"),
+                               std::forward<decltype(val)>(val));
+        }
+
     }
 
     struct log

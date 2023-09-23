@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://nuqlrvw8di7s"]
+
+[ext_resource type="Texture2D" uid="uid://dlxldnu52cpnv" path="res://assets/art/topdown/shooter/man_blue/manblue_gun.png" id="1_ts0vk"]
+
+[node name="Player" type="Character"]
+scale = Vector2(2, 2)
+
+[node name="PlayerCollisionPoly" type="CollisionPolygon2D" parent="."]
+position = Vector2(0.5, -1.5)
+rotation = -1.5708
+polygon = PackedVector2Array(8, 21.5, -21.5, 21.5, -21.5, -21.5, -4.5, -21.5, 8, 1.5)
+
+[node name="PlayerSprite" type="Sprite2D" parent="PlayerCollisionPoly"]
+texture = ExtResource("1_ts0vk")
+
+[node name="FiringPoint" type="Marker2D" parent="PlayerCollisionPoly"]
+unique_name_in_owner = true
+position = Vector2(23.5, 9.50009)

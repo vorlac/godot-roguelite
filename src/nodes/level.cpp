@@ -1,6 +1,7 @@
 #include "nodes/level.hpp"
 
 #include "nodes/character.hpp"
+#include "singletons/console.hpp"
 #include "util/bind.hpp"
 #include "util/conversions.hpp"
 #include "util/debug.hpp"
@@ -14,18 +15,10 @@
 namespace rl::inline node
 {
     Level::Level()
+        : m_player{ player_scene.instantiate() }
     {
-        godot::ResourceLoader* resource_loader{ resource::loader::get() };
-        godot::Ref<godot::Resource> background_texture{ resource_loader->load(
-            path::sprite::Background) };
-
-        m_background->set_name("BackgroundTexture");
-        m_background->set_texture(background_texture);
-        m_background->set_global_position({ 0, 0 });
-        m_background->set_centered(true);
-        m_background->set_z_index(-100);
-
-        this->set_name("Level");
+        // TODO: kill magic string
+        scene::node::set_unique_name(this, "Level1");
         this->activate(true);
     }
 
@@ -33,15 +26,12 @@ namespace rl::inline node
     {
         this->add_child(m_player);
         this->add_child(m_projectile_spawner);
-        this->add_child(m_background);
 
-        signal<event::position_changed>::connect<Character>(m_player) <=> [this]() {
-            return slot(this, on_character_position_changed);
-        }();
+        signal<event::position_changed>::connect<PlayerController>(m_player->get_controller()) <=>
+            slot(this, on_character_position_changed);
 
-        signal<event::spawn_projectile>::connect<Character>(m_player) <=> [this]() {
-            return slot(this, on_character_spawn_projectile);
-        }();
+        signal<event::spawn_projectile>::connect<Character>(m_player) <=>
+            slot(this, on_character_spawn_projectile);
     }
 
     void Level::_process(double delta_time)
@@ -49,9 +39,9 @@ namespace rl::inline node
         if (engine::editor_active())
             return;
 
-        if (this->active() && input::cursor_visible()) [[unlikely]]
+        if (this->active() && input::cursor_visible()) [[likely]]
             input::hide_cursor();
-        if (!this->active() && !input::cursor_visible()) [[unlikely]]
+        else if (!this->active() && !input::cursor_visible()) [[unlikely]]
             input::show_cursor();
 
         this->queue_redraw();
@@ -59,12 +49,6 @@ namespace rl::inline node
 
     void Level::_draw()
     {
-        if constexpr (diag::is_enabled(diag::LevelProcess))
-        {
-            const godot::Rect2 level_bounds{ this->m_background->get_rect() };
-            this->draw_rect(level_bounds, { "RED" }, false, 5.0);
-        }
-
         if (this->active()) [[likely]]
         {
             godot::Point2 mouse_pos{ this->get_global_mouse_position() };
@@ -103,7 +87,9 @@ namespace rl::inline node
                                               godot::Vector2 location) const
     {
         runtime_assert(node != nullptr);
-        log::info(node->get_class() + " location: " + location);
+        auto console{ Console<godot::RichTextLabel>::get() };
+        console->print("{} ({},{})\n", io::green(to<std::string>(node->get_class()) + " location: "),
+                       io::orange(location.x), io::orange(location.y));
     }
 
     void Level::_bind_methods()

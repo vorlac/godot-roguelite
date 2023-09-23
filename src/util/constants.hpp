@@ -17,22 +17,16 @@ namespace rl::inline constants
 
     namespace path
     {
-        namespace sprite
-        {
-            constexpr inline auto Player{ "res://assets/art/placeholder/player.svg" };
-            constexpr inline auto Enemy{ "res://assets/art/placeholder/enemy.svg" };
-            constexpr inline auto Bullet{ "res://assets/art/placeholder/bullet.svg" };
-            constexpr inline auto Background{ "res://assets/art/placeholder/background.png" };
-        }
-
         namespace scene
         {
-            constexpr auto Bullet{ "res://assets/scenes/projectiles/bullet.tscn" };
+            constexpr inline auto Level1{ "res://scenes/levels/level1.tscn" };
+            constexpr inline auto Player{ "res://scenes/characters/player.tscn" };
+            constexpr inline auto Bullet{ "res://scenes/projectiles/bullet.tscn" };
         }
 
         namespace ui
         {
-            constexpr inline auto MainDialog{ "res://assets/scenes/ui/main_dialog.tscn" };
+            constexpr inline auto MainDialog{ "res://scenes/ui/main_dialog.tscn" };
         }
     }
 }

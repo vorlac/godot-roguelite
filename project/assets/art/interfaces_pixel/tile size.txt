@@ -1,0 +1,11 @@
+
+
+	# 16x tilesheet(s)
+
+	Tile size : 16 x 16px
+	Margin    : 2px
+
+	# 32x tilesheet(s)
+
+	Tile size : 32 x 32px
+	Margin    : 2px

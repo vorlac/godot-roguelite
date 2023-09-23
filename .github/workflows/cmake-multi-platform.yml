@@ -35,7 +35,7 @@ jobs:
           -G Ninja
 
       - name: rebuild - clean (linux)
-        run: cmake --build ${{ github.workspace }}/.out --config Debug --target clean --parallel $(nproc)
+        run: cmake --build ${{ github.workspace }}/.out --config Debug --target clean --parallel 48
 
       - name: rebuild - build (linux)
-        run: cmake --build ${{ github.workspace }}/.out --config Debug --target roguelite --parallel $(nproc)
+        run: cmake --build ${{ github.workspace }}/.out --config Debug --target roguelite --parallel 48

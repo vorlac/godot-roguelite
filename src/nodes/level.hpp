@@ -3,6 +3,8 @@
 #include "nodes/character.hpp"
 #include "nodes/projectile_spawner.hpp"
 #include "util/bind.hpp"
+#include "util/constants.hpp"
+#include "util/scene.hpp"
 
 #include <atomic>
 #include <vector>
@@ -12,6 +14,8 @@
 
 namespace rl::inline node
 {
+    class Character;
+
     class Level : public godot::Node2D
     {
         GDCLASS(Level, godot::Node2D);
@@ -35,9 +39,9 @@ namespace rl::inline node
                                                            godot::Vector2 location) const;
 
     private:
-        rl::ProjectileSpawner* m_projectile_spawner{ memnew(rl::ProjectileSpawner) };
-        godot::Sprite2D* m_background{ memnew(godot::Sprite2D) };
-        rl::Character* m_player{ memnew(rl::Character) };
         std::atomic<bool> m_active{ false };
+        resource::preload::scene<Character> player_scene{ path::scene::Player };
+        ProjectileSpawner* m_projectile_spawner{ memnew(rl::ProjectileSpawner) };
+        Character* m_player{ nullptr };
     };
 }

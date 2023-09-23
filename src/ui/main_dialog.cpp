@@ -13,19 +13,15 @@ namespace rl::inline ui
 {
     void MainDialog::_ready()
     {
-        m_level = gdcast<rl::Level>(this->find_child("Level", true, false));
+        m_level = gdcast<Level>(this->find_child("Level1", true, false));
         runtime_assert(m_level != nullptr);
 
-        if (m_console_label == nullptr)
-        {
-            godot::Node* scene_root{ scene::tree::root_node(this) };
-            m_console_label = gdcast<godot::RichTextLabel>(
-                scene_root->find_child("ConsolePanel", true, false));
-            runtime_assert(m_console_label != nullptr);
-            auto console{ Console<godot::RichTextLabel>::get() };
-            runtime_assert(console != nullptr);
-            console->set_context(m_console_label);
-        }
+        godot::Node* scene_root{ scene::tree::root_node(this) };
+        m_console_label = gdcast<godot::RichTextLabel>(
+            scene_root->find_child("ConsolePanel", true, false));
+
+        auto console{ Console<godot::RichTextLabel>::get() };
+        console->set_context(m_console_label);
     }
 
     void MainDialog::_notification(int notification)
@@ -54,7 +50,7 @@ namespace rl::inline ui
             }
         }
 
-        Console<godot::RichTextLabel>::get()->info_msg(
-            fmt::format("notification: {}\n", notification));
+        auto console{ Console<godot::RichTextLabel>::get() };
+        console->print("notification: {}\n", notification);
     }
 }

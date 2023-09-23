@@ -23,7 +23,7 @@ namespace rl::inline ui
         }
 
     protected:
-        rl::Level* m_level{ nullptr };
+        Level* m_level{ nullptr };
         godot::RichTextLabel* m_console_label{ nullptr };
     };
 }

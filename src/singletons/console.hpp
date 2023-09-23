@@ -30,6 +30,11 @@ namespace rl
             m_static_inst = nullptr;
         }
 
+        static inline rl::Console<TContext>* get()
+        {
+            return m_static_inst;
+        }
+
         void set_context(TContext* context)
         {
             m_gui_console = context;
@@ -62,7 +67,7 @@ namespace rl
                         const duration_t elapsed{ clock_t::now() - m_start_time };
 
                         m_gui_console->append_text(
-                            fmt::format("{:5} [{:>7.2}] [b]=>[/b] [color=yellow]{}[/color]",
+                            fmt::format("[color=gray]{:5} [{:>7.2}] [b]=>[/b] {}[/color]",
                                         m_line_num.fetch_add(1, std::memory_order_relaxed), elapsed,
                                         msg.payload)
                                 .c_str());
@@ -81,14 +86,10 @@ namespace rl
             spdlog::flush_every(0.25s);
         }
 
-        void info_msg(std::string&& msg)
+        template <typename... TArgs>
+        void print(fmt::format_string<TArgs...> format_str, TArgs&&... args)
         {
-            m_logger->info(std::forward<std::string>(msg));
-        }
-
-        static inline rl::Console<TContext>* get()
-        {
-            return m_static_inst;
+            m_logger->info(format_str, std::forward<TArgs>(args)...);
         }
 
     protected:
