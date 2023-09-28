@@ -9,6 +9,11 @@
 #include <godot_cpp/classes/collision_shape2d.hpp>
 #include <godot_cpp/classes/sprite2d.hpp>
 
+namespace godot
+{
+    class Marker2D;
+}
+
 namespace rl::inline node
 {
     class Character : public godot::CharacterBody2D
@@ -53,5 +58,7 @@ namespace rl::inline node
         Camera* m_camera{ memnew(Camera) };
         // handles all input related player controls
         PlayerController* m_player_controller{ memnew(PlayerController) };
+        // marker identifying location where to spwwn projectiles
+        godot::Marker2D* m_firing_point{ nullptr };
     };
 }

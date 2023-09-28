@@ -16,3 +16,4 @@ texture = ExtResource("1_ts0vk")
 [node name="FiringPoint" type="Marker2D" parent="PlayerCollisionPoly"]
 unique_name_in_owner = true
 position = Vector2(23.5, 9.50009)
+rotation = 1.5708

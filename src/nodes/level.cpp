@@ -9,6 +9,7 @@
 #include "util/input.hpp"
 #include "util/io.hpp"
 
+#include <godot_cpp/classes/marker2d.hpp>
 #include <godot_cpp/variant/callable.hpp>
 #include <godot_cpp/variant/vector2.hpp>
 
@@ -74,13 +75,13 @@ namespace rl::inline node
         if (projectile != nullptr)
         {
             projectile->set_position(node->get_global_position());
-            projectile->set_rotation(node->get_rotation() - godot::Math::deg_to_rad(45.0));
+            projectile->set_rotation(node->get_global_rotation() - godot::Math::deg_to_rad(45.0));
 
-            Character* character{ gdcast<Character>(node) };
-            if (character != nullptr)
+            godot::Marker2D* firing_pt{ gdcast<godot::Marker2D>(node) };
+            if (firing_pt != nullptr)
             {
                 projectile->set_velocity(
-                    godot::Vector2(0, -1).rotated(character->get_global_rotation()));
+                    godot::Vector2(0, -1).rotated(firing_pt->get_global_rotation()));
             }
 
             this->add_child(projectile);

@@ -1,8 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://c8tur70b73kih"]
+[gd_scene load_steps=2 format=3 uid="uid://c8tur70b73kih"]
 
 [ext_resource type="Texture2D" uid="uid://b76tyx7byavoa" path="res://assets/art/prototype_textures/dark/texture_03.png" id="1_g3701"]
-
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_prw1o"]
 
 [node name="Level1" type="Level"]
 
@@ -11,6 +9,3 @@ z_index = -10
 scale = Vector2(3, 3)
 texture = ExtResource("1_g3701")
 metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BackgroundTexture"]
-shape = SubResource("WorldBoundaryShape2D_prw1o")

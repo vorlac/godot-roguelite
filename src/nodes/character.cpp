@@ -15,6 +15,7 @@
 #include <vector>
 
 #include <godot_cpp/classes/input.hpp>
+#include <godot_cpp/classes/marker2d.hpp>
 #include <godot_cpp/classes/rectangle_shape2d.hpp>
 #include <godot_cpp/classes/ref.hpp>
 #include <godot_cpp/classes/resource_loader.hpp>
@@ -37,6 +38,9 @@ namespace rl::inline node
     {
         this->add_child(m_camera);
         this->add_child(m_player_controller);
+
+        m_firing_point = gdcast<godot::Marker2D>(this->find_child("FiringPoint", true, false));
+        runtime_assert(m_firing_point != nullptr);
 
         signal<event::player_move>::connect<PlayerController>(m_player_controller) <=>
             [this]() mutable {
@@ -82,7 +86,7 @@ namespace rl::inline node
     void Character::on_player_shoot()
     {
         // TODO: fix this
-        this->emit_signal(event::spawn_projectile, this);
+        this->emit_signal(event::spawn_projectile, m_firing_point);
     }
 
     [[property]]
