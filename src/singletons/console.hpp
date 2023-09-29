@@ -2,11 +2,13 @@
 
 #include <chrono>
 #include <fmt/chrono.h>
+#include <fmt/compile.h>
 #include <fmt/core.h>
 #include <spdlog/sinks/callback_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
 #include <string>
+#include <type_traits>
 
 #include <godot_cpp/classes/object.hpp>
 #include <godot_cpp/classes/rich_text_label.hpp>
@@ -67,7 +69,7 @@ namespace rl
                         const duration_t elapsed{ clock_t::now() - m_start_time };
 
                         m_gui_console->append_text(
-                            fmt::format("[color=gray]{:5} [{:>7.2}] [b]=>[/b] {}[/color]",
+                            fmt::format("[color=gray]{:5} [{:>7.2}] [b]=>[/b] {}[/color]\n",
                                         m_line_num.fetch_add(1, std::memory_order_relaxed), elapsed,
                                         msg.payload)
                                 .c_str());
@@ -107,6 +109,8 @@ namespace rl
         const clock_t::time_point m_start_time{ clock_t::now() };
 
     private:
-        static inline rl::Console<TContext>* m_static_inst{ nullptr };
+        static inline Console<TContext>* m_static_inst{ nullptr };
     };
+
+    using console = Console<godot::RichTextLabel>;
 }

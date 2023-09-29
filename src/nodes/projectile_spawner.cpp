@@ -2,7 +2,7 @@
 
 #include "util/bind.hpp"
 
-namespace rl::inline node
+namespace rl
 {
     [[nodiscard]]
     Projectile* ProjectileSpawner::spawn_projectile()

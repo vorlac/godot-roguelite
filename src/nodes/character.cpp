@@ -26,11 +26,11 @@
 #include <godot_cpp/variant/typed_array.hpp>
 #include <godot_cpp/variant/vector2.hpp>
 
-namespace rl::inline node
+namespace rl
 {
     Character::Character()
     {
-        this->set_name("Player");
+        scene::node::set_unique_name(this, name::character::player);
         this->set_motion_mode(MotionMode::MOTION_MODE_FLOATING);
     }
 
@@ -39,23 +39,18 @@ namespace rl::inline node
         this->add_child(m_camera);
         this->add_child(m_player_controller);
 
-        m_firing_point = gdcast<godot::Marker2D>(this->find_child("FiringPoint", true, false));
+        m_firing_point = gdcast<godot::Marker2D>(
+            this->find_child(name::character::firing_pt, true, false));
         runtime_assert(m_firing_point != nullptr);
 
         signal<event::player_move>::connect<PlayerController>(m_player_controller) <=>
-            [this]() mutable {
-                return slot(this, on_player_movement);
-            }();
+            slot(this, on_player_movement);
 
         signal<event::player_rotate>::connect<PlayerController>(m_player_controller) <=>
-            [this]() mutable {
-                return slot(this, on_player_rotate);
-            }();
+            slot(this, on_player_rotate);
 
         signal<event::player_shoot>::connect<PlayerController>(m_player_controller) <=>
-            [this]() mutable {
-                return slot(this, on_player_shoot);
-            }();
+            slot(this, on_player_shoot);
     }
 
     PlayerController* Character::get_controller() const

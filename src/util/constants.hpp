@@ -4,11 +4,27 @@
 
 namespace rl::inline constants
 {
-
-    namespace node::name
+    namespace name
     {
-        constexpr inline auto level1{ "Level1" };
-        constexpr inline auto level2{ "Level2" };
+        namespace level
+        {
+            constexpr inline auto level1{ "Level1" };
+            constexpr inline auto physics_box{ "PhysicsBox" };
+        }
+
+        namespace dialog
+        {
+            constexpr inline auto console{ "ConsolePanel" };
+            constexpr inline auto canvas_layer{ "MainCanvasLayer" };
+
+        }
+
+        namespace character
+        {
+            constexpr inline auto player{ "Player" };
+            constexpr inline auto firing_pt{ "FiringPoint" };
+        }
+
     }
 
     namespace event
@@ -20,6 +36,8 @@ namespace rl::inline constants
         constexpr inline auto player_move{ "player_move" };
         constexpr inline auto player_rotate{ "player_rotate" };
         constexpr inline auto player_shoot{ "player_shoot" };
+        constexpr inline auto body_entered{ "body_entered" };
+        constexpr inline auto body_exited{ "body_exited" };
     }
 
     enum layer : uint32_t

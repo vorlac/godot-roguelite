@@ -14,7 +14,7 @@ namespace godot
     class Marker2D;
 }
 
-namespace rl::inline node
+namespace rl
 {
     class Character : public godot::CharacterBody2D
     {

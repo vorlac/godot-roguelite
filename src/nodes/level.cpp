@@ -9,21 +9,25 @@
 #include "util/input.hpp"
 #include "util/io.hpp"
 
+#include <godot_cpp/classes/collision_polygon2d.hpp>
 #include <godot_cpp/classes/marker2d.hpp>
+#include <godot_cpp/classes/rigid_body2d.hpp>
 #include <godot_cpp/variant/callable.hpp>
 #include <godot_cpp/variant/vector2.hpp>
 
-namespace rl::inline node
+namespace rl
 {
     Level::Level()
     {
-        // TODO: kill magic string
-        scene::node::set_unique_name(this, "Level1");
+        scene::node::set_unique_name(this, name::level::level1);
         this->activate(true);
     }
 
     void Level::_ready()
     {
+        godot::Node* box{ this->find_child(name::level::physics_box) };
+        m_physics_box = gdcast<godot::RigidBody2D>(box);
+
         this->add_child(m_player);
         this->add_child(m_projectile_spawner);
 
@@ -39,7 +43,7 @@ namespace rl::inline node
         if (engine::editor_active())
             return;
 
-        if (this->active() && input::cursor_visible()) [[likely]]
+        if (this->active() && input::cursor_visible()) [[unlikely]]
             input::hide_cursor();
         else if (!this->active() && !input::cursor_visible()) [[unlikely]]
             input::show_cursor();
@@ -67,20 +71,37 @@ namespace rl::inline node
     }
 
     [[signal_slot]]
-    void Level::on_character_spawn_projectile(godot::Node* obj)
+    void Level::on_physics_box_entered(godot::Node* node) const
+    {
+        console::get()->print("{} > {}", io::yellow("projectile"), to<std::string>(node->get_name()));
+    }
+
+    [[signal_slot]]
+    void Level::on_physics_box_exited(godot::Node* node) const
+    {
+        console::get()->print("{} < {}", io::red("projectile"), to<std::string>(node->get_name()));
+    }
+
+    [[signal_slot]] void Level::on_character_spawn_projectile(godot::Node* obj)
     {
         godot::Node2D* node{ gdcast<godot::Node2D>(obj) };
         Projectile* projectile{ m_projectile_spawner->spawn_projectile() };
         if (projectile != nullptr)
         {
             projectile->set_position(node->get_global_position());
-            projectile->set_rotation(node->get_global_rotation() - godot::Math::deg_to_rad(45.0));
+            projectile->set_rotation(node->get_global_rotation());
 
             godot::Marker2D* firing_pt{ gdcast<godot::Marker2D>(node) };
             if (firing_pt != nullptr)
             {
                 projectile->set_velocity(
                     godot::Vector2(0, -1).rotated(firing_pt->get_global_rotation()));
+
+                signal<event::body_entered>::connect<Projectile>(projectile) <=>
+                    slot(this, on_physics_box_entered);
+
+                signal<event::body_exited>::connect<Projectile>(projectile) <=>
+                    slot(this, on_physics_box_exited);
             }
 
             this->add_child(projectile);
@@ -92,8 +113,8 @@ namespace rl::inline node
                                               godot::Vector2 location) const
     {
         runtime_assert(node != nullptr);
-        auto console{ Console<godot::RichTextLabel>::get() };
-        console->print("{} ({},{})\n", io::green(to<std::string>(node->get_class()) + " location: "),
+        auto console{ console::get() };
+        console->print("{} ({},{})", io::green(to<std::string>(node->get_class()) + " location: "),
                        io::orange(location.x), io::orange(location.y));
     }
 
@@ -101,5 +122,7 @@ namespace rl::inline node
     {
         bind_member_function(Level, on_character_position_changed);
         bind_member_function(Level, on_character_spawn_projectile);
+        bind_member_function(Level, on_physics_box_entered);
+        bind_member_function(Level, on_physics_box_exited);
     }
 }

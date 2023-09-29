@@ -10,7 +10,7 @@
 #include <godot_cpp/classes/node2d.hpp>
 #include <godot_cpp/variant/variant.hpp>
 
-namespace rl::inline node
+namespace rl
 {
     void PlayerController::_process(double delta_time)
     {

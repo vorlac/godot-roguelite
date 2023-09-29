@@ -10,7 +10,7 @@
 #include <godot_cpp/classes/node2d.hpp>
 #include <godot_cpp/variant/typed_array.hpp>
 
-namespace rl::inline node
+namespace rl
 {
     using namespace std::chrono_literals;
 

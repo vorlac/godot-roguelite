@@ -12,7 +12,12 @@
 #include <godot_cpp/classes/node2d.hpp>
 #include <godot_cpp/classes/sprite2d.hpp>
 
-namespace rl::inline node
+namespace godot
+{
+    class RigidBody2D;
+}
+
+namespace rl
 {
     class Character;
 
@@ -34,6 +39,8 @@ namespace rl::inline node
     protected:
         static void _bind_methods();
 
+        [[signal_slot]] void on_physics_box_entered(godot::Node* node) const;
+        [[signal_slot]] void on_physics_box_exited(godot::Node* node) const;
         [[signal_slot]] void on_character_spawn_projectile(godot::Node* obj);
         [[signal_slot]] void on_character_position_changed(const godot::Object* const obj,
                                                            godot::Vector2 location) const;
@@ -44,5 +51,6 @@ namespace rl::inline node
         ProjectileSpawner* m_projectile_spawner{ memnew(rl::ProjectileSpawner) };
         resource::preload::scene<Character> player_scene{ path::scene::Player };
         Character* m_player{ player_scene.instantiate() };
+        godot::RigidBody2D* m_physics_box{ nullptr };
     };
 }

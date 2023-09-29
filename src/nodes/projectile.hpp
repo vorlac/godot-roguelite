@@ -1,11 +1,15 @@
 #pragma once
 
+#include "singletons/console.hpp"
 #include "util/attributes.hpp"
+#include "util/bind.hpp"
+#include "util/conversions.hpp"
+#include "util/io.hpp"
 
 #include <godot_cpp/classes/area2d.hpp>
 #include <godot_cpp/variant/vector2.hpp>
 
-namespace rl::inline node
+namespace rl
 {
     class Projectile : public godot::Area2D
     {
@@ -29,9 +33,25 @@ namespace rl::inline node
         [[property]] void set_acceleration(const double acceleration);
         [[property]] void set_velocity(const godot::Vector2& velocity);
 
+        // [[signal_slot]]
+        // void on_body_enter(godot::Node* node) const
+        // {
+        //     console::get()->print("Projectile: {} {} {}", to<std::string>(this->get_name()),
+        //                           io::yellow("entering >>"), to<std::string>(node->get_name()));
+        // }
+
+        // [[signal_slot]]
+        // void on_body_exit(godot::Node* node) const
+        // {
+        //     console::get()->print("Projectile: {} {} {}", to<std::string>(this->get_name()),
+        //                           io::orange("exiting <<"), to<std::string>(node->get_name()));
+        // }
+
     protected:
         static void _bind_methods()
         {
+            // bind_member_function(Projectile, on_body_enter);
+            // bind_member_function(Projectile, on_body_exit);
         }
 
     protected:

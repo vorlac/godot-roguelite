@@ -3,7 +3,7 @@
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/node2d.hpp>
 
-namespace rl::inline node
+namespace rl
 {
     class PlayerController : public godot::Node2D
     {

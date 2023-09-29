@@ -2,7 +2,7 @@
 
 #include <godot_cpp/classes/camera2d.hpp>
 
-namespace rl::inline node
+namespace rl
 {
     Camera::Camera()
     {

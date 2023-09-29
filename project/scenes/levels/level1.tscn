@@ -18,7 +18,7 @@ z_index = 10
 position = Vector2(400, 400)
 scale = Vector2(0.25, 0.25)
 collision_layer = 8
-collision_mask = 0
+collision_mask = 7
 
 [node name="WallCollisionPoly" type="CollisionPolygon2D" parent="Wall"]
 polygon = PackedVector2Array(512, 512, -512, 512, -512, -512, 512, -512)
@@ -55,13 +55,14 @@ texture = ExtResource("4_ix12c")
 z_index = 10
 position = Vector2(400, -400)
 collision_layer = 64
-collision_mask = 0
+collision_mask = 79
 contact_monitor = true
+linear_damp = 1.0
 
-[node name="WallCollisionPoly" type="CollisionPolygon2D" parent="PhysicsBox"]
+[node name="PhysicsBoxCollisionPoly" type="CollisionPolygon2D" parent="PhysicsBox"]
 scale = Vector2(0.25, 0.25)
 polygon = PackedVector2Array(512, 512, -512, 512, -512, -512, 512, -512)
 
-[node name="Texture02" type="Sprite2D" parent="PhysicsBox"]
+[node name="PhysicsBoxTexture" type="Sprite2D" parent="PhysicsBox"]
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("5_pmdlb")

@@ -8,17 +8,21 @@
 
 #include <string>
 #include <string_view>
+#include <tuple>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 #include <godot_cpp/classes/object.hpp>
+#include <godot_cpp/classes/rigid_body2d.hpp>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/callable.hpp>
 #include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/string_name.hpp>
 
 #define bind_member_function(class_name, func_name) method<&class_name::func_name>::bind(#func_name)
-#define slot(slot_owner, slot_callback)             godot::Callable(slot_owner, #slot_callback)
+#define slot(slot_owner, slot_callback) \
+    std::forward_as_tuple(godot::Callable(slot_owner, #slot_callback), slot_owner)
 
 namespace rl::inline utils
 {
@@ -142,8 +146,7 @@ namespace rl::inline utils
                                           std::forward<decltype(signal_params)>(signal_params)));
                 }
 
-                signal_registry::class_bindings[class_name].emplace_back(signal_name,
-                                                                         signal_params);
+                signal_registry::class_bindings[class_name].emplace_back(signal_name, signal_params);
                 runtime_assert(signal_params.size() == arg_count);
             }
         };
@@ -159,35 +162,40 @@ namespace rl::inline utils
         template <GDObjectDerived TOwnerObj>
         struct connect
         {
-        public:
-            static inline TOwnerObj* signal_owner{ nullptr };
+        private:
+            static inline TOwnerObj* m_signal_owner{ nullptr };
 
         public:
-            explicit connect(TOwnerObj* owner)
+            explicit connect(TOwnerObj* signal_owner)
             {
-                static_assert(std::is_same_v<decltype(owner), decltype(signal_owner)>);
+                static_assert(std::is_same_v<decltype(signal_owner), decltype(m_signal_owner)>);
 
-                signal_owner = owner;
-                bool found_binding{ false };
-                const std::string class_name = rl::to<std::string>(TOwnerObj::get_class_static());
-                const auto& class_signals = signal_registry::class_bindings[class_name];
-                for (const auto& sig : class_signals)
-                {
-                    if (sig.first == signal_name)
-                    {
-                        found_binding = true;
-                        break;
-                    }
-                }
-
-                runtime_assert(found_binding);
+                m_signal_owner = signal_owner;
+                const std::string class_name = rl::to<std::string>(m_signal_owner->get_class());
+                runtime_assert(m_signal_owner->has_signal(signal_name.data()));
             }
 
-            auto operator<=>(godot::Callable&& callback)
+            template <typename TNode>
+            auto operator<=>(std::tuple<godot::Callable&&, TNode&&> callback)
             {
+                auto&& cb{ std::forward<godot::Callable>(std::get<0>(callback)) };
+                auto&& callback_owner{ std::get<1>(callback) };
+
+                if (m_signal_owner == nullptr)
+                {
+                    error_msg("Attempting to connect a signal to a null object");
+                    return godot::Error::ERR_DOES_NOT_EXIST;
+                }
+
+                if (!callback_owner->has_method(cb.get_method()))
+                {
+                    error_msg("Signal connection method missing bindings");
+                    return godot::Error::ERR_METHOD_NOT_FOUND;
+                }
+
                 // TODO: compare and validate the arg count, raw types, and variant conversions
                 // between the matching signal binding record and the callback being connected.
-                return signal_owner->connect(signal_name.data(), callback);
+                return m_signal_owner->connect(signal_name.data(), cb);
             }
         };
     };

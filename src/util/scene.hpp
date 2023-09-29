@@ -21,6 +21,7 @@ namespace rl::inline utils
             requires std::derived_from<TNode, godot::Node>
         static inline void set_unique_name(TNode* node, const char* name)
         {
+            runtime_assert(node != nullptr);
             node->set_name(name);
             node->set_unique_name_in_owner(true);
         }

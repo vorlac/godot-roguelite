@@ -3,17 +3,22 @@
 [ext_resource type="Texture2D" uid="uid://cbx5pr44nef0m" path="res://assets/art/topdown/tanks_redux/projectiles/bulletdark1_outline.png" id="1_sadn1"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_i8hct"]
-radius = 10.0
+radius = 9.89949
 height = 35.0
 
 [node name="Projectile" type="Projectile"]
-scale = Vector2(0.5, 0.5)
+collision_layer = 4
+collision_mask = 122
+input_pickable = false
+priority = 1
+linear_damp_space_override = 1
+linear_damp = 0.25
+angular_damp_space_override = 1
+
+[node name="Bullet" type="Sprite2D" parent="."]
+scale = Vector2(0.666665, 0.666665)
+texture = ExtResource("1_sadn1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-rotation = 0.785398
-scale = Vector2(0.75, 0.75)
+scale = Vector2(0.5, 0.5)
 shape = SubResource("CapsuleShape2D_i8hct")
-
-[node name="Bullet" type="Sprite2D" parent="CollisionShape2D"]
-scale = Vector2(1.33333, 1.33333)
-texture = ExtResource("1_sadn1")

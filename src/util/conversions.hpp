@@ -1,5 +1,7 @@
 #pragma once
 
+#include "util/assert.hpp"
+
 #include <concepts>
 #include <string>
 #include <string_view>
@@ -16,7 +18,10 @@ namespace rl::inline utils
         requires std::derived_from<std::remove_cvref_t<TIn>, godot::Object>
     constexpr inline TOut* gdcast(TIn* obj)
     {
-        return godot::Object::cast_to<TOut>(obj);
+        runtime_assert(obj != nullptr);
+        auto ret{ godot::Object::cast_to<TOut>(obj) };
+        runtime_assert(ret != nullptr);
+        return ret;
     }
 
     template <typename TOut>

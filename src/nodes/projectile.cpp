@@ -4,7 +4,7 @@
 
 #include <godot_cpp/variant/vector2.hpp>
 
-namespace rl::inline node
+namespace rl
 {
     void Projectile::_ready()
     {

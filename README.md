@@ -13,7 +13,7 @@ This project is meant to show others working with GDExtension how to:
 * use CMake, VCPKG, and submodules to configure the project automatically
 * configure VSCode (linux & windows) / Visual Studio 2022 (windows) for
     * good code navigation for godot engine sources, godot-cpp sources, and the gdextension project sources.
-    * good type completion / intellisense configuration
+    * good autocomplete / intellisense configuration
     * preconfigured debugger launch profiles to run the project standalone or by launching the editor (both launch settings debuggable)
     * good debugger visualizations for internal godot data structures by leveraging the .natvis file provided with godot-cpp
 

@@ -2,6 +2,7 @@
 
 #include "singletons/console.hpp"
 #include "util/assert.hpp"
+#include "util/constants.hpp"
 #include "util/conversions.hpp"
 
 #include <godot_cpp/classes/canvas_layer.hpp>
@@ -11,15 +12,16 @@ namespace rl::inline ui
 {
     void MainDialog::_ready()
     {
-        m_level = gdcast<Level>(this->find_child("Level1", true, false));
-        runtime_assert(m_level != nullptr);
+        Console<godot::RichTextLabel>* game_console{ console::get() };
 
-        godot::Node* scene_root{ scene::tree::root_node(this) };
-        m_console_label = gdcast<godot::RichTextLabel>(
-            scene_root->find_child("ConsolePanel", true, false));
+        godot::Node* root{ scene::tree::root_node(this) };
+        godot::Node* label{ root->find_child(name::dialog::console, true, false) };
+        godot::Node* level{ this->find_child(name::level::level1, true, false) };
 
-        auto console{ Console<godot::RichTextLabel>::get() };
-        console->set_context(m_console_label);
+        m_level = gdcast<Level>(level);
+        m_console_label = gdcast<godot::RichTextLabel>(label);
+
+        game_console->set_context(m_console_label);
     }
 
     void MainDialog::_notification(int notification)
@@ -30,25 +32,23 @@ namespace rl::inline ui
                 [[fallthrough]];
             case Node::NOTIFICATION_UNPARENTED:
             {
-                Console<godot::RichTextLabel>::get()->clear_context();
-                Console<godot::RichTextLabel>::get()->stop_logging();
+                console::get()->clear_context();
+                console::get()->stop_logging();
                 break;
             }
             case Control::NOTIFICATION_MOUSE_ENTER:
             {
-                runtime_assert(m_level != nullptr);
                 m_level->activate(true);
                 break;
             }
             case Control::NOTIFICATION_MOUSE_EXIT:
             {
-                runtime_assert(m_level != nullptr);
                 m_level->activate(false);
                 break;
             }
         }
 
-        auto console{ Console<godot::RichTextLabel>::get() };
-        console->print("notification: {}\n", notification);
+        auto console{ console::get() };
+        console->print("notification: {}", notification);
     }
 }

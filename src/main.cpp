@@ -9,8 +9,6 @@ namespace rl
 {
     Main::Main()
     {
-        scene::node::set_unique_name(this, "Main");
-
         resource::preload::scene<Level> level{ path::scene::Level1 };
         resource::preload::scene<MainDialog> dialog{ path::ui::MainDialog };
 
@@ -22,7 +20,7 @@ namespace rl
         if (m_main_dialog != nullptr)
         {
             m_canvas_layer = gdcast<godot::CanvasLayer>(
-                m_main_dialog->find_child("MainCanvasLayer", true, false));
+                m_main_dialog->find_child(name::dialog::canvas_layer, true, false));
 
             runtime_assert(m_canvas_layer != nullptr);
             if (m_active_level != nullptr && m_canvas_layer != nullptr)
