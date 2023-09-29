@@ -1,10 +1,10 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=10 format=3 uid="uid://bshwhsqouic3e"]
 
-[ext_resource type="Theme" path="res://assets/themes/ui_theme.tres" id="1_lp5so"]
+[ext_resource type="Theme" uid="uid://bjiaijiglw4a3" path="res://assets/themes/ui_theme.tres" id="1_lp5so"]
 [ext_resource type="Theme" path="res://assets/themes/fira_code_font_theme.tres" id="2_jha0r"]
-[ext_resource type="FontFile" path="res://assets/themes/fonts/firacode/firacode_regular.ttf" id="3_rno71"]
-[ext_resource type="FontFile" path="res://assets/themes/fonts/firacode/firacode_bold.ttf" id="4_l2181"]
-[ext_resource type="FontFile" path="res://assets/themes/fonts/firacode/firacode_retina.ttf" id="5_gla07"]
+[ext_resource type="FontFile" uid="uid://gfim3353elck" path="res://assets/themes/fonts/firacode/firacode_regular.ttf" id="3_rno71"]
+[ext_resource type="FontFile" uid="uid://c06onx6hjeqes" path="res://assets/themes/fonts/firacode/firacode_bold.ttf" id="4_l2181"]
+[ext_resource type="FontFile" uid="uid://b782x7gq8vkya" path="res://assets/themes/fonts/firacode/firacode_retina.ttf" id="5_gla07"]
 [ext_resource type="StyleBox" path="res://assets/themes/console_text_box.tres" id="5_k0ydj"]
 [ext_resource type="Theme" path="res://assets/themes/default.tres" id="7_hq11r"]
 
@@ -105,7 +105,7 @@ physics_object_picking = true
 physics_object_picking_sort = true
 gui_disable_input = true
 gui_embed_subwindows = true
-size = Vector2i(512, 256)
+size = Vector2i(1900, 895)
 render_target_update_mode = 4
 
 [node name="MainCanvasLayer" type="CanvasLayer" parent="TopVerticalLayout/OuterDialogMargin/VerticalSplit/SubViewportContainer/MainSubViewport"]

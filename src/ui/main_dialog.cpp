@@ -4,8 +4,6 @@
 #include "util/assert.hpp"
 #include "util/conversions.hpp"
 
-#include <fmt/format.h>
-
 #include <godot_cpp/classes/canvas_layer.hpp>
 #include <godot_cpp/classes/control.hpp>
 

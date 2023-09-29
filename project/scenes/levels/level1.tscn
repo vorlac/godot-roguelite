@@ -1,11 +1,67 @@
-[gd_scene load_steps=2 format=3 uid="uid://c8tur70b73kih"]
+[gd_scene load_steps=6 format=3 uid="uid://c8tur70b73kih"]
 
-[ext_resource type="Texture2D" uid="uid://b76tyx7byavoa" path="res://assets/art/prototype_textures/dark/texture_03.png" id="1_g3701"]
+[ext_resource type="Texture2D" uid="uid://dsq2y3cfi6f0r" path="res://assets/art/prototype_textures/light/texture_03.png" id="1_nl15v"]
+[ext_resource type="Texture2D" uid="uid://cl68k75es1iy3" path="res://assets/art/prototype_textures/dark/texture_04.png" id="2_6qqh6"]
+[ext_resource type="Texture2D" uid="uid://b65xeiq7etdod" path="res://assets/art/prototype_textures/red/texture_02.png" id="3_blm5m"]
+[ext_resource type="Texture2D" uid="uid://b4wu73uyjafmf" path="res://assets/art/prototype_textures/green/texture_10.png" id="4_ix12c"]
+[ext_resource type="Texture2D" uid="uid://djiso2qx4vtt5" path="res://assets/art/prototype_textures/purple/texture_02.png" id="5_pmdlb"]
 
 [node name="Level1" type="Level"]
 
 [node name="BackgroundTexture" type="Sprite2D" parent="."]
-z_index = -10
-scale = Vector2(3, 3)
-texture = ExtResource("1_g3701")
-metadata/_edit_lock_ = true
+z_index = -100
+scale = Vector2(4, 4)
+texture = ExtResource("1_nl15v")
+
+[node name="Wall" type="StaticBody2D" parent="."]
+z_index = 10
+position = Vector2(400, 400)
+scale = Vector2(0.25, 0.25)
+collision_layer = 8
+collision_mask = 0
+
+[node name="WallCollisionPoly" type="CollisionPolygon2D" parent="Wall"]
+polygon = PackedVector2Array(512, 512, -512, 512, -512, -512, 512, -512)
+
+[node name="WallTexture" type="Sprite2D" parent="Wall"]
+texture = ExtResource("2_6qqh6")
+
+[node name="DeathPit" type="StaticBody2D" parent="."]
+z_index = -90
+position = Vector2(-400, -400)
+scale = Vector2(0.25, 0.25)
+collision_layer = 32
+collision_mask = 0
+
+[node name="DeathCollisionPoly" type="CollisionPolygon2D" parent="DeathPit"]
+polygon = PackedVector2Array(512, 512, -512, 512, -512, -512, 512, -512)
+
+[node name="DeathPitTexture" type="Sprite2D" parent="DeathPit"]
+texture = ExtResource("3_blm5m")
+
+[node name="DamageZone" type="StaticBody2D" parent="."]
+position = Vector2(-400, 400)
+scale = Vector2(0.25, 0.25)
+collision_layer = 16
+collision_mask = 0
+
+[node name="DamageCollisionPoly" type="CollisionPolygon2D" parent="DamageZone"]
+polygon = PackedVector2Array(512, 512, -512, 512, -512, -512, 512, -512)
+
+[node name="DamageTexture" type="Sprite2D" parent="DamageZone"]
+texture = ExtResource("4_ix12c")
+
+[node name="PhysicsBox" type="RigidBody2D" parent="."]
+z_index = 10
+position = Vector2(400, -400)
+collision_layer = 64
+collision_mask = 0
+contact_monitor = true
+
+[node name="WallCollisionPoly" type="CollisionPolygon2D" parent="PhysicsBox"]
+scale = Vector2(0.25, 0.25)
+polygon = PackedVector2Array(512, 512, -512, 512, -512, -512, 512, -512)
+
+[node name="Texture02" type="Sprite2D" parent="PhysicsBox"]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("5_pmdlb")

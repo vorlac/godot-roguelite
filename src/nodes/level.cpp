@@ -16,7 +16,6 @@
 namespace rl::inline node
 {
     Level::Level()
-        : m_player{ player_scene.instantiate() }
     {
         // TODO: kill magic string
         scene::node::set_unique_name(this, "Level1");

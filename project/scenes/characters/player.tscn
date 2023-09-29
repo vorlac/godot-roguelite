@@ -4,6 +4,7 @@
 
 [node name="Player" type="Character"]
 scale = Vector2(2, 2)
+collision_mask = 127
 
 [node name="PlayerCollisionPoly" type="CollisionPolygon2D" parent="."]
 position = Vector2(0.5, -1.5)

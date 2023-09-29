@@ -1,7 +1,21 @@
 # Godot 4.1 GDExtension C++ Prototype
- This project is a rough prototype focusing on understanding how to implement most of the core logic of a game in C++ using GDExtension. Everything is done in the code aside from UI/dialog/menu design, and scene file generation. The current focus is just learning more about how to implement certain features / funtionality in the GDExtension library so there isn't much game logic. Since the documentation is very sparse when it comes to pure native development, a lot of what is implemnted in this side project is mostly focused on providing examples for a variety of misc functionality. Game logic will become a focus when most of the essentials are figured out through misc features/functionality.
+ This project is a rough prototype focusing on understanding how to implementa majority of a game's core logic/scripting in C++ using GDExtension. Everything is done in the code aside from UI/dialog/menu design, and scene file generation.
 
-***Disclaimer:*** I am very new to godot, I've only been using it for about 6 weeks at the time of writing this. There's a very good chance some of the design/implementation approaches used in this project are completely wrong. I just work through most feature additions until something works and stick with that until I find a better/cleaner way.
+ The current focus is aimed towards learning more about how certain features and funtionality can be implemented in native code leveraging the [godot-cpp](https://github.com/godotengine/godot-cpp) GDExtension bindings so there isn't much game logic implemented yet. Since the documentation is pretty sparse when it comes to pure native development, most of the functionality implemnted in this project is focused on providing a variety of general examples of misc functionality that others will likely find useful.
+
+ Game logic will become a focus when most of the essentials are figured out and implented throughout the project.
+
+# Overview
+This project is meant to show others working with GDExtension how to:
+* structure a project
+* implement specific features and functionality entirely in C++
+* incorporate 3rd party libraries into their GDExtension code/library
+* use CMake, VCPKG, and submodules to configure the project automatically
+* configure VSCode (linux & windows) / Visual Studio 2022 (windows) for
+    * good code navigation for godot engine sources, godot-cpp sources, and the gdextension project sources.
+    * good type completion / intellisense configuration
+    * preconfigured debugger launch profiles to run the project standalone or by launching the editor (both launch settings debuggable)
+    * good debugger visualizations for internal godot data structures by leveraging the .natvis file provided with godot-cpp
 
 # High Level Project Structure
 
@@ -12,25 +26,32 @@ The overall node hierarchy:
 <div class="highlight highlight-html"> <pre>
 <a href="./src/main.hpp" title="title">Main</a>
 ├── <a href="./src/ui/main_dialog.hpp" title="title">MainDialog</a>
-│   ├── <a href="./project/assets/scenes/ui/dialogs/main_dialog.tscn" title="title">RichTextLabel (In-Game Console)</a>
-│   └── <a href="./project/assets/scenes/ui/dialogs/main_dialog.tscn" title="title">MainSubViewport (Primary Game Viewport)</a>
-│       └── <a href="./project/assets/scenes/ui/dialogs/main_dialog.tscn" title="title">Canvas Layer</a>
-├── <a href="./src/core/level.hpp" title="title">Level</a>
+│   ├── <a href="./project/scenes/ui/main_dialog.tscn" title="title">RichTextLabel (In-Game Console)</a>
+│   └── <a href="./project/scenes/ui/main_dialog.tscn" title="title">MainSubViewport (Primary Game Viewport)</a>
+│       └── <a href="./project/scenes/ui/main_dialog.tscn" title="title">Canvas Layer</a>
+├── <a href="./src/nodes/level.hpp" title="title">Level</a>
 │   ├── <a href="./src/nodes/character.cpp" title="title">Character</a>
 │   │   ├── <a href="./src/nodes/camera.cpp" title="title">Camera</a>
 │   │   ├── <a href="./src/nodes/character.cpp" title="title">Sprite2D</a>
 │   │   └── <a href="./src/nodes/character.cpp" title="title">CollisionShape2D</a>
-│   ├── <a href="./src/core/projectile_spawner.hpp" title="title">Projectile Spawner</a>
-│   │   └── <a href="./src/nodes/projectile.cpp" title="title">Projectile</a>
-│   └── <a href="./src/core/level.hpp" title="title">Sprite2D (Background)</a>
-└── <a href="./src/core/main.hpp" title="title">Main Canvas Layer (reference to Canvas Layer in MainDialog)</a>
+│   └── <a href="./src/nodes/projectile_spawner.hpp" title="title">Projectile Spawner</a>
+│       └── <a href="./src/nodes/projectile.cpp" title="title">Projectile</a>
+└── <a href="./src/ui/main_dialog.hpp" title="title">Main Canvas Layer (reference to Canvas Layer in MainDialog)</a>
 </p>
 <a href="./src/singletons/console.hpp" title="title">Console (Singleton)</a>
-└── <a href="./project/assets/scenes/ui/dialogs/main_dialog.tscn" title="title">RichTextLabel (Reference from MainDialog)</a>
+└── <a href="./project/scenes/ui/main_dialog.tscn" title="title">RichTextLabel (Reference from MainDialog)</a>
 </pre> </div>
 
-# Development Setup
-See the [wiki](https://github.com/vorlac/godot-roguelite/wiki) for development/tooling setup instructions
+# Setup Guide
+See the [wiki](https://github.com/vorlac/godot-roguelite/wiki) for a detailed guide that will walk you through the steps required to get this project running and debugging on linux or windows.
+
+# Contributing
+This repo and/or the [gdextension developer documentation](https://github.com/vorlac/gdextension-docs/blob/main/main.md) I recently started working on is open to anyone that wants to contribute. Feel free to submit PRs for any changes that implement new features, fix bugs, or improve upon any existing features, functionality, or design.
+
+# Additional Resources
+The projects below are also worth checking out for some additional GDExtension examples to use as references
+* https://github.com/paddy-exe/GDExtensionSummator
+* https://github.com/asmaloney/GDExtensionTemplate
 
 # Licensing
 #### Code

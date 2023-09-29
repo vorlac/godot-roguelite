@@ -40,8 +40,9 @@ namespace rl::inline node
 
     private:
         std::atomic<bool> m_active{ false };
-        resource::preload::scene<Character> player_scene{ path::scene::Player };
+        godot::Node* m_background{ nullptr };
         ProjectileSpawner* m_projectile_spawner{ memnew(rl::ProjectileSpawner) };
-        Character* m_player{ nullptr };
+        resource::preload::scene<Character> player_scene{ path::scene::Player };
+        Character* m_player{ player_scene.instantiate() };
     };
 }
