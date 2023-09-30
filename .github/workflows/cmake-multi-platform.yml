@@ -9,9 +9,9 @@ jobs:
       - uses: actions/checkout@v3
 
         # linux / gcc build
-      - name: [linux | gcc] => cmake - delete cache
+      - name: '[linux | gcc] => cmake - delete cache'
         run: rm -rf ${{ github.workspace }}/.out/*
-      - name: [linux | gcc] => cmake - configure
+      - name: '[linux | gcc] => cmake - configure'
         run: >
           cmake -B ${{ github.workspace }}/.out
           -DCMAKE_CXX_COMPILER=g++
@@ -19,15 +19,15 @@ jobs:
           -DCMAKE_BUILD_TYPE=Debug
           -S ${{ github.workspace }}
           -G Ninja
-      - name: [linux | gcc] => cmake - clean
+      - name: '[linux | gcc] => cmake - clean'
         run: cmake --build ${{ github.workspace }}/.out --config Debug --target clean --parallel 48
-      - name: [linux | gcc] => cmake - build
+      - name: '[linux | gcc] => cmake - build'
         run: cmake --build ${{ github.workspace }}/.out --config Debug --target roguelite --parallel 48
 
         # linux / clang build
-      - name: [linux | clang] => cmake - delete cache
+      - name: '[linux | clang] => cmake - delete cache'
         run: rm -rf ${{ github.workspace }}/.out/*
-      - name: [linux | clang] => cmake - configure
+      - name: '[linux | clang] => cmake - configure'
         run: >
           cmake -B ${{ github.workspace }}/.out
           -DCMAKE_CXX_COMPILER=clang++
@@ -35,7 +35,7 @@ jobs:
           -DCMAKE_BUILD_TYPE=Debug
           -S ${{ github.workspace }}
           -G Ninja
-      - name: [linux | clang] => cmake - clean
+      - name: '[linux | clang] => cmake - clean'
         run: cmake --build ${{ github.workspace }}/.out --config Debug --target clean --parallel 48
-      - name: [linux | clang] => cmake - build
+      - name: '[linux | clang] => cmake - build'
         run: cmake --build ${{ github.workspace }}/.out --config Debug --target roguelite --parallel 48
