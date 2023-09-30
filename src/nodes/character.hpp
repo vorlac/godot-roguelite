@@ -48,7 +48,7 @@ namespace rl
         // Rate of acceleration/deceleration (unit/s/s)
         double m_movement_friction{ 5.0 };
         // Rate of rotational acceleration/deceleration (unit/s/s)
-        double m_rotation_speed{ 5.0 };
+        double m_rotation_speed{ 10.0 };
         // target movement speed (units/s)
         double m_movement_speed{ 500.0 };
         // target facing angle (radians)

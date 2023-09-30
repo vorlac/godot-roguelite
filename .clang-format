@@ -48,7 +48,7 @@ BraceWrapping:
   SplitEmptyFunction: true
   SplitEmptyRecord: true
   SplitEmptyNamespace: true
-BreakBeforeBinaryOperators: None
+BreakBeforeBinaryOperators: true # None
 BreakBeforeConceptDeclarations: true
 BreakBeforeInheritanceComma: true
 BreakInheritanceList: AfterComma

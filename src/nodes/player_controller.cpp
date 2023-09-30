@@ -79,8 +79,8 @@ namespace rl
                 [[fallthrough]];
             case InputMode::MouseAndKeyboard:
             {
-                godot::Vector2 rotation_dir{ this->get_global_mouse_position() -
-                                             this->get_global_position() };
+                godot::Vector2 rotation_dir{ this->get_global_mouse_position()
+                                             - this->get_global_position() };
 
                 m_rotation_angle = rotation_dir.angle() + godot::Math::deg_to_rad(90.0);
                 break;
@@ -95,8 +95,8 @@ namespace rl
                     godot::Vector2 target_rotation{ input->get_vector("rotate_left", "rotate_right",
                                                                       "rotate_up", "rotate_down") };
                     if (!target_rotation.is_zero_approx())
-                        m_rotation_angle = godot::Vector2(0, 0).angle_to_point(target_rotation) +
-                                           godot::Math::deg_to_rad(90.0);
+                        m_rotation_angle = godot::Vector2(0, 0).angle_to_point(target_rotation)
+                                           + godot::Math::deg_to_rad(90.0);
                 }
                 break;
             }

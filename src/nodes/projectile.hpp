@@ -6,14 +6,14 @@
 #include "util/conversions.hpp"
 #include "util/io.hpp"
 
-#include <godot_cpp/classes/area2d.hpp>
+#include <godot_cpp/classes/rigid_body2d.hpp>
 #include <godot_cpp/variant/vector2.hpp>
 
 namespace rl
 {
-    class Projectile : public godot::Area2D
+    class Projectile : public godot::RigidBody2D
     {
-        GDCLASS(Projectile, godot::Area2D);
+        GDCLASS(Projectile, godot::RigidBody2D);
 
     public:
         Projectile() = default;
@@ -26,12 +26,12 @@ namespace rl
         [[property]] double get_time_to_live() const;
         [[property]] double get_max_travel_dist() const;
         [[property]] double get_acceleration() const;
-        [[property]] godot::Vector2 get_velocity() const;
-        [[property]] void set_movement_speed(const double speed);
-        [[property]] void set_time_to_live(const double ttl);
-        [[property]] void set_max_travel_dist(const double dist);
-        [[property]] void set_acceleration(const double acceleration);
-        [[property]] void set_velocity(const godot::Vector2& velocity);
+        [[property]] double get_velocity() const;
+        [[property]] void set_movement_speed(double speed);
+        [[property]] void set_time_to_live(double ttl);
+        [[property]] void set_max_travel_dist(double dist);
+        [[property]] void set_acceleration(double acceleration);
+        [[property]] void set_velocity(double velocity);
 
         // [[signal_slot]]
         // void on_body_enter(godot::Node* node) const
@@ -50,20 +50,28 @@ namespace rl
     protected:
         static void _bind_methods()
         {
-            // bind_member_function(Projectile, on_body_enter);
-            // bind_member_function(Projectile, on_body_exit);
+            bind_member_function(Projectile, get_movement_speed);
+            bind_member_function(Projectile, get_time_to_live);
+            bind_member_function(Projectile, get_max_travel_dist);
+            bind_member_function(Projectile, get_acceleration);
+            bind_member_function(Projectile, get_velocity);
+            bind_member_function(Projectile, set_movement_speed);
+            bind_member_function(Projectile, set_time_to_live);
+            bind_member_function(Projectile, set_max_travel_dist);
+            bind_member_function(Projectile, set_acceleration);
+            bind_member_function(Projectile, set_velocity);
         }
 
     protected:
         godot::Vector2 m_start_pos{ 0.0, 0.0 };
         // projectile movement velocity (pixels)
-        godot::Vector2 m_velocity{ 1.0, 1.0 };
+        double m_velocity{ 1500 };
         // projectile movement speed (pixels/s)
         double m_movement_speed{ 1000.0 };
         // projectile acceleration (pixels/s/s)
-        double m_accelleration{ 100.0 };
+        double m_acceleration{ 100.0 };
         // max time duration alive (seconds)
-        double m_time_to_live{ 1.0 };
+        double m_time_to_live{ 2.5 };
         // max travel distance (pixels) - uint32_t?
         double m_max_travel_dist{ 1000.0 * 1000.0 };
     };

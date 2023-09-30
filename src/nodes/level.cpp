@@ -31,11 +31,11 @@ namespace rl
         this->add_child(m_player);
         this->add_child(m_projectile_spawner);
 
-        signal<event::position_changed>::connect<PlayerController>(m_player->get_controller()) <=>
-            slot(this, on_character_position_changed);
+        signal<event::position_changed>::connect<PlayerController>(m_player->get_controller())
+            <=> slot(this, on_character_position_changed);
 
-        signal<event::spawn_projectile>::connect<Character>(m_player) <=>
-            slot(this, on_character_spawn_projectile);
+        signal<event::spawn_projectile>::connect<Character>(m_player)
+            <=> slot(this, on_character_spawn_projectile);
     }
 
     void Level::_process(double delta_time)
@@ -82,26 +82,23 @@ namespace rl
         console::get()->print("{} < {}", io::red("projectile"), to<std::string>(node->get_name()));
     }
 
-    [[signal_slot]] void Level::on_character_spawn_projectile(godot::Node* obj)
+    [[signal_slot]]
+    void Level::on_character_spawn_projectile(godot::Node* obj)
     {
-        godot::Node2D* node{ gdcast<godot::Node2D>(obj) };
         Projectile* projectile{ m_projectile_spawner->spawn_projectile() };
         if (projectile != nullptr)
         {
-            projectile->set_position(node->get_global_position());
-            projectile->set_rotation(node->get_global_rotation());
-
-            godot::Marker2D* firing_pt{ gdcast<godot::Marker2D>(node) };
+            godot::Marker2D* firing_pt{ gdcast<godot::Marker2D>(obj) };
             if (firing_pt != nullptr)
             {
-                projectile->set_velocity(
-                    godot::Vector2(0, -1).rotated(firing_pt->get_global_rotation()));
+                projectile->set_position(firing_pt->get_global_position());
+                projectile->set_rotation(firing_pt->get_global_rotation());
 
-                signal<event::body_entered>::connect<Projectile>(projectile) <=>
-                    slot(this, on_physics_box_entered);
+                signal<event::body_entered>::connect<Projectile>(projectile)
+                    <=> slot(this, on_physics_box_entered);
 
-                signal<event::body_exited>::connect<Projectile>(projectile) <=>
-                    slot(this, on_physics_box_exited);
+                signal<event::body_exited>::connect<Projectile>(projectile)
+                    <=> slot(this, on_physics_box_exited);
             }
 
             this->add_child(projectile);

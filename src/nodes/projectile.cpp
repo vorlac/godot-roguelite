@@ -9,6 +9,8 @@ namespace rl
     void Projectile::_ready()
     {
         m_start_pos = this->get_global_position();
+        auto forward{ this->get_transform()[0].normalized() };
+        this->apply_impulse(forward * m_velocity);
     }
 
     void Projectile::_process(double delta_time)
@@ -16,11 +18,6 @@ namespace rl
         if (engine::editor_active())
             return;
 
-        godot::Vector2 position{ this->get_position() };
-        position += m_velocity * m_movement_speed * delta_time;
-        this->set_position(position);
-
-        // check time to live
         m_time_to_live -= delta_time;
         if (m_time_to_live <= 0)
         {
@@ -50,37 +47,49 @@ namespace rl
     }
 
     [[property]]
+    double Projectile::get_acceleration() const
+    {
+        return m_acceleration;
+    }
+
+    [[property]]
     double Projectile::get_max_travel_dist() const
     {
         return godot::Math::sqrt(m_max_travel_dist);
     }
 
     [[property]]
-    godot::Vector2 Projectile::get_velocity() const
+    double Projectile::get_velocity() const
     {
         return m_velocity;
     }
 
     [[property]]
-    void Projectile::set_movement_speed(const double speed)
+    void Projectile::set_movement_speed(double speed)
     {
         m_movement_speed = speed;
     }
 
     [[property]]
-    void Projectile::set_time_to_live(const double ttl)
+    void Projectile::set_time_to_live(double ttl)
     {
         m_time_to_live = ttl;
     }
 
     [[property]]
-    void Projectile::set_max_travel_dist(const double dist)
+    void Projectile::set_acceleration(double acceleration)
     {
-        m_max_travel_dist = { dist * dist };
+        m_acceleration = acceleration;
     }
 
     [[property]]
-    void Projectile::set_velocity(const godot::Vector2& velocity)
+    void Projectile::set_max_travel_dist(double dist)
+    {
+        m_max_travel_dist = dist * dist;
+    }
+
+    [[property]]
+    void Projectile::set_velocity(double velocity)
     {
         m_velocity = velocity;
     }

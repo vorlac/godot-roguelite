@@ -43,14 +43,14 @@ namespace rl
             this->find_child(name::character::firing_pt, true, false));
         runtime_assert(m_firing_point != nullptr);
 
-        signal<event::player_move>::connect<PlayerController>(m_player_controller) <=>
-            slot(this, on_player_movement);
+        signal<event::player_move>::connect<PlayerController>(m_player_controller)
+            <=> slot(this, on_player_movement);
 
-        signal<event::player_rotate>::connect<PlayerController>(m_player_controller) <=>
-            slot(this, on_player_rotate);
+        signal<event::player_rotate>::connect<PlayerController>(m_player_controller)
+            <=> slot(this, on_player_rotate);
 
-        signal<event::player_shoot>::connect<PlayerController>(m_player_controller) <=>
-            slot(this, on_player_shoot);
+        signal<event::player_shoot>::connect<PlayerController>(m_player_controller)
+            <=> slot(this, on_player_shoot);
     }
 
     PlayerController* Character::get_controller() const

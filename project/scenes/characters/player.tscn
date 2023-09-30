@@ -4,7 +4,8 @@
 
 [node name="Player" type="Character"]
 scale = Vector2(2, 2)
-collision_mask = 12
+collision_mask = 8
+platform_on_leave = 2
 
 [node name="PlayerCollisionPoly" type="CollisionPolygon2D" parent="."]
 position = Vector2(0.5, -1.5)
@@ -17,4 +18,3 @@ texture = ExtResource("1_ts0vk")
 [node name="FiringPoint" type="Marker2D" parent="PlayerCollisionPoly"]
 unique_name_in_owner = true
 position = Vector2(23.5, 9.50009)
-rotation = 1.5708

@@ -8,17 +8,17 @@ height = 35.0
 
 [node name="Projectile" type="Projectile"]
 collision_layer = 4
-collision_mask = 122
-input_pickable = false
-priority = 1
-linear_damp_space_override = 1
-linear_damp = 0.25
-angular_damp_space_override = 1
+collision_mask = 74
+mass = 0.01
+continuous_cd = 1
+max_contacts_reported = 1
+contact_monitor = true
+can_sleep = false
 
 [node name="Bullet" type="Sprite2D" parent="."]
-scale = Vector2(0.666665, 0.666665)
+rotation = 1.5708
 texture = ExtResource("1_sadn1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2(0.5, 0.5)
+rotation = 1.5708
 shape = SubResource("CapsuleShape2D_i8hct")
