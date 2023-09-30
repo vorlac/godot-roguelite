@@ -1,17 +1,18 @@
 # TODO
 
-### Console / Stats / Resource Monitoring
+### Stats / Resource Monitoring
 * print resource usage (fps, frametime, object count, etc) in UI labels.
-* make `rl::utils::console` generic so it can write to any widget type
-    * register any number of any widget type as a "console" object
-* make `rl::utils::console` static initialized and threaded.
-* add support for formatted/colored text & fixed width text style for console widgets
-* truncate text output once it exceeds ~1024 lines.
+* truncate console text output once it exceeds ~1024 lines.
 
 ### Resource loading
-* look into common vulkan/shader exceptions on startup
-    * related to resources built on different machines? different builds of editor?
-* see if loading from path can be default rather than loading precached binary resource file.
+* see if loading from path can be default rather than loading cached resource file.
+    * cached files don't always play nice with certain native code changes (i.e. changing `GDCLASS` baseclass)
+
+### Menu Dialogs / HUD
+* create main menu
+* create options menu
+* create pause menu
+* in-game HUD
 
 ### Level Creation
 * look into procedural level generation
@@ -68,31 +69,5 @@
 * Look into shaders
 * particle effects (projectiles? dashing?)
 
-# Resources
-### Editor Plugin
-* https://docs.godotengine.org/en/stable/tutorials/plugins/editor/making_main_screen_plugins.html
-
-### Handle inputs properly while the editor is running and standalone
-* https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-property-gui-disable-input
-* https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-property-handle-input-locally
-* https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-property-gui-disable-input
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-property-exclusive
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-property-mouse-passthrough
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-property-mouse-passthrough-polygon
-
-### Window / viewport configuration
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-method-grab-focus
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-method-has-focus
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-method-is-embedded
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-property-min-size
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-property-size
-* https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-property-world-2d
-* https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-method-get-camera-2d
-* https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-method-push-input
-* https://docs.godotengine.org/en/stable/classes/class_viewport.html#class-viewport-method-push-unhandled-input
-
-# In game menu UI
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-property-wrap-controls
-
-# Editor mode enhancements:
-* https://docs.godotengine.org/en/stable/classes/class_window.html#class-window-property-transient
+### Audio
+* Hook up some basic sfx / music
