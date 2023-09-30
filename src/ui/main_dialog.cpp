@@ -4,6 +4,7 @@
 #include "util/assert.hpp"
 #include "util/constants.hpp"
 #include "util/conversions.hpp"
+#include "util/engine.hpp"
 
 #include <godot_cpp/classes/canvas_layer.hpp>
 #include <godot_cpp/classes/control.hpp>
@@ -12,6 +13,9 @@ namespace rl::inline ui
 {
     void MainDialog::_ready()
     {
+        if (engine::editor_active())
+            return;
+
         Console<godot::RichTextLabel>* game_console{ console::get() };
 
         godot::Node* root{ scene::tree::root_node(this) };
