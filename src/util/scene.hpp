@@ -78,29 +78,17 @@ namespace rl::inline utils
                 using object_t = TObj;
 
             public:
-                scene() = default;
-
                 scene(const char* resource_path)
                 {
-                    this->set_path(resource_path);
-                }
+                    auto fh{ godot::FileAccess::open(resource_path, godot::FileAccess::READ) };
+                    bool file_access_success{ !fh.is_null() };
+                    runtime_assert(file_access_success);
 
-                void set_path(const char* resource_path)
-                {
-                    if (initialized)
-                        error_msg("preload::scene already initalized");
-                    else
+                    if (file_access_success)
                     {
-                        auto fh{ godot::FileAccess::open(resource_path, godot::FileAccess::READ) };
-                        bool file_access_success{ !fh.is_null() };
-                        runtime_assert(file_access_success);
-
-                        if (file_access_success)
-                        {
-                            godot::ResourceLoader* resource_loader{ resource::loader::get() };
-                            m_packed_resource = resource_loader->load(resource_path);
-                            initialized = m_packed_resource.is_valid();
-                        }
+                        godot::ResourceLoader* resource_loader{ resource::loader::get() };
+                        m_packed_resource = resource_loader->load(resource_path);
+                        initialized = m_packed_resource.is_valid();
                     }
                 }
 

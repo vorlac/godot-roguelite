@@ -3,29 +3,15 @@ name: GDExtension CMake
 on: [push, pull_request]
 
 jobs:
-  # build-windows:
-  #   runs-on: windows-latest
-  #   steps:
-  #     - uses: actions/setup-python@v2
-  #       with:
-  #         python-version: "3.x"
-  #         architecture: "x64"
-  #     - uses: ilammy/msvc-dev-cmd@v1
-  #     - name: build-windows-latest
-  #       run: pip3 install --user scons
-
   build-linux:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
 
-      #- name: Install dependencies
-      #  run: pip install --user scons
-
-      - name:  cmake - delete cache (linux | debug | gcc)
+        # linux / gcc build
+      - name: [linux | gcc] => cmake - delete cache
         run: rm -rf ${{ github.workspace }}/.out/*
-
-      - name: cmake - configure (linux | debug | gcc)
+      - name: [linux | gcc] => cmake - configure
         run: >
           cmake -B ${{ github.workspace }}/.out
           -DCMAKE_CXX_COMPILER=g++
@@ -33,9 +19,23 @@ jobs:
           -DCMAKE_BUILD_TYPE=Debug
           -S ${{ github.workspace }}
           -G Ninja
-
-      - name: rebuild - clean (linux)
+      - name: [linux | gcc] => cmake - clean
         run: cmake --build ${{ github.workspace }}/.out --config Debug --target clean --parallel 48
+      - name: [linux | gcc] => cmake - build
+        run: cmake --build ${{ github.workspace }}/.out --config Debug --target roguelite --parallel 48
 
-      - name: rebuild - build (linux)
+        # linux / clang build
+      - name: [linux | clang] => cmake - delete cache
+        run: rm -rf ${{ github.workspace }}/.out/*
+      - name: [linux | clang] => cmake - configure
+        run: >
+          cmake -B ${{ github.workspace }}/.out
+          -DCMAKE_CXX_COMPILER=clang++
+          -DCMAKE_C_COMPILER=clang
+          -DCMAKE_BUILD_TYPE=Debug
+          -S ${{ github.workspace }}
+          -G Ninja
+      - name: [linux | clang] => cmake - clean
+        run: cmake --build ${{ github.workspace }}/.out --config Debug --target clean --parallel 48
+      - name: [linux | clang] => cmake - build
         run: cmake --build ${{ github.workspace }}/.out --config Debug --target roguelite --parallel 48
