@@ -21,8 +21,13 @@
 #include <godot_cpp/variant/string_name.hpp>
 
 #define bind_member_function(class_name, func_name) method<&class_name::func_name>::bind(#func_name)
+
 #define slot(slot_owner, slot_callback) \
     std::forward_as_tuple(godot::Callable(slot_owner, #slot_callback), slot_owner)
+
+#define bind_property(class_name, prop_name, prop_type)                \
+    node_property<class_name, prop_type, &class_name::get_##prop_name, \
+                  &class_name::set_##prop_name>::add(#prop_name)
 
 namespace rl::inline utils
 {
@@ -50,6 +55,30 @@ namespace rl::inline utils
                     },
                     arg_types_str);
             }
+        }
+    };
+
+    template <GDObjectDerived TNode, VariantCompatible TProperty, auto GetterMethod, auto SetterMethod>
+    struct node_property
+    {
+        using getter_traits = function_traits<decltype(GetterMethod)>;
+        using setter_traits = function_traits<decltype(SetterMethod)>;
+
+        static constexpr void add(std::string&& prop_name)
+        {
+            const std::string getter_name{ "get_" + prop_name };
+            const std::string setter_name{ "set_" + prop_name };
+
+            method<GetterMethod>::bind(getter_name);
+            method<SetterMethod>::bind(setter_name);
+
+            const godot::PropertyInfo property_info(
+                variant_traits<TProperty>::type_info::get_class_info().type,
+                godot::String(prop_name.c_str()));
+
+            godot::ClassDB::add_property(TNode::get_class_static(), property_info,
+                                         godot::String(setter_name.c_str()),
+                                         godot::String(getter_name.c_str()));
         }
     };
 
@@ -198,30 +227,5 @@ namespace rl::inline utils
                 return m_signal_owner->connect(signal_name.data(), cb);
             }
         };
-    };
-
-    // TODO: get rid of this
-    template <typename TGetter, typename TSetter>
-    struct PropertyBinding
-
-    {
-        PropertyBinding(std::tuple<godot::String, godot::String>&& func_names,
-                        std::tuple<TGetter, TSetter>&& func_callables,
-                        std::tuple<godot::String, godot::Variant::Type>&& prop_desc)
-            : getter_name{ std::get<0>(func_names) }
-            , setter_name{ std::get<1>(func_names) }
-            , getter_func{ std::get<0>(func_callables) }
-            , setter_func{ std::get<1>(func_callables) }
-            , property_name{ std::get<0>(prop_desc) }
-            , property_type{ std::get<1>(prop_desc) }
-        {
-        }
-
-        godot::String getter_name;
-        godot::String setter_name;
-        TGetter getter_func{ nullptr };
-        TSetter setter_func{ nullptr };
-        godot::String property_name;
-        godot::Variant::Type property_type{ godot::Variant::NIL };
     };
 }

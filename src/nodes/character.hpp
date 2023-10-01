@@ -42,7 +42,6 @@ namespace rl
 
     protected:
         static void _bind_methods();
-        static void bind_properties();
 
     protected:
         // Rate of acceleration/deceleration (unit/s/s)

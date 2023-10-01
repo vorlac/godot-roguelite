@@ -126,40 +126,11 @@ namespace rl
         bind_member_function(Character, on_player_rotate);
         bind_member_function(Character, on_player_shoot);
 
-        Character::bind_properties();
+        bind_property(Character, movement_speed, double);
+        bind_property(Character, movement_friction, double);
+        bind_property(Character, rotation_speed, double);
 
         signal_binding<Character, event::position_changed>::add<godot::Object*, godot::Vector2>();
         signal_binding<Character, event::spawn_projectile>::add<>();
-    }
-
-    void Character::bind_properties()
-    {
-        const static std::array property_bindings = {
-            rl::PropertyBinding{
-                std::tuple{ "get_movement_speed", "set_movement_speed" },
-                std::tuple{ &Character::get_movement_speed, &Character::set_movement_speed },
-                std::tuple{ "movement_speed", godot::Variant::FLOAT },
-            },
-            rl::PropertyBinding{
-                std::tuple{ "get_movement_friction", "set_movement_friction" },
-                std::tuple{ &Character::get_movement_friction, &Character::set_movement_friction },
-                std::tuple{ "movement_friction", godot::Variant::FLOAT },
-            },
-            rl::PropertyBinding{
-                std::tuple{ "get_rotation_speed", "set_rotation_speed" },
-                std::tuple{ &Character::get_rotation_speed, &Character::set_rotation_speed },
-                std::tuple{ "rotation_speed", godot::Variant::FLOAT },
-            }
-        };
-
-        for (auto&& bind : property_bindings)
-        {
-            godot::ClassDB::bind_method(godot::D_METHOD(bind.getter_name), bind.getter_func);
-            godot::ClassDB::bind_method(godot::D_METHOD(bind.setter_name, bind.property_name),
-                                        bind.setter_func);
-            godot::PropertyInfo binding_prop_info{ bind.property_type, bind.property_name };
-            godot::ClassDB::add_property(get_class_static(), binding_prop_info, bind.setter_name,
-                                         bind.getter_name);
-        }
     }
 }
