@@ -45,15 +45,12 @@ namespace rl::inline utils
             else
             {
                 const typename traits_t::arg_types func_args{};
-                std::vector<godot::String> vec_strs = rl::detail::to_arg_vec(func_args);
-                std::tuple arg_types_str{ detail::arg_vec_to_tuple<tup_size>(vec_strs) };
-
                 std::apply(
                     [&](auto&&... args) {
                         godot::ClassDB::bind_method(godot::D_METHOD(func_name.data()), Method,
                                                     args...);
                     },
-                    arg_types_str);
+                    func_args);
             }
         }
     };
@@ -163,9 +160,8 @@ namespace rl::inline utils
 
                     std::apply(
                         [&](auto&&... arg) {
-                            signal_params = {
-                                variant_traits<decltype(arg)>::type_info::get_class_info()...
-                            };
+                            signal_params
+                                = { variant_traits<decltype(arg)>::type_info::get_class_info()... };
                         },
                         signal_args);
 
