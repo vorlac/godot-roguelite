@@ -4,6 +4,7 @@
 #include "nodes/camera.hpp"
 #include "nodes/character.hpp"
 #include "nodes/level.hpp"
+#include "nodes/player.hpp"
 #include "nodes/player_controller.hpp"
 #include "nodes/projectile_spawner.hpp"
 #include "singletons/console.hpp"
@@ -44,6 +45,7 @@ namespace godot
         ClassDB::register_class<rl::PlayerController>();
         ClassDB::register_class<rl::Camera>();
         ClassDB::register_class<rl::Character>();
+        ClassDB::register_class<rl::Player>();
         ClassDB::register_class<rl::Level>();
         ClassDB::register_class<rl::MainDialog>();
         ClassDB::register_class<rl::Main>();

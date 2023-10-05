@@ -11,7 +11,7 @@ gradient = SubResource("Gradient_l415w")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
-[node name="Player" type="Character"]
+[node name="Player" type="Player"]
 scale = Vector2(2, 2)
 collision_mask = 8
 platform_on_leave = 2

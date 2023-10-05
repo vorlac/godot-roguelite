@@ -1,6 +1,6 @@
 #pragma once
 
-#include "nodes/character.hpp"
+#include "nodes/player.hpp"
 #include "nodes/projectile_spawner.hpp"
 #include "util/bind.hpp"
 #include "util/constants.hpp"
@@ -19,7 +19,7 @@ namespace godot
 
 namespace rl
 {
-    class Character;
+    class Player;
 
     class Level : public godot::Node2D
     {
@@ -29,7 +29,7 @@ namespace rl
         Level();
         ~Level() = default;
 
-        void _ready() override;
+        virtual void _ready() override;
         void _draw() override;
         void _process(double delta_time) override;
 
@@ -41,7 +41,7 @@ namespace rl
 
         [[signal_slot]] void on_physics_box_entered(godot::Node* node) const;
         [[signal_slot]] void on_physics_box_exited(godot::Node* node) const;
-        [[signal_slot]] void on_character_spawn_projectile(godot::Node* obj);
+        [[signal_slot]] void on_player_spawn_projectile(godot::Node* obj);
         [[signal_slot]] void on_character_position_changed(const godot::Object* const obj,
                                                            godot::Vector2 location) const;
 
@@ -49,8 +49,8 @@ namespace rl
         std::atomic<bool> m_active{ false };
         godot::Node* m_background{ nullptr };
         ProjectileSpawner* m_projectile_spawner{ memnew(rl::ProjectileSpawner) };
-        resource::preload::scene<Character> player_scene{ path::scene::Player };
-        Character* m_player{ player_scene.instantiate() };
+        resource::preload::scene<Player> player_scene{ path::scene::Player };
+        Player* m_player{ player_scene.instantiate() };
         godot::RigidBody2D* m_physics_box{ nullptr };
     };
 }

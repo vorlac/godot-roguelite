@@ -22,7 +22,7 @@ namespace rl
 
     public:
         Character();
-        ~Character() = default;
+        virtual ~Character() = default;
 
         void _ready() override;
 

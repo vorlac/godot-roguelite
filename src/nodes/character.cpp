@@ -30,7 +30,6 @@ namespace rl
 {
     Character::Character()
     {
-        scene::node::set_unique_name(this, name::character::player);
         this->set_motion_mode(MotionMode::MOTION_MODE_FLOATING);
     }
 
@@ -131,6 +130,5 @@ namespace rl
         bind_property(Character, rotation_speed, double);
 
         signal_binding<Character, event::position_changed>::add<godot::Object*, godot::Vector2>();
-        signal_binding<Character, event::spawn_projectile>::add<>();
     }
 }

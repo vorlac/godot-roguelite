@@ -34,8 +34,8 @@ namespace rl
         signal<event::position_changed>::connect<PlayerController>(m_player->get_controller())
             <=> slot(this, on_character_position_changed);
 
-        signal<event::spawn_projectile>::connect<Character>(m_player)
-            <=> slot(this, on_character_spawn_projectile);
+        signal<event::spawn_projectile>::connect<Player>(m_player)
+            <=> slot(this, on_player_spawn_projectile);
     }
 
     void Level::_process(double delta_time)
@@ -83,7 +83,7 @@ namespace rl
     }
 
     [[signal_slot]]
-    void Level::on_character_spawn_projectile(godot::Node* obj)
+    void Level::on_player_spawn_projectile(godot::Node* obj)
     {
         Projectile* projectile{ m_projectile_spawner->spawn_projectile() };
         if (projectile != nullptr)
@@ -118,7 +118,7 @@ namespace rl
     void Level::_bind_methods()
     {
         bind_member_function(Level, on_character_position_changed);
-        bind_member_function(Level, on_character_spawn_projectile);
+        bind_member_function(Level, on_player_spawn_projectile);
         bind_member_function(Level, on_physics_box_entered);
         bind_member_function(Level, on_physics_box_exited);
     }
