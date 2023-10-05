@@ -29,9 +29,9 @@ endfunction(run_active_cmake_diagnostics)
 # values using a case insentive regex match
 #
 # examples:
-# 1. print all cmake variables: 
+# 1. print all cmake variables:
 #    > dump_cmake_variables(".*")
-# 2. print all boolt cmake variables: 
+# 2. print all boolt cmake variables:
 #    > dump_cmake_variables("^boost.*")
 function(dump_cmake_variables)
     get_cmake_property(_vars VARIABLES)
@@ -97,6 +97,8 @@ function(print_project_variables)
     message(NOTICE "    CMAKE_TOOLCHAIN_FILE:....................: " ${CMAKE_TOOLCHAIN_FILE})
     message(NOTICE "    CMAKE_SOURCE_DIR:........................: " ${CMAKE_SOURCE_DIR})
     message(NOTICE "    CMAKE_COMMAND:...........................: " ${CMAKE_COMMAND})
+    message(NOTICE "    CLANG_FORMAT_PROGRAM:....................: " ${CLANG_FORMAT_PROGRAM})
+    message(NOTICE "    SCONS_PROGRAM:...........................: " ${SCONS_PROGRAM})
     message(NOTICE "    CMAKE_CXX_COMPILER:......................: " ${CMAKE_CXX_COMPILER})
     message(NOTICE "    CMAKE_LINKER:............................: " ${CMAKE_LINKER})
     message(NOTICE "    CMAKE_BUILD_TOOL:........................: " ${CMAKE_BUILD_TOOL})

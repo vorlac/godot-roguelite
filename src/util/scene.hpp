@@ -1,6 +1,6 @@
 #pragma once
 
-#include "util/assert.hpp"
+#include "core/assert.hpp"
 #include "util/conversions.hpp"
 
 #include <concepts>
@@ -12,6 +12,11 @@
 #include <godot_cpp/classes/resource_loader.hpp>
 #include <godot_cpp/classes/scene_tree.hpp>
 #include <godot_cpp/classes/window.hpp>
+
+namespace rl
+{
+    class Character;
+}
 
 namespace rl::inline utils
 {
@@ -69,8 +74,8 @@ namespace rl::inline utils
         namespace preload
         {
             template <typename TObj, typename TScene = godot::PackedScene>
-                requires std::derived_from<TScene, godot::Resource> &&
-                         std::convertible_to<TObj, godot::Object>
+                requires std::derived_from<TScene, godot::Resource>
+                         && std::convertible_to<TObj, godot::Object>
             class scene
             {
             public:
@@ -92,8 +97,8 @@ namespace rl::inline utils
                     }
                 }
 
-                [[nodiscard]]
-                auto instantiate() -> TObj*
+                template <typename... TArgs>
+                [[nodiscard]] auto instantiate(TArgs... args) -> TObj*
                 {
                     assertion(initialized, "instantiation invoked from uninitialized scene loader");
                     if (!initialized) [[unlikely]]
@@ -101,6 +106,13 @@ namespace rl::inline utils
 
                     TObj* obj{ gdcast<TObj>(m_packed_resource->instantiate()) };
                     runtime_assert(obj != nullptr);
+
+                    if constexpr (std::is_base_of_v<Character, object_t>)
+                    {
+                        if (obj != nullptr)
+                            obj->set_controller(args...);
+                    }
+
                     return obj;
                 }
 

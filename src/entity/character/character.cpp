@@ -1,10 +1,11 @@
-#include "nodes/character.hpp"
+#include "entity/character/character.hpp"
 
-#include "nodes/camera.hpp"
-#include "nodes/player_controller.hpp"
-#include "util/assert.hpp"
+#include "core/assert.hpp"
+#include "core/concepts.hpp"
+#include "core/constants.hpp"
+#include "entity/camera.hpp"
+#include "entity/controller/character_controller.hpp"
 #include "util/bind.hpp"
-#include "util/constants.hpp"
 #include "util/engine.hpp"
 #include "util/input.hpp"
 #include "util/io.hpp"
@@ -12,6 +13,7 @@
 
 #include <array>
 #include <tuple>
+#include <type_traits>
 #include <vector>
 
 #include <godot_cpp/classes/input.hpp>
@@ -28,7 +30,8 @@
 
 namespace rl
 {
-    Character::Character()
+    Character::Character(CharacterController* controller)
+        : m_character_controller(controller)
     {
         this->set_motion_mode(MotionMode::MOTION_MODE_FLOATING);
     }
@@ -36,29 +39,40 @@ namespace rl
     void Character::_ready()
     {
         this->add_child(m_camera);
-        this->add_child(m_player_controller);
+        this->add_child(m_character_controller);
 
         m_firing_point = gdcast<godot::Marker2D>(
             this->find_child(name::character::firing_pt, true, false));
+
         runtime_assert(m_firing_point != nullptr);
+        runtime_assert(m_character_controller != nullptr);
 
-        signal<event::player_move>::connect<PlayerController>(m_player_controller)
-            <=> slot(this, on_player_movement);
+        if (m_character_controller != nullptr)
+        {
+            signal<event::character_move>::connect<CharacterController>(m_character_controller)
+                <=> slot(this, on_character_movement);
 
-        signal<event::player_rotate>::connect<PlayerController>(m_player_controller)
-            <=> slot(this, on_player_rotate);
+            signal<event::character_rotate>::connect<CharacterController>(m_character_controller)
+                <=> slot(this, on_character_rotate);
 
-        signal<event::player_shoot>::connect<PlayerController>(m_player_controller)
-            <=> slot(this, on_player_shoot);
+            signal<event::character_shoot>::connect<CharacterController>(m_character_controller)
+                <=> slot(this, on_character_shoot);
+        }
     }
 
-    PlayerController* Character::get_controller() const
+    void Character::set_controller(CharacterController* controller)
     {
-        return m_player_controller;
+        m_character_controller = controller;
+        runtime_assert(m_character_controller != nullptr);
+    }
+
+    CharacterController* Character::get_controller() const
+    {
+        return m_character_controller;
     }
 
     [[signal_slot]]
-    void Character::on_player_movement(godot::Vector2 movement_velocity, double delta_time)
+    void Character::on_character_movement(godot::Vector2 movement_velocity, double delta_time)
     {
         double increment = m_movement_friction * delta_time;
         godot::Vector2 velocity{ this->get_velocity().lerp(movement_velocity, increment) };
@@ -69,7 +83,7 @@ namespace rl
     }
 
     [[signal_slot]]
-    void Character::on_player_rotate(double rotation_angle, double delta_time)
+    void Character::on_character_rotate(double rotation_angle, double delta_time)
     {
         double smoothed_angle = godot::Math::lerp_angle(this->get_rotation(), rotation_angle,
                                                         m_rotation_speed * delta_time);
@@ -77,7 +91,7 @@ namespace rl
     }
 
     [[signal_slot]]
-    void Character::on_player_shoot()
+    void Character::on_character_shoot()
     {
         // TODO: fix this
         this->emit_signal(event::spawn_projectile, m_firing_point);
@@ -117,18 +131,5 @@ namespace rl
     void Character::set_rotation_speed(const double rotation_speed)
     {
         m_rotation_speed = rotation_speed;
-    }
-
-    void Character::_bind_methods()
-    {
-        bind_member_function(Character, on_player_movement);
-        bind_member_function(Character, on_player_rotate);
-        bind_member_function(Character, on_player_shoot);
-
-        bind_property(Character, movement_speed, double);
-        bind_property(Character, movement_friction, double);
-        bind_property(Character, rotation_speed, double);
-
-        signal_binding<Character, event::position_changed>::add<godot::Object*, godot::Vector2>();
     }
 }

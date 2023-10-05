@@ -1,8 +1,8 @@
 #pragma once
 
-#include "nodes/projectile.hpp"
+#include "core/constants.hpp"
+#include "entity/projectile/projectile.hpp"
 #include "util/bind.hpp"
-#include "util/constants.hpp"
 #include "util/scene.hpp"
 
 #include <chrono>

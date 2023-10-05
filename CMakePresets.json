@@ -12,7 +12,7 @@
         "strategy": "external"
       },
       "environment": {
-        "NINJA_STATUS": "%p [%f/%t] - "
+        "NINJA_STATUS": "%p [%es] (%f/%t)  -"
       }
     },
     {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "util/assert.hpp"
+#include "core/assert.hpp"
 
 #include <concepts>
 #include <string>

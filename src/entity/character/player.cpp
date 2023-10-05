@@ -1,7 +1,7 @@
-#include "nodes/player.hpp"
+#include "entity/character/player.hpp"
 
-#include "nodes/character.hpp"
-#include "util/constants.hpp"
+#include "core/constants.hpp"
+#include "entity/character/character.hpp"
 #include "util/scene.hpp"
 
 namespace rl
@@ -10,5 +10,9 @@ namespace rl
         : Character()
     {
         scene::node::set_unique_name(this, name::character::player);
+    }
+
+    void Player::_bind_methods()
+    {
     }
 }

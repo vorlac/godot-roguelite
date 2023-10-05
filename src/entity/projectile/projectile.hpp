@@ -1,7 +1,7 @@
 #pragma once
 
+#include "core/attributes.hpp"
 #include "singletons/console.hpp"
-#include "util/attributes.hpp"
 #include "util/bind.hpp"
 #include "util/conversions.hpp"
 #include "util/io.hpp"
@@ -27,6 +27,7 @@ namespace rl
         [[property]] double get_max_travel_dist() const;
         [[property]] double get_acceleration() const;
         [[property]] double get_velocity() const;
+
         [[property]] void set_movement_speed(double speed);
         [[property]] void set_time_to_live(double ttl);
         [[property]] void set_max_travel_dist(double dist);

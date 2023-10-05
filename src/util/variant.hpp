@@ -1,21 +1,20 @@
 #pragma once
 
-#include "util/concepts.hpp"
+#include "core/concepts.hpp"
 
 #include <tuple>
 #include <type_traits>
 
-#include <godot_cpp/core/type_info.hpp>
-#include <godot_cpp/variant/variant.hpp>
+#include <godot_cpp/classes/ref.hpp>
 
 namespace rl::inline utils
 {
     template <VariantCompatible T>
     struct variant_traits
     {
-        using raw_type = std::type_identity_t<T>;
-        using type_info = std::type_identity_t<godot::GetTypeInfo<std::remove_cvref_t<T>>>;
-        static constexpr inline godot::Variant::Type variant_type =
-            static_cast<godot::Variant::Type>(type_info::VARIANT_TYPE);
+        using raw_type = T;
+        using type_info = godot::GetTypeInfo<std::remove_cvref_t<T>>;
+        static constexpr inline godot::Variant::Type variant_type
+            = static_cast<godot::Variant::Type>(type_info::VARIANT_TYPE);
     };
 }

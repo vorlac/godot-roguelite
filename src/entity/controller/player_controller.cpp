@@ -1,7 +1,6 @@
-#include "nodes/player_controller.hpp"
+#include "entity/controller/player_controller.hpp"
 
-#include "util/bind.hpp"
-#include "util/constants.hpp"
+#include "core/constants.hpp"
 #include "util/engine.hpp"
 #include "util/input.hpp"
 #include "util/io.hpp"
@@ -12,39 +11,17 @@
 
 namespace rl
 {
-    void PlayerController::_process(double delta_time)
-    {
-        if (engine::editor_active())
-            return;
-
-        godot::Input* input_handler{ input::get() };
-        if (input_handler != nullptr)
-        {
-            this->process_movement_input(input_handler, delta_time);
-            this->process_rotation_input(input_handler, delta_time);
-            this->process_state_input(input_handler, delta_time);
-
-            m_elapsed_time += delta_time;
-            if (m_elapsed_time > 1.0)
-            {
-                m_elapsed_time = 0.0;
-                this->emit_signal(event::position_changed, this->get_parent(),
-                                  this->get_global_position());
-            }
-        }
-    }
-
-    void PlayerController::process_state_input(godot::Input* const input, double delta_time)
+    void PlayerController::process_action_input(godot::Input* const input, double delta_time)
     {
         if (input->is_action_pressed("shoot"))
-            this->emit_signal(event::player_shoot);
+            this->emit_signal(event::character_shoot);
     }
 
     void PlayerController::process_movement_input(godot::Input* const input, double delta_time)
     {
         auto velocity{ input->get_vector(input::action::move_left, input::action::move_right,
                                          input::action::move_up, input::action::move_down) };
-        this->emit_signal(event::player_move, velocity, delta_time);
+        this->emit_signal(event::character_move, velocity, delta_time);
     }
 
     PlayerController::InputMode PlayerController::get_input_mode(godot::Input* const input)
@@ -103,14 +80,6 @@ namespace rl
             }
         }
 
-        this->emit_signal(event::player_rotate, m_rotation_angle, delta_time);
-    }
-
-    void PlayerController::_bind_methods()
-    {
-        signal_binding<PlayerController, event::player_move>::add<godot::Vector2, double>();
-        signal_binding<PlayerController, event::player_rotate>::add<double, double>();
-        signal_binding<PlayerController, event::player_shoot>::add<godot::Object*>();
-        signal_binding<PlayerController, event::position_changed>::add<godot::Object*, godot::Vector2>();
+        this->emit_signal(event::character_rotate, m_rotation_angle, delta_time);
     }
 }

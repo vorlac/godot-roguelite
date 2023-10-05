@@ -1,4 +1,4 @@
-#include "nodes/projectile.hpp"
+#include "entity/projectile/projectile.hpp"
 
 #include "util/engine.hpp"
 

@@ -1,8 +1,8 @@
 #include "ui/main_dialog.hpp"
 
+#include "core/assert.hpp"
+#include "core/constants.hpp"
 #include "singletons/console.hpp"
-#include "util/assert.hpp"
-#include "util/constants.hpp"
 #include "util/conversions.hpp"
 #include "util/engine.hpp"
 

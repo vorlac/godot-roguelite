@@ -1,4 +1,4 @@
-#include "nodes/projectile_spawner.hpp"
+#include "entity/projectile/projectile_spawner.hpp"
 
 #include "util/bind.hpp"
 

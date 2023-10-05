@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <string>
 
 namespace rl::inline constants
@@ -22,6 +23,7 @@ namespace rl::inline constants
         namespace character
         {
             constexpr inline auto player{ "Player" };
+            constexpr inline auto enemy{ "Enemy" };
             constexpr inline auto firing_pt{ "FiringPoint" };
         }
 
@@ -33,14 +35,14 @@ namespace rl::inline constants
         constexpr inline auto entered_area{ "entered_area" };
         constexpr inline auto exited_area{ "exited_area" };
         constexpr inline auto spawn_projectile{ "spawn_projectile" };
-        constexpr inline auto player_move{ "player_move" };
-        constexpr inline auto player_rotate{ "player_rotate" };
-        constexpr inline auto player_shoot{ "player_shoot" };
+        constexpr inline auto character_move{ "character_move" };
+        constexpr inline auto character_rotate{ "character_rotate" };
+        constexpr inline auto character_shoot{ "character_shoot" };
         constexpr inline auto body_entered{ "body_entered" };
         constexpr inline auto body_exited{ "body_exited" };
     }
 
-    enum class layer : uint32_t
+    enum class LayerID : uint32_t
     {
         Player = 0x00000001,
         NPCs = 0x00000002,
