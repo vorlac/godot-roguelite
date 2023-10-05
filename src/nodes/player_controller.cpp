@@ -42,7 +42,8 @@ namespace rl
 
     void PlayerController::process_movement_input(godot::Input* const input, double delta_time)
     {
-        auto velocity{ input->get_vector("move_left", "move_right", "move_up", "move_down") };
+        auto velocity{ input->get_vector(input::action::move_left, input::action::move_right,
+                                         input::action::move_up, input::action::move_down) };
         this->emit_signal(event::player_move, velocity, delta_time);
     }
 
