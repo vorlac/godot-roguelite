@@ -177,6 +177,17 @@ if(NOT EXISTS "${godot_debug_editor_executable}")
 endif()
 
 # =======================================================================
+# Compiler identification
+# =======================================================================
+
+# used below to conditionally set certain compile options depending on the toolset used.
+# taken from godot-cpp's cmakelists.txt for consistency (along with some of the compiler 
+# options defined in target_compile_options() below).
+set(compiler_is_clang "$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:Clang>>")
+set(compiler_is_gnu "$<CXX_COMPILER_ID:GNU>")
+set(compiler_is_msvc "$<CXX_COMPILER_ID:MSVC>")
+
+# =======================================================================
 # 3rd party library setup/configuration (leverages vcpkg)
 # =======================================================================
 
@@ -217,7 +228,12 @@ target_include_directories(godot_engine PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine"
     "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/platform/windows"
     "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/thirdparty/zlib"
+    "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/thirdparty/vulkan"
     "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/thirdparty/vulkan/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/thirdparty/vulkan/include/vulkan"
+    "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/drivers/vulkan"
+    SYSTEM "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/thirdparty/glad"
+    SYSTEM "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/thirdparty/volk"
     SYSTEM "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/thirdparty/zstd"
     SYSTEM "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/thirdparty/mbedtls/include"
 )
@@ -248,6 +264,10 @@ target_compile_definitions(godot_engine PUBLIC
     VK_USE_PLATFORM_WIN32_KHR
     GLAD_ENABLED
     GLES_OVER_GL
+    _SCRT_STARTUP_WINMAIN=1
+    $<${compiler_is_msvc}:
+        MSVC
+    >
 )
 
 # =======================================================================
@@ -265,13 +285,6 @@ file(GLOB_RECURSE roguelite_sources CONFIGURE_DEPENDS
 
 # add the gdextension dynamic library
 add_library(${gdextension_lib_name} SHARED ${roguelite_sources})
-
-# used below to conditionally set certain compile options depending on the toolset used.
-# taken from godot-cpp's cmakelists.txt for consistency (along with some of the compiler 
-# options defined in target_compile_options() below).
-set(compiler_is_clang "$<OR:$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:Clang>>")
-set(compiler_is_gnu "$<CXX_COMPILER_ID:GNU>")
-set(compiler_is_msvc "$<CXX_COMPILER_ID:MSVC>")
 
 # import the same compiler warning settings that the bindings library uses
 include("${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-cpp/cmake/GodotCompilerWarnings.cmake")
