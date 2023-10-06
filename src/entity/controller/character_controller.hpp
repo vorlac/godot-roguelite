@@ -3,7 +3,6 @@
 #include "core/concepts.hpp"
 #include "core/constants.hpp"
 #include "util/bind.hpp"
-#include "util/io.hpp"
 
 #include <type_traits>
 
@@ -49,13 +48,6 @@ namespace rl
             requires std::derived_from<T, CharacterController>
         static void bind_members()
         {
-            log::print("CharacterController::bind_members<{}>() called",
-                       to<std::string_view>(T::get_class_static()));
-            log::print("    - signal: {} added", event::character_move);
-            log::print("    - signal: {} added", event::character_rotate);
-            log::print("    - signal: {} added", event::character_shoot);
-            log::print("    - signal: {} added", event::position_changed);
-
             using character_move_signal_t = signal_binding<T, event::character_move>;
             using add_character_move_signal_binding_t
                 = character_move_signal_t::template add<godot::Vector2, double>;

@@ -5,7 +5,6 @@
 #include "entity/camera.hpp"
 #include "singletons/console.hpp"
 #include "util/bind.hpp"
-#include "util/io.hpp"
 
 #include <concepts>
 
@@ -56,17 +55,6 @@ namespace rl
             requires std::derived_from<T, Character>
         static void bind_members()
         {
-            log::print("Character::bind_members<{}>() called",
-                       to<std::string_view>(T::get_class_static()));
-            log::print("    - method: {} binded", "on_character_movement");
-            log::print("    - method: {} binded", "on_character_rotate");
-            log::print("    - method: {} binded", "on_character_shoot");
-            log::print("    - property: {} added", "movement_speed");
-            log::print("    - property: {} added", "movement_friction");
-            log::print("    - property: {} added", "rotation_speed");
-            log::print("    - signal: {} added", event::character_shoot);
-            log::print("    - signal: {} added", event::spawn_projectile);
-
             bind_member_function(T, on_character_movement);
             bind_member_function(T, on_character_rotate);
             bind_member_function(T, on_character_shoot);
