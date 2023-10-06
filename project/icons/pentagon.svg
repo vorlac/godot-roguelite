@@ -1,0 +1,38 @@
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	y="0px" viewBox="0 0 900 1100" xml:space="preserve">
+	<style type="text/css">
+		.st0 {
+			fill: #1F262E;
+		}
+
+		.st1 {
+			fill: #954F8E;
+		}
+
+		.st2 {
+			fill: #F58132;
+		}
+
+		.st3 {
+			fill: #D7DF23;
+		}
+
+		.st4 {
+			fill: #DA3A80;
+		}
+
+		.st5 {
+			fill: #F2D90E;
+		}
+
+		.st6 {
+			fill: none;
+			stroke: #F2D90E;
+			stroke-width: 5;
+			stroke-linecap: round;
+			stroke-miterlimit: 10;
+		}
+	</style>
+	<path class="st5" d="M110.43,246.63l21.93,15.93l-8.38,25.78h-27.1l-8.38-25.78L110.43,246.63 M110.43,223.14L66.17,255.3
+	l16.91,52.03h54.71l16.91-52.03L110.43,223.14L110.43,223.14z" />
+</svg>

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "util/assert.hpp"
-#include "util/concepts.hpp"
+#include "core/assert.hpp"
+#include "core/concepts.hpp"
+#include "core/function_traits.hpp"
 #include "util/conversions.hpp"
-#include "util/function_traits.hpp"
 #include "util/variant.hpp"
 
 #include <string>
@@ -14,11 +14,11 @@
 #include <vector>
 
 #include <godot_cpp/classes/object.hpp>
-#include <godot_cpp/classes/rigid_body2d.hpp>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/callable.hpp>
 #include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/string_name.hpp>
+#include <godot_cpp/variant/vector2.hpp>
 
 #define bind_member_function(class_name, func_name) method<&class_name::func_name>::bind(#func_name)
 
@@ -107,23 +107,12 @@ namespace rl::inline utils
         }
     };
 
-    struct signal_registry
-    {
-        using signal_name_t = std::string;
-        using signal_args_t = std::vector<godot::PropertyInfo>;
-        using signal_properties_t = std::pair<signal_name_t, signal_args_t>;
-        using signal_info_vec_t = std::vector<signal_properties_t>;
-        using class_signal_map_t = std::unordered_map<std::string, signal_info_vec_t>;
-
-        static inline class_signal_map_t class_bindings = {};
-    };
-
     template <GDObjectDerived TObject, auto& SignalName>
     class signal_binding
     {
     public:
         using object_t = std::type_identity_t<TObject>;
-        using signal_t = signal_binding<object_t, SignalName>;
+        using signal_t = std::type_identity_t<signal_binding<object_t, SignalName>>;
         static inline constexpr std::string_view signal_name{ SignalName };
         static inline std::vector<godot::PropertyInfo> signal_params{};
 
@@ -138,7 +127,7 @@ namespace rl::inline utils
         template <typename... TArgs>
         struct add
         {
-            using arg_types = std::tuple<TArgs...>;
+            using arg_types = std::tuple<std::type_identity_t<TArgs>...>;
             static constexpr inline size_t arg_count{ std::tuple_size_v<arg_types> };
 
             add()
@@ -171,7 +160,6 @@ namespace rl::inline utils
                                           std::forward<decltype(signal_params)>(signal_params)));
                 }
 
-                signal_registry::class_bindings[class_name].emplace_back(signal_name, signal_params);
                 runtime_assert(signal_params.size() == arg_count);
             }
         };

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "util/concepts.hpp"
+#include "core/concepts.hpp"
 
 #include <fmt/compile.h>
 #include <fmt/core.h>
@@ -14,6 +14,8 @@
 #include <tuple>
 #include <type_traits>
 #include <utility>
+
+#include <godot_cpp/core/error_macros.hpp>
 
 namespace rl::inline utils
 {
@@ -125,7 +127,8 @@ namespace rl::inline utils
         template <typename... Args>
         static inline void print(spdlog::format_string_t<Args...> fmt, Args&&... args)
         {
-            spdlog::debug(fmt, std::forward<Args>(args)...);
+            std::string msg{ fmt::format(fmt, std::forward<Args>(args)...) };
+            ERR_PRINT_ED(msg.data());
         }
     };
 }

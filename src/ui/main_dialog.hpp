@@ -1,6 +1,6 @@
 #pragma once
 
-#include "nodes/level.hpp"
+#include "entity/level.hpp"
 
 #include <godot_cpp/classes/panel.hpp>
 #include <godot_cpp/classes/rich_text_label.hpp>

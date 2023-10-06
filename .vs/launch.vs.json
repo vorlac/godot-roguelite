@@ -15,7 +15,8 @@
         "${workspaceRoot}/project"
       ],
       "project": "CMakeLists.txt",
-      "name": "gdextension (editor)"
+      "name": "gdextension (editor)",
+      "visualizerFile": "${workspaceRoot}/extern/godot-engine/platform/windows/godot.natvis"
     },
     {
       "type": "dll",
@@ -28,7 +29,8 @@
         "${workspaceRoot}/project"
       ],
       "project": "CMakeLists.txt",
-      "name": "gdextension (console)"
+      "name": "gdextension (project)",
+      "visualizerFile": "${workspaceRoot}/extern/godot-engine/platform/windows/godot.natvis"
     }
   ]
 }

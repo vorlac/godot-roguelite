@@ -1,6 +1,6 @@
 #pragma once
 
-#include "nodes/level.hpp"
+#include "entity/level.hpp"
 #include "ui/main_dialog.hpp"
 
 #include <godot_cpp/classes/canvas_layer.hpp>
@@ -18,7 +18,6 @@ namespace rl
 
         void _ready() override;
         void initialize();
-        //void notification(int notification_type);
 
     protected:
         void apply_default_settings();

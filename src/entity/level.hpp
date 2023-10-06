@@ -1,9 +1,10 @@
 #pragma once
 
-#include "nodes/player.hpp"
-#include "nodes/projectile_spawner.hpp"
+#include "core/constants.hpp"
+#include "entity/character/player.hpp"
+#include "entity/controller/player_controller.hpp"
+#include "entity/projectile/projectile_spawner.hpp"
 #include "util/bind.hpp"
-#include "util/constants.hpp"
 #include "util/scene.hpp"
 
 #include <atomic>
@@ -50,7 +51,7 @@ namespace rl
         godot::Node* m_background{ nullptr };
         ProjectileSpawner* m_projectile_spawner{ memnew(rl::ProjectileSpawner) };
         resource::preload::scene<Player> player_scene{ path::scene::Player };
-        Player* m_player{ player_scene.instantiate() };
+        Player* m_player{ player_scene.instantiate(memnew(PlayerController)) };
         godot::RigidBody2D* m_physics_box{ nullptr };
     };
 }

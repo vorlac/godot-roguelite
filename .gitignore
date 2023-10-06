@@ -1,6 +1,7 @@
 .godot/
 .import/
 .out/
+out/
 cmake-build-*/
 
 export.cfg

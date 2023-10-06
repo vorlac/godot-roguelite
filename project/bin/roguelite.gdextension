@@ -5,11 +5,7 @@ compatibility_minimum = 4.1
 
 [libraries]
 
-windows.debug.x86_32 = "res://bin/roguelited.dll"
-windows.debug.x86_64 = "res://bin/roguelited.dll"
-windows.release.x86_64 = "res://bin/roguelite.dll"
-windows.release.x86_32 = "res://bin/roguelite.dll"
-linux.debug.x86_32 = "res://bin/libroguelited.so"
-linux.debug.x86_64 = "res://bin/libroguelited.so"
-linux.release.x86_64 = "res://bin/libroguelite.so"
-linux.release.x86_32 = "res://bin/libroguelite.so"
+windows.debug.x86_64 = "res://bin/roguelite.debug.x64.dll"
+windows.release.x86_64 = "res://bin/roguelite.release.x64.dll"
+linux.debug.x86_64 = "res://bin/libroguelite.debug.x64.so"
+linux.release.x86_64 = "res://bin/libroguelite.release.x64.so"

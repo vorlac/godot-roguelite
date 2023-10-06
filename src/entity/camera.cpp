@@ -1,4 +1,4 @@
-#include "nodes/camera.hpp"
+#include "entity/camera.hpp"
 
 #include <godot_cpp/classes/camera2d.hpp>
 

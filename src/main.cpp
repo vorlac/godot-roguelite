@@ -1,6 +1,6 @@
 #include "main.hpp"
 
-#include "util/assert.hpp"
+#include "core/assert.hpp"
 #include "util/conversions.hpp"
 #include "util/engine.hpp"
 #include "util/input.hpp"

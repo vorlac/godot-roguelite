@@ -52,6 +52,7 @@ This repo and/or the [gdextension developer documentation](https://github.com/vo
 The projects below are also worth checking out for some additional GDExtension examples to use as references
 * https://github.com/paddy-exe/GDExtensionSummator
 * https://github.com/asmaloney/GDExtensionTemplate
+* https://github.com/godotengine/godot-cpp/tree/master/test/src
 
 # Licensing
 #### Code

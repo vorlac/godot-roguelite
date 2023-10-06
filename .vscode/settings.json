@@ -101,4 +101,5 @@
     "workbench.list.smoothScrolling": true,
     "workbench.tree.renderIndentGuides": "always",
     "dotnet.defaultSolution": "disable",
+    "svg.preview.background": "editor",
 }

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "nodes/character.hpp"
+#include "core/constants.hpp"
+#include "entity/character/character.hpp"
 #include "util/bind.hpp"
-#include "util/constants.hpp"
 
 namespace rl
 {
@@ -12,6 +12,7 @@ namespace rl
 
     public:
         Player();
+        ~Player() = default;
 
         void _ready() override
         {
@@ -19,9 +20,6 @@ namespace rl
         }
 
     protected:
-        static void _bind_methods()
-        {
-            signal_binding<Player, event::spawn_projectile>::add<>();
-        }
+        static void _bind_methods();
     };
 }

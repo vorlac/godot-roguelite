@@ -1,6 +1,7 @@
-#include "nodes/level.hpp"
+#include "entity/level.hpp"
 
-#include "nodes/character.hpp"
+#include "entity/character/character.hpp"
+#include "entity/controller/player_controller.hpp"
 #include "singletons/console.hpp"
 #include "util/bind.hpp"
 #include "util/conversions.hpp"
@@ -31,11 +32,15 @@ namespace rl
         this->add_child(m_player);
         this->add_child(m_projectile_spawner);
 
-        signal<event::position_changed>::connect<PlayerController>(m_player->get_controller())
-            <=> slot(this, on_character_position_changed);
+        PlayerController* controller{ gdcast<PlayerController>(m_player->get_controller()) };
+        if (controller != nullptr)
+        {
+            signal<event::position_changed>::connect<CharacterController>(controller)
+                <=> slot(this, on_character_position_changed);
 
-        signal<event::spawn_projectile>::connect<Player>(m_player)
-            <=> slot(this, on_player_spawn_projectile);
+            signal<event::spawn_projectile>::connect<Player>(m_player)
+                <=> slot(this, on_player_spawn_projectile);
+        }
     }
 
     void Level::_process(double delta_time)
