@@ -79,6 +79,8 @@ include(godot-dev-configuration)
 find_package(fmt CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
+find_package(hiredis CONFIG REQUIRED)
+find_package(redis++ CONFIG REQUIRED)
 
 # =======================================================================
 # GDExtension dynamic library setup/configuration
@@ -174,6 +176,8 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE fmt::fmt-header-only
     PRIVATE spdlog::spdlog_header_only
     PRIVATE OpenSSL::SSL OpenSSL::Crypto
+    PRIVATE hiredis::hiredis
+    PRIVATE PRIVATE redis++::redis++_static
 )
 
 # =======================================================================
