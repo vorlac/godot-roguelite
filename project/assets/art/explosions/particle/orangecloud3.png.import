@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ctn3i6gcpwln3"
-path="res://.godot/imported/orangecloud3.png-273b9a95cb343ee2cb355cf916a03013.ctex"
+path="res://.godot/imported/orangeCloud3.png-3a432089bf5aa03652301a9b246c4e4e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/art/explosions/particle/orangecloud3.png"
-dest_files=["res://.godot/imported/orangecloud3.png-273b9a95cb343ee2cb355cf916a03013.ctex"]
+source_file="res://assets/art/explosions/particle/orangeCloud3.png"
+dest_files=["res://.godot/imported/orangeCloud3.png-3a432089bf5aa03652301a9b246c4e4e.ctex"]
 
 [params]
 

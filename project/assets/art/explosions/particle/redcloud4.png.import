@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://1wvbg0p8211l"
-path="res://.godot/imported/redcloud4.png-a069fec777fae1387091fe32aafa3351.ctex"
+path="res://.godot/imported/redCloud4.png-07e5023e47d865f3b4c4760a8da41e25.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/art/explosions/particle/redcloud4.png"
-dest_files=["res://.godot/imported/redcloud4.png-a069fec777fae1387091fe32aafa3351.ctex"]
+source_file="res://assets/art/explosions/particle/redCloud4.png"
+dest_files=["res://.godot/imported/redCloud4.png-07e5023e47d865f3b4c4760a8da41e25.ctex"]
 
 [params]
 

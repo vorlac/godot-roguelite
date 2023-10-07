@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b6il8q218futq"
-path="res://.godot/imported/sonicexplosion05.png-24cfa93576eea0eecbb512851fd7739c.ctex"
+path="res://.godot/imported/sonicExplosion05.png-f947b9baa65d46fc9b01595a636a58d0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/art/explosions/sonic/sonicexplosion05.png"
-dest_files=["res://.godot/imported/sonicexplosion05.png-24cfa93576eea0eecbb512851fd7739c.ctex"]
+source_file="res://assets/art/explosions/sonic/sonicExplosion05.png"
+dest_files=["res://.godot/imported/sonicExplosion05.png-f947b9baa65d46fc9b01595a636a58d0.ctex"]
 
 [params]
 

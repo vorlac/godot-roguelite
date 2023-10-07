@@ -5,6 +5,11 @@
 #include "util/engine.hpp"
 #include "util/input.hpp"
 
+#include <openssl/evp.h>
+#include <openssl/pem.h>
+#include <openssl/rsa.h>
+#include <openssl/sha.h>
+
 namespace rl
 {
     Main::Main()

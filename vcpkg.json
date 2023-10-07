@@ -3,8 +3,5 @@
   "documentation": "https://github.com/microsoft/vcpkg/blob/master/docs/users/manifests.md",
   "name": "roguelite",
   "version": "0.1.0",
-  "dependencies": [
-    "fmt",
-    "spdlog"
-  ]
+  "dependencies": ["fmt", "spdlog", "openssl"]
 }

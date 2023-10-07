@@ -5,6 +5,8 @@ compatibility_minimum = 4.1
 
 [libraries]
 
+macos.debug = "res://bin/libroguelite.debug.dylib"
+macos.release = "res://bin/libroguelite.debug.dylib"
 windows.debug.x86_64 = "res://bin/roguelite.debug.x64.dll"
 windows.release.x86_64 = "res://bin/roguelite.release.x64.dll"
 linux.debug.x86_64 = "res://bin/libroguelite.debug.x64.so"

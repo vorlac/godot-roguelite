@@ -5,9 +5,23 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "project (gdb)",
-      "type": "cppdbg",
+      "type": "lldb",
       "request": "launch",
+      "name": "MacOS Launch",
+      "args": [
+        "--editor",
+        "--debug",
+        "--verbose",
+        "--path",
+        "${workspaceFolder}/project"
+      ],
+      "program": "${workspaceFolder}/extern/godot-engine/bin/godot.macos.editor.dev.arm64",
+      "cwd": "${workspaceFolder}",
+      "osx": {
+        "program": "${workspaceFolder}/extern/godot-engine/bin/godot.macos.editor.dev.arm64"
+      }
+    },
+    {
       "MIMode": "gdb",
       "linux": {
         "program": "${workspaceFolder}/extern/godot-engine/bin/godot.linuxbsd.editor.dev.x86_64",
@@ -17,19 +31,12 @@
         "program": "${workspaceFolder}/extern/godot-engine/bin/godot.windows.editor.dev.x86_64.exe",
         "miDebuggerPath": "C:\\tools\\mingw64\\bin\\gdb.exe"
       },
-      "args": [
-        "--debug",
-        "--verbose",
-        "--path",
-        "${workspaceFolder}/project",
-      ],
-      "cwd": "${workspaceFolder}",
       "visualizerFile": "${workspaceFolder}/extern/godot-engine/platform/windows/godot.natvis",
       "internalConsoleOptions": "openOnSessionStart",
       "launchCompleteCommand": "exec-run",
       "symbolLoadInfo": {
         "loadAll": true,
-        "exceptionList": "",
+        "exceptionList": ""
       },
       "setupCommands": [
         {
@@ -88,16 +95,11 @@
         "searchMicrosoftSymbolServer": true
       },
       "program": "${workspaceFolder}/extern/godot-engine/bin/godot.windows.editor.dev.x86_64.exe",
-      "args": [
-        "--debug",
-        "--verbose",
-        "--path",
-        "${workspaceFolder}/project"
-      ],
+      "args": ["--debug", "--verbose", "--path", "${workspaceFolder}/project"],
       "cwd": "${workspaceFolder}",
       "visualizerFile": "${workspaceFolder}/extern/godot-engine/platform/windows/godot.natvis",
       "internalConsoleOptions": "openOnSessionStart",
-      "console": "internalConsole",
+      "console": "internalConsole"
     },
     {
       "name": "editor (vsdbg)",
@@ -122,7 +124,7 @@
       "cwd": "${workspaceFolder}",
       "visualizerFile": "${workspaceFolder}/extern/godot-engine/platform/windows/godot.natvis",
       "internalConsoleOptions": "openOnSessionStart",
-      "console": "internalConsole",
+      "console": "internalConsole"
     }
   ]
 }

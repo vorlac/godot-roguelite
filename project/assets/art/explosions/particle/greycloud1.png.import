@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://r11lwjfhrkc4"
-path="res://.godot/imported/greycloud1.png-b546a81e0ac987cb61113efa5de4de02.ctex"
+path="res://.godot/imported/greyCloud1.png-d71fdd90aee25a4da3b2751cf7dc4ded.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/art/explosions/particle/greycloud1.png"
-dest_files=["res://.godot/imported/greycloud1.png-b546a81e0ac987cb61113efa5de4de02.ctex"]
+source_file="res://assets/art/explosions/particle/greyCloud1.png"
+dest_files=["res://.godot/imported/greyCloud1.png-d71fdd90aee25a4da3b2751cf7dc4ded.ctex"]
 
 [params]
 

@@ -1,5 +1,8 @@
 .godot/
 .import/
+*.import
+project/**/*.import
+
 .out/
 out/
 cmake-build-*/

@@ -45,7 +45,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}")
 set(CMAKE_PDB_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}")
 set(CMAKE_COMPILE_PDB_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}")
-set(CMAKE_DEBUG_POSTFIX ".debug.${CMAKE_CXX_COMPILER_ARCHITECTURE_ID}")
+set(CMAKE_DEBUG_POSTFIX ".debug")
 
 # =======================================================================
 # Compiler identification
@@ -78,6 +78,7 @@ include(godot-dev-configuration)
 
 find_package(fmt CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
+find_package(OpenSSL REQUIRED)
 
 # =======================================================================
 # GDExtension dynamic library setup/configuration
@@ -141,14 +142,14 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
 )
 
-# linker options for the gdextension library
-target_link_options(${PROJECT_NAME} PRIVATE
-    $<$<NOT:${compiler_is_msvc}>:
-        -static-libgcc
-        -static-libstdc++
-        -Wl,-R,'$$ORIGIN'
-    >
-)
+# # linker options for the gdextension library
+# target_link_options(${PROJECT_NAME} PRIVATE
+#     $<$<NOT:${compiler_is_msvc}>:
+#         -static-libgcc
+#         -static-libstdc++
+#         -Wl,-R,'$$ORIGIN'
+#     >
+# )
 
 # =======================================================================
 # Optional configuration / build features
@@ -172,6 +173,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE fmt::fmt
     PRIVATE fmt::fmt-header-only
     PRIVATE spdlog::spdlog_header_only
+    PRIVATE OpenSSL::SSL OpenSSL::Crypto
 )
 
 # =======================================================================
