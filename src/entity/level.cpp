@@ -36,10 +36,10 @@ namespace rl
         if (controller != nullptr)
         {
             signal<event::position_changed>::connect<CharacterController>(controller)
-                <=> slot(this, on_character_position_changed);
+                <=> g_slot(this, on_character_position_changed);
 
             signal<event::spawn_projectile>::connect<Player>(m_player)
-                <=> slot(this, on_player_spawn_projectile);
+                <=> g_slot(this, on_player_spawn_projectile);
         }
     }
 
@@ -100,10 +100,10 @@ namespace rl
                 projectile->set_rotation(firing_pt->get_global_rotation());
 
                 signal<event::body_entered>::connect<Projectile>(projectile)
-                    <=> slot(this, on_physics_box_entered);
+                    <=> g_slot(this, on_physics_box_entered);
 
                 signal<event::body_exited>::connect<Projectile>(projectile)
-                    <=> slot(this, on_physics_box_exited);
+                    <=> g_slot(this, on_physics_box_exited);
             }
 
             this->add_child(projectile);

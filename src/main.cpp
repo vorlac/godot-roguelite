@@ -5,7 +5,7 @@
 #include "util/engine.hpp"
 #include "util/input.hpp"
 
-#include <hiredis/hiredis.h>
+#include <sw/redis++/redis++.h>
 
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/input.hpp>
@@ -14,49 +14,24 @@
 #include <godot_cpp/variant/utility_functions.hpp>
 
 using namespace godot;
+using namespace sw::redis;
 
 namespace rl
 {
     Main::Main()
     {
-        redisContext* context = redisConnect("localhost", 6379);
-        if (context == NULL || context->err)
+        try
         {
-            if (context)
-            {
-                UtilityFunctions::print("Connection error: %s\n", context->errstr);
-                redisFree(context);
-            }
-            else
-            {
-                UtilityFunctions::print("Connection error: Can't allocate redis context\n");
-            }
-            exit(1);
+            auto redis = Redis("tcp://127.0.0.1:6379");
+            // redis.set("key", "val");
+            auto val = redis.get("key");
+            std::string std_val = *val;
+            UtilityFunctions::print("VALUE: ", std_val.c_str());
         }
-
-        UtilityFunctions::print("Redis connection successful");
-
-        // SET a key-value pair
-        redisReply* reply = (redisReply*)redisCommand(context, "SET mykey myvalue");
-        if (reply == NULL)
+        catch (const sw::redis::Error& e)
         {
-            UtilityFunctions::print("SET failed\n");
-            exit(1);
+            // Error handling.
         }
-        freeReplyObject(reply);
-        UtilityFunctions::print("Redis SET successful");
-
-        // GET the value of a key
-        redisReply* getReply = (redisReply*)redisCommand(context, "GET mykey");
-        if (getReply == NULL)
-        {
-            UtilityFunctions::print("GET failed\n");
-            exit(1);
-        }
-        UtilityFunctions::print("GET mykey: ", getReply->str);
-        freeReplyObject(getReply);
-
-        redisFree(context);
 
         resource::preload::scene<Level> level{ path::scene::Level1 };
         resource::preload::scene<MainDialog> dialog{ path::ui::MainDialog };
