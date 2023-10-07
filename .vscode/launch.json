@@ -5,9 +5,10 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "editor (lldb)",
       "type": "lldb",
       "request": "launch",
-      "name": "MacOS Launch",
+      "cwd": "${workspaceFolder}",
       "args": [
         "--editor",
         "--debug",
@@ -15,50 +16,37 @@
         "--path",
         "${workspaceFolder}/project"
       ],
-      "program": "${workspaceFolder}/extern/godot-engine/bin/godot.macos.editor.dev.arm64",
-      "cwd": "${workspaceFolder}",
+      "linux": {
+        "program": "${workspaceFolder}/extern/godot-engine/bin/godot.linuxbsd.editor.dev.x86_64"
+      },
+      "windows": {
+        "program": "${workspaceFolder}/extern/godot-engine/bin/godot.windows.editor.dev.x86_64.exe"
+      },
       "osx": {
         "program": "${workspaceFolder}/extern/godot-engine/bin/godot.macos.editor.dev.arm64"
       }
     },
     {
-      "MIMode": "gdb",
+      "name": "project (lldb)",
+      "type": "lldb",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "args": ["--debug", "--verbose", "--path", "${workspaceFolder}/project"],
       "linux": {
-        "program": "${workspaceFolder}/extern/godot-engine/bin/godot.linuxbsd.editor.dev.x86_64",
-        "miDebuggerPath": "/usr/bin/gdb"
+        "program": "${workspaceFolder}/extern/godot-engine/bin/godot.linuxbsd.editor.dev.x86_64"
       },
       "windows": {
-        "program": "${workspaceFolder}/extern/godot-engine/bin/godot.windows.editor.dev.x86_64.exe",
-        "miDebuggerPath": "C:\\tools\\mingw64\\bin\\gdb.exe"
+        "program": "${workspaceFolder}/extern/godot-engine/bin/godot.windows.editor.dev.x86_64.exe"
       },
-      "visualizerFile": "${workspaceFolder}/extern/godot-engine/platform/windows/godot.natvis",
-      "internalConsoleOptions": "openOnSessionStart",
-      "launchCompleteCommand": "exec-run",
-      "symbolLoadInfo": {
-        "loadAll": true,
-        "exceptionList": ""
-      },
-      "setupCommands": [
-        {
-          "description": "Enable pretty-printing for gdb",
-          "text": "-enable-pretty-printing",
-          "ignoreFailures": true
-        }
-      ]
+      "osx": {
+        "program": "${workspaceFolder}/extern/godot-engine/bin/godot.macos.editor.dev.arm64"
+      }
     },
     {
       "name": "editor (gdb)",
       "type": "cppdbg",
       "request": "launch",
-      "MIMode": "gdb",
-      "linux": {
-        "program": "${workspaceFolder}/extern/godot-engine/bin/godot.linuxbsd.editor.dev.x86_64",
-        "miDebuggerPath": "/usr/bin/gdb"
-      },
-      "windows": {
-        "program": "${workspaceFolder}/extern/godot-engine/bin/godot.windows.editor.dev.x86_64.exe",
-        "miDebuggerPath": "C:\\tools\\mingw64\\bin\\gdb.exe"
-      },
+      "cwd": "${workspaceFolder}",
       "args": [
         "--editor",
         "--debug",
@@ -66,7 +54,15 @@
         "--path",
         "${workspaceFolder}/project"
       ],
-      "cwd": "${workspaceFolder}",
+      "linux": {
+        "program": "${workspaceFolder}/extern/godot-engine/bin/godot.linuxbsd.editor.dev.x86_64",
+        "miDebuggerPath": "/usr/bin/gdb"
+      },
+      "windows": {
+        "program": "${workspaceFolder}/extern/godot-engine/bin/godot.windows.editor.dev.x86_64.exe",
+        "miDebuggerPath": "C:\\tools\\mingw64\\bin\\gdb.exe"
+      },
+      "MIMode": "gdb",
       "visualizerFile": "${workspaceFolder}/extern/godot-engine/platform/windows/godot.natvis",
       "internalConsoleOptions": "openOnSessionStart",
       "launchCompleteCommand": "exec-run",
