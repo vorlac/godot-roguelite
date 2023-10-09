@@ -134,8 +134,6 @@ target_compile_options(${PROJECT_NAME} PUBLIC
     >
 )
 
-##### <<<<<<<<<
-
 # include directories gdextension library
 target_include_directories(${PROJECT_NAME} PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
