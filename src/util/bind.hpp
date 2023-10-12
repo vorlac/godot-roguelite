@@ -44,7 +44,7 @@ namespace rl::inline utils
                 godot::ClassDB::bind_method(godot::D_METHOD(func_name.data()), Method);
             else
             {
-                std::tuple func_args = traits_t::arg_types_nocvref();
+                const typename traits_t::arg_types_nocvref func_args{};
                 std::apply(
                     [&](auto&&... args) {
                         godot::ClassDB::bind_method(godot::D_METHOD(func_name.data()), Method,
@@ -93,7 +93,7 @@ namespace rl::inline utils
                                                    Function);
             else
             {
-                const typename traits_t::arg_types func_args{};
+                const typename traits_t::arg_types_nocvref func_args{};
                 std::vector<godot::String> vec_strs = rl::detail::to_arg_vec(func_args);
                 std::tuple arg_types_str{ detail::arg_vec_to_tuple<tup_size>(vec_strs) };
 
