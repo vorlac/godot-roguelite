@@ -49,13 +49,13 @@ namespace rl
         if (m_character_controller != nullptr)
         {
             signal<event::character_move>::connect<CharacterController>(m_character_controller)
-                <=> slot(this, on_character_movement);
+                <=> signal_callback(this, on_character_movement);
 
             signal<event::character_rotate>::connect<CharacterController>(m_character_controller)
-                <=> slot(this, on_character_rotate);
+                <=> signal_callback(this, on_character_rotate);
 
             signal<event::character_shoot>::connect<CharacterController>(m_character_controller)
-                <=> slot(this, on_character_shoot);
+                <=> signal_callback(this, on_character_shoot);
         }
     }
 

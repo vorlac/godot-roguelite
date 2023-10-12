@@ -10,8 +10,32 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/ports")
 endif()
 
 # =======================================================================
+# VCPKG triplet definition (should enforce static linkage for all deps)
+# This would typically be passed in from CMakePresets.json, but if
+# the cmake configuration is invoked without using a preset this fallback
+# should define a preset that prefers static linkage for 3rd party libs.
+# =======================================================================
+
+if (NOT VCPKG_TARGET_TRIPLET)
+    if (WIN32)
+        # static-md enforces static linkage to all dependencies,
+        # as well as dynamic linkage to the C runtime for consistency.
+        # if this gives you trouble change to "x64-windows-static".
+        set(VCPKG_TARGET_TRIPLET "x64-windows-static-md")
+    elseif(APPLE)
+        if ("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "arm64")
+            set(VCPKG_TARGET_TRIPLET "arm64-macos")
+        else()
+            set(VCPKG_TARGET_TRIPLET "x64-macos")
+        endif()
+    elseif(UNIX)
+        set(VCPKG_TARGET_TRIPLET "x64-linux")
+    endif()
+endif()
+
+# =======================================================================
 # Define VCPKG toolchain file. This would typically be passed in from
-# CMakePresets.json, but if the cmake configuration is invoked without 
+# CMakePresets.json, but if the cmake configuration is invoked without
 # using a preset this fallback should detect that the path is missing.
 # =======================================================================
 if(NOT CMAKE_TOOLCHAIN_FILE)

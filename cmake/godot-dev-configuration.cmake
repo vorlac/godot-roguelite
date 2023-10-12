@@ -43,9 +43,14 @@ endif()
 # Godot editor/engine debug build
 # =======================================================================
 
+string(TOLOWER "${CMAKE_SYSTEM_NAME}" host_os)
+
 # define variable to be used in the engine build when specifying platform.
 set(host_os_engine "${host_os}")
-if(UNIX)
+if (APPLE)
+    # ${CMAKE_SYSTEM_NAME} returns Darwin, but the scons platform name will be macos
+    set(host_os_engine "macos")
+elseif(UNIX)
     # the scons build expects linuxbsd to be passed in as the platform
     # when building on linux, so just append bsd to CMAKE_SYSTEM_NAME
     set(host_os_engine "${host_os}bsd")
@@ -70,16 +75,19 @@ message(NOTICE "godot_debug_editor_executable = ${godot_debug_editor_executable}
 if(NOT EXISTS "${godot_debug_editor_executable}")
     message("Godot engine debug binaries not found, invoking debug build of engine...")
 
-    execute_process(
-        COMMAND scons platform=${host_os} arch=x64 target=editor use_static_cpp=yes dev_build=yes debug_symbols=yes optimize=none use_lto=no --clean
-        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine"
-        COMMAND_ERROR_IS_FATAL ANY
-    )
+    set(GODOT_ENGINE_CLEAN_BUILD OFF)
+    if (GODOT_ENGINE_CLEAN_BUILD MATCHES ON)
+        execute_process(
+            COMMAND "${SCONS_PROGRAM}" arch=x64 target=editor use_static_cpp=yes dev_build=yes debug_symbols=yes optimize=none use_lto=no --clean
+            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine"
+            COMMAND_ERROR_IS_FATAL ANY
+        )
+    endif()
 
     # this build should only ever need to be run once (unless the enging debug binaries
     # are deleted or you want to change the build configuration/command invoked below).
     execute_process(
-        COMMAND scons platform=${host_os} arch=x64 target=editor use_static_cpp=yes dev_build=yes debug_symbols=yes optimize=none use_lto=no
+        COMMAND "${SCONS_PROGRAM}" arch=x64 target=editor use_static_cpp=yes dev_build=yes debug_symbols=yes optimize=none use_lto=no
         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine"
         COMMAND_ERROR_IS_FATAL ANY
     )

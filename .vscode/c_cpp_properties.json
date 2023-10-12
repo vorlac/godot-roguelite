@@ -6,14 +6,21 @@
             "configurationProvider": "ms-vscode.cmake-tools",
             "intelliSenseMode": "linux-gcc-x64",
             "cppStandard": "gnu++23",
-            "compilerPath": "/usr/bin/g++"
+            "compilerPath": "g++"
         },
         {
             "name": "GDNative C++ (Clang)",
             "configurationProvider": "ms-vscode.cmake-tools",
             "intelliSenseMode": "linux-clang-x64",
             "cppStandard": "gnu++23",
-            "compilerPath": "/usr/bin/clang++"
+            "compilerPath": "clang++"
+        },
+        {
+            "name": "Mac GDNative C++ (Clang)",
+            "configurationProvider": "ms-vscode.cmake-tools",
+            "intelliSenseMode": "macos-clang-x64",
+            "cppStandard": "gnu++23",
+            "compilerPath": "clang++"
         },
         {
             "name": "GDNative C++ (MSVC)",

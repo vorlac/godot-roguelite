@@ -22,7 +22,7 @@
 
 #define bind_member_function(class_name, func_name) method<&class_name::func_name>::bind(#func_name)
 
-#define slot(slot_owner, slot_callback) \
+#define signal_callback(slot_owner, slot_callback) \
     std::forward_as_tuple(godot::Callable(slot_owner, #slot_callback), slot_owner)
 
 #define bind_property(class_name, prop_name, prop_type)                \

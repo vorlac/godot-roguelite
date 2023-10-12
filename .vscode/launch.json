@@ -123,6 +123,49 @@
       "visualizerFile": "${workspaceFolder}/extern/godot-engine/platform/windows/godot.natvis",
       "internalConsoleOptions": "openOnSessionStart",
       "console": "internalConsole",
+    },
+    {
+      "name": "project (lldb)",
+      "type": "lldb",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "--debug",
+        "--verbose",
+        "--path",
+        "${workspaceFolder}/project"
+      ],
+      "linux": {
+        "program": "${workspaceFolder}/extern/godot-engine/bin/godot.linuxbsd.editor.dev.x86_64"
+      },
+      "windows": {
+        "program": "${workspaceFolder}/extern/godot-engine/bin/godot.windows.editor.dev.x86_64.exe"
+      },
+      "osx": {
+        "program": "${workspaceFolder}/extern/godot-engine/bin/godot.macos.editor.dev.arm64"
+      }
+    },
+    {
+      "name": "editor (lldb)",
+      "type": "lldb",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "--editor",
+        "--debug",
+        "--verbose",
+        "--path",
+        "${workspaceFolder}/project"
+      ],
+      "linux": {
+        "program": "${workspaceFolder}/extern/godot-engine/bin/godot.linuxbsd.editor.dev.x86_64"
+      },
+      "windows": {
+        "program": "${workspaceFolder}/extern/godot-engine/bin/godot.windows.editor.dev.x86_64.exe"
+      },
+      "osx": {
+        "program": "${workspaceFolder}/extern/godot-engine/bin/godot.macos.editor.dev.arm64"
+      }
     }
   ]
 }

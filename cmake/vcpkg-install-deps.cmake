@@ -1,11 +1,4 @@
 # =======================================================================
-# VCPKG triplet definition (should enforce static linkage for all deps)
-# =======================================================================
-
-string(TOLOWER "${CMAKE_SYSTEM_NAME}" host_os)
-set(VCPKG_TARGET_TRIPLET "x64-${host_os}-static")
-
-# =======================================================================
 # VCPKG bootstrap / initialization.
 # =======================================================================
 
