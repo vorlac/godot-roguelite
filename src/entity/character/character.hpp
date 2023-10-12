@@ -29,11 +29,12 @@ namespace rl
         GDCLASS(Character, godot::CharacterBody2D);
 
     public:
-        Character(CharacterController* controller = nullptr);
+        Character();
         virtual ~Character() = default;
 
-        void _ready() override;
+        virtual void _ready() override;
 
+    public:
         CharacterController* get_controller() const;
         void set_controller(CharacterController* controller);
 
@@ -51,32 +52,18 @@ namespace rl
                                                    double delta_time);
 
     protected:
-        template <typename T>
-            requires std::derived_from<T, Character>
-        static void bind_members()
-        {
-            bind_member_function(T, on_character_movement);
-            bind_member_function(T, on_character_rotate);
-            bind_member_function(T, on_character_shoot);
-
-            bind_property(T, movement_speed, double);
-            bind_property(T, movement_friction, double);
-            bind_property(T, rotation_speed, double);
-
-            using pos_changed_signal_t = signal_binding<T, event::position_changed>;
-            using add_pos_changed_signal_binding_t
-                = pos_changed_signal_t::template add<godot::Object*, godot::Vector2>;
-            add_pos_changed_signal_binding_t();
-
-            using spawn_projectile_signal_t = signal_binding<T, event::spawn_projectile>;
-            using add_spawn_projectile_signal_binding_t
-                = spawn_projectile_signal_t::template add<godot::Object*, godot::Vector2>;
-            add_spawn_projectile_signal_binding_t();
-        }
-
         static void _bind_methods()
         {
-            Character::bind_members<Character>();
+            bind_member_function(Character, on_character_movement);
+            bind_member_function(Character, on_character_rotate);
+            bind_member_function(Character, on_character_shoot);
+
+            bind_property(Character, movement_speed, double);
+            bind_property(Character, movement_friction, double);
+            bind_property(Character, rotation_speed, double);
+
+            signal_binding<Character, event::position_changed>::add<godot::Object*, godot::Vector2>();
+            signal_binding<Character, event::spawn_projectile>::add<godot::Object*, godot::Vector2>();
         }
 
     protected:

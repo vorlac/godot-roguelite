@@ -30,8 +30,7 @@
 
 namespace rl
 {
-    Character::Character(CharacterController* controller)
-        : m_character_controller(controller)
+    Character::Character()
     {
         this->set_motion_mode(MotionMode::MOTION_MODE_FLOATING);
     }

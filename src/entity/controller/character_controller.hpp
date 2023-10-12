@@ -31,48 +31,12 @@ namespace rl
 
         void _process(double delta_time) override;
 
-        virtual void process_action_input(godot::Input* const input, double delta_time)
-        {
-        }
-
-        virtual void process_movement_input(godot::Input* const input, double delta_time)
-        {
-        }
-
-        virtual void process_rotation_input(godot::Input* const input, double delta_time)
-        {
-        }
+        virtual void process_action_input(godot::Input* const input, double delta_time);
+        virtual void process_movement_input(godot::Input* const input, double delta_time);
+        virtual void process_rotation_input(godot::Input* const input, double delta_time);
 
     protected:
-        template <typename T>
-            requires std::derived_from<T, CharacterController>
-        static void bind_members()
-        {
-            using character_move_signal_t = signal_binding<T, event::character_move>;
-            using add_character_move_signal_binding_t
-                = character_move_signal_t::template add<godot::Vector2, double>;
-            add_character_move_signal_binding_t();
-
-            using character_rotate_signal_t = signal_binding<T, event::character_rotate>;
-            using add_character_rotate_signal_binding_t
-                = character_rotate_signal_t::template add<double, double>;
-            add_character_rotate_signal_binding_t();
-
-            using character_shoot_signal_t = signal_binding<T, event::character_shoot>;
-            using add_character_shoot_signal_binding_t
-                = character_shoot_signal_t::template add<godot::Object*>;
-            add_character_shoot_signal_binding_t();
-
-            using position_changed_signal_t = signal_binding<T, event::position_changed>;
-            using add_position_changed_signal_binding_t
-                = position_changed_signal_t::template add<godot::Object*, godot::Vector2>;
-            add_position_changed_signal_binding_t();
-        }
-
-        static void _bind_methods()
-        {
-            CharacterController::bind_members<CharacterController>();
-        }
+        static void _bind_methods();
 
     protected:
         // the active input mode for character controls

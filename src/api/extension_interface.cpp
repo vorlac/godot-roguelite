@@ -45,7 +45,7 @@ namespace rl
         godot::ClassDB::register_class<rl::Projectile>();
         godot::ClassDB::register_class<rl::ProjectileSpawner>();
 
-        godot::ClassDB::register_abstract_class<rl::CharacterController>();
+        godot::ClassDB::register_class<rl::CharacterController>();
         godot::ClassDB::register_class<rl::PlayerController>();
         godot::ClassDB::register_class<rl::EnemyController>();
 

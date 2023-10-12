@@ -1,5 +1,6 @@
 #include "entity/controller/character_controller.hpp"
 
+#include "core/assert.hpp"
 #include "core/constants.hpp"
 #include "util/bind.hpp"
 #include "util/engine.hpp"
@@ -34,20 +35,27 @@ namespace rl
         }
     }
 
-    // void CharacterController::process_action_input(godot::Input* const input, double delta_time)
-    //{
-    // }
+    void CharacterController::process_action_input(godot::Input* const input, double delta_time)
+    {
+        error_msg("process_action_input() not implemented in derived class");
+    }
 
-    // void CharacterController::process_movement_input(godot::Input* const input, double delta_time)
-    //{
-    // }
+    void CharacterController::process_movement_input(godot::Input* const input, double delta_time)
+    {
+        error_msg("process_movement_input() not implemented in derived class");
+    }
 
-    // void CharacterController::process_rotation_input(godot::Input* const input, double delta_time)
-    //{
-    // }
+    void CharacterController::process_rotation_input(godot::Input* const input, double delta_time)
+    {
+        error_msg("process_rotation_input() not implemented in derived class");
+    }
 
-    // void CharacterController::_bind_methods()
-    //{
-    //     CharacterController::bind_members<CharacterController>();
-    // }
+    void CharacterController::_bind_methods()
+    {
+        signal_binding<CharacterController, event::character_move>::add<godot::Vector2, double>();
+        signal_binding<CharacterController, event::character_rotate>::add<double, double>();
+        signal_binding<CharacterController, event::character_shoot>::add<godot::Object*>();
+        signal_binding<CharacterController, event::position_changed>::add<godot::Object*,
+                                                                          godot::Vector2>();
+    }
 }

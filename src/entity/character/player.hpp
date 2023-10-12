@@ -14,10 +14,7 @@ namespace rl
         Player();
         ~Player() = default;
 
-        void _ready() override
-        {
-            Character::_ready();
-        }
+        void _ready() override;
 
     protected:
         static void _bind_methods();
