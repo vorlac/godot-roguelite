@@ -4,7 +4,7 @@ set(GDEXTENSION_LIB_NAME roguelite)
 set(GDEXTENSION_LIB_PATH "${CMAKE_CURRENT_SOURCE_DIR}/project/bin")
 
 option(
-  AUTOFORMAT_SRC_ON_CONFIGURE 
+  AUTOFORMAT_SRC_ON_CONFIGURE
     "If enabled, clang-format will be used to format all sources in src/ during configuration"
         ON
 )
@@ -18,9 +18,6 @@ option(
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE ON)
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_COLOR_DIAGNOSTICS ON)
 set(CMAKE_MESSAGE_LOG_LEVEL STATUS)
 
@@ -38,14 +35,7 @@ project("${GDEXTENSION_LIB_NAME}"
     0.1.0
 )
 
-include(vcpkg-setup)
-
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}")
-set(CMAKE_PDB_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}")
-set(CMAKE_COMPILE_PDB_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}")
-set(CMAKE_DEBUG_POSTFIX ".debug.${CMAKE_CXX_COMPILER_ARCHITECTURE_ID}")
+include(vcpkg-install-deps)
 
 # =======================================================================
 # Compiler identification
@@ -170,6 +160,30 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE fmt::fmt
     PRIVATE fmt::fmt-header-only
     PRIVATE spdlog::spdlog_header_only
+)
+
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+	set(system_bits 64)
+else()
+    set(system_bits 32)
+endif()
+
+string(TOLOWER
+    "${PROJECT_NAME}.${CMAKE_SYSTEM_NAME}.${system_bits}.${CMAKE_BUILD_TYPE}"
+    gde_lib_name
+)
+
+set_target_properties(${PROJECT_NAME}
+	PROPERTIES
+		POSITION_INDEPENDENT_CODE ON
+        CMAKE_EXPORT_COMPILE_COMMANDS ON
+        CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE ON
+		ARCHIVE_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}"
+		LIBRARY_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}"
+		RUNTIME_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}"
+        CMAKE_PDB_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}"
+        CMAKE_COMPILE_PDB_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}"
+		OUTPUT_NAME "${gde_lib_name}"
 )
 
 # =======================================================================

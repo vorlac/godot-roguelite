@@ -1,4 +1,3 @@
-
 # VCPKG submodule init/update
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/ports")
     message(NOTICE "VCPKG package manager sources not found")
@@ -10,7 +9,11 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/ports")
     )
 endif()
 
-# VCPKG toolchain file
+# =======================================================================
+# Define VCPKG toolchain file. This would typically be passed in from
+# CMakePresets.json, but if the cmake configuration is invoked without 
+# using a preset this fallback should detect that the path is missing.
+# =======================================================================
 if(NOT CMAKE_TOOLCHAIN_FILE)
     set(toolchain_file_path "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/scripts/buildsystems/vcpkg.cmake")
     if (EXISTS "${toolchain_file_path}")
