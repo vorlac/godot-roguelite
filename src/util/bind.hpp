@@ -44,7 +44,7 @@ namespace rl::inline utils
                 godot::ClassDB::bind_method(godot::D_METHOD(func_name.data()), Method);
             else
             {
-                const typename traits_t::arg_types func_args{};
+                std::tuple func_args = traits_t::arg_types_nocvref();
                 std::apply(
                     [&](auto&&... args) {
                         godot::ClassDB::bind_method(godot::D_METHOD(func_name.data()), Method,

@@ -74,6 +74,7 @@ namespace rl::inline utils
         using return_type = TRet;
         using class_type = TClass;
         using arg_types = std::tuple<TArgs...>;
+        using arg_types_nocvref = std::tuple<std::remove_cvref_t<TArgs>...>;
         inline static const std::string_view class_name{ typeid(class_type).name() };
         static constexpr size_t arg_count = sizeof...(TArgs);
     };
