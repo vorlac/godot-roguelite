@@ -129,14 +129,16 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
 )
 
-# linker options for the gdextension library
-target_link_options(${PROJECT_NAME} PRIVATE
-    $<$<NOT:${compiler_is_msvc}>:
-        -static-libgcc
-        -static-libstdc++
-        -Wl,-R,'$$ORIGIN'
-    >
-)
+if (NOT APPLE)
+    # linker options for the gdextension library
+    target_link_options(${PROJECT_NAME} PRIVATE
+        $<$<NOT:${compiler_is_msvc}>:
+            -static-libgcc
+            -static-libstdc++
+            -Wl,-R,'$$ORIGIN'
+        >
+    )
+endif()
 
 # =======================================================================
 # Optional configuration / build features

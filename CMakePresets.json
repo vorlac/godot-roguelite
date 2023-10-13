@@ -11,6 +11,10 @@
         "value": "x64",
         "strategy": "external"
       },
+      "toolset": {
+        "value": "host=x64",
+        "strategy": "external"
+      },
       "environment": {
         "NINJA_STATUS": "%p [%es] (%f/%t)  -"
       }
@@ -29,7 +33,8 @@
       "hidden": true,
       "cacheVariables": {
         "CMAKE_C_COMPILER": "cl",
-        "CMAKE_CXX_COMPILER": "cl"
+        "CMAKE_CXX_COMPILER": "cl",
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static-md"
       },
       "condition": {
         "type": "equals",
@@ -108,9 +113,9 @@
         "CMAKE_CXX_COMPILER": "clang++"
       },
       "condition": {
-        "type": "equals",
+        "type": "notEquals",
         "lhs": "${hostSystemName}",
-        "rhs": "Linux"
+        "rhs": "Windows"
       }
     },
     {
