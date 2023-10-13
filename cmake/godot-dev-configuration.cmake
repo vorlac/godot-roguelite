@@ -57,7 +57,7 @@ elseif(UNIX)
 endif()
 
 set(godot_debug_editor_executable
-    "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/bin/godot.${host_os_engine}.editor.dev.x86_64${CMAKE_EXECUTABLE_SUFFIX}"
+    "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine/bin/godot.${host_os_engine}.editor.dev.${CMAKE_SYSTEM_PROCESSOR}${CMAKE_EXECUTABLE_SUFFIX}"
 )
 
 find_program(SCONS_PROGRAM NAMES scons)
