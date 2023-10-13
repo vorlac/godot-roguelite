@@ -78,7 +78,7 @@ if(NOT EXISTS "${godot_debug_editor_executable}")
     set(GODOT_ENGINE_CLEAN_BUILD OFF)
     if (GODOT_ENGINE_CLEAN_BUILD MATCHES ON)
         execute_process(
-            COMMAND "${SCONS_PROGRAM}" arch=x64 target=editor use_static_cpp=yes dev_build=yes debug_symbols=yes optimize=none use_lto=no --clean
+            COMMAND "${SCONS_PROGRAM}" target=editor use_static_cpp=yes dev_build=yes debug_symbols=yes optimize=none use_lto=no --clean
             WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine"
             COMMAND_ERROR_IS_FATAL ANY
         )
@@ -87,7 +87,7 @@ if(NOT EXISTS "${godot_debug_editor_executable}")
     # this build should only ever need to be run once (unless the enging debug binaries
     # are deleted or you want to change the build configuration/command invoked below).
     execute_process(
-        COMMAND "${SCONS_PROGRAM}" arch=x64 target=editor use_static_cpp=yes dev_build=yes debug_symbols=yes optimize=none use_lto=no
+        COMMAND "${SCONS_PROGRAM}" target=editor use_static_cpp=yes dev_build=yes debug_symbols=yes optimize=none use_lto=no
         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine"
         COMMAND_ERROR_IS_FATAL ANY
     )
