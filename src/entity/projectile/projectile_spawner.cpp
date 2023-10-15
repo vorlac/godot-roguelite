@@ -41,7 +41,6 @@ namespace rl
 
     void ProjectileSpawner::_bind_methods()
     {
-        bind_member_function(ProjectileSpawner, get_fire_rate);
-        bind_member_function(ProjectileSpawner, set_fire_rate);
+        bind_property(ProjectileSpawner, fire_rate, double);
     }
 }
