@@ -17,7 +17,6 @@ namespace rl
         ~Main() = default;
 
         void _ready() override;
-        void initialize();
 
     protected:
         void apply_default_settings();
