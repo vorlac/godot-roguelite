@@ -1,10 +1,10 @@
-#include "util/engine.hpp"
-
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/main_loop.hpp>
 #include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/classes/scene_tree.hpp>
 #include <godot_cpp/classes/window.hpp>
+
+#include "util/engine.hpp"
 
 namespace rl::inline utils
 {

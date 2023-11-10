@@ -42,8 +42,7 @@ namespace rl::inline constants
         constexpr inline auto body_exited{ "body_exited" };
     }
 
-    enum class LayerID : uint32_t
-    {
+    enum class LayerID : uint32_t {
         Player = 0x00000001,
         NPCs = 0x00000002,
         Projectiles = 0x00000004,

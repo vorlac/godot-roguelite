@@ -1,9 +1,9 @@
 #pragma once
 
-#include "entity/level.hpp"
-
 #include <godot_cpp/classes/panel.hpp>
 #include <godot_cpp/classes/rich_text_label.hpp>
+
+#include "entity/level.hpp"
 
 namespace rl::inline ui
 {

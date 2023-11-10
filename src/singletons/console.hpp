@@ -1,14 +1,15 @@
 #pragma once
 
 #include <chrono>
+#include <string>
+#include <type_traits>
+
 #include <fmt/chrono.h>
 #include <fmt/compile.h>
 #include <fmt/core.h>
 #include <spdlog/sinks/callback_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
-#include <string>
-#include <type_traits>
 
 #include <godot_cpp/classes/object.hpp>
 #include <godot_cpp/classes/rich_text_label.hpp>

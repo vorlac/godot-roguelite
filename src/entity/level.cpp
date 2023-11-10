@@ -1,7 +1,12 @@
-#include "entity/level.hpp"
+#include <godot_cpp/classes/collision_polygon2d.hpp>
+#include <godot_cpp/classes/marker2d.hpp>
+#include <godot_cpp/classes/rigid_body2d.hpp>
+#include <godot_cpp/variant/callable.hpp>
+#include <godot_cpp/variant/vector2.hpp>
 
 #include "entity/character/character.hpp"
 #include "entity/controller/player_controller.hpp"
+#include "entity/level.hpp"
 #include "singletons/console.hpp"
 #include "util/bind.hpp"
 #include "util/conversions.hpp"
@@ -9,12 +14,6 @@
 #include "util/engine.hpp"
 #include "util/input.hpp"
 #include "util/io.hpp"
-
-#include <godot_cpp/classes/collision_polygon2d.hpp>
-#include <godot_cpp/classes/marker2d.hpp>
-#include <godot_cpp/classes/rigid_body2d.hpp>
-#include <godot_cpp/variant/callable.hpp>
-#include <godot_cpp/variant/vector2.hpp>
 
 namespace rl
 {
@@ -35,11 +34,11 @@ namespace rl
         PlayerController* controller{ gdcast<PlayerController>(m_player->get_controller()) };
         if (controller != nullptr)
         {
-            signal<event::position_changed>::connect<CharacterController>(controller)
-                <=> signal_callback(this, on_character_position_changed);
+            signal<event::position_changed>::connect<CharacterController>(controller) <=>
+                signal_callback(this, on_character_position_changed);
 
-            signal<event::spawn_projectile>::connect<Player>(m_player)
-                <=> signal_callback(this, on_player_spawn_projectile);
+            signal<event::spawn_projectile>::connect<Player>(m_player) <=>
+                signal_callback(this, on_player_spawn_projectile);
         }
     }
 
@@ -99,11 +98,11 @@ namespace rl
                 projectile->set_position(firing_pt->get_global_position());
                 projectile->set_rotation(firing_pt->get_global_rotation());
 
-                signal<event::body_entered>::connect<Projectile>(projectile)
-                    <=> signal_callback(this, on_physics_box_entered);
+                signal<event::body_entered>::connect<Projectile>(projectile) <=>
+                    signal_callback(this, on_physics_box_entered);
 
-                signal<event::body_exited>::connect<Projectile>(projectile)
-                    <=> signal_callback(this, on_physics_box_exited);
+                signal<event::body_exited>::connect<Projectile>(projectile) <=>
+                    signal_callback(this, on_physics_box_exited);
             }
 
             this->add_child(projectile);

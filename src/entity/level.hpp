@@ -1,17 +1,17 @@
 #pragma once
 
+#include <atomic>
+#include <vector>
+
+#include <godot_cpp/classes/node2d.hpp>
+#include <godot_cpp/classes/sprite2d.hpp>
+
 #include "core/constants.hpp"
 #include "entity/character/player.hpp"
 #include "entity/controller/player_controller.hpp"
 #include "entity/projectile/projectile_spawner.hpp"
 #include "util/bind.hpp"
 #include "util/scene.hpp"
-
-#include <atomic>
-#include <vector>
-
-#include <godot_cpp/classes/node2d.hpp>
-#include <godot_cpp/classes/sprite2d.hpp>
 
 namespace godot
 {

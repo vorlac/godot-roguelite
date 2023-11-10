@@ -1,11 +1,5 @@
 #pragma once
 
-#include "core/assert.hpp"
-#include "core/concepts.hpp"
-#include "core/function_traits.hpp"
-#include "util/conversions.hpp"
-#include "util/variant.hpp"
-
 #include <string>
 #include <string_view>
 #include <tuple>
@@ -19,6 +13,12 @@
 #include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/string_name.hpp>
 #include <godot_cpp/variant/vector2.hpp>
+
+#include "core/assert.hpp"
+#include "core/concepts.hpp"
+#include "core/function_traits.hpp"
+#include "util/conversions.hpp"
+#include "util/variant.hpp"
 
 #define bind_member_function(class_name, func_name) method<&class_name::func_name>::bind(#func_name)
 
@@ -149,8 +149,9 @@ namespace rl::inline utils
 
                     std::apply(
                         [&](auto&&... arg) {
-                            signal_params
-                                = { variant_traits<decltype(arg)>::type_info::get_class_info()... };
+                            signal_params = {
+                                variant_traits<decltype(arg)>::type_info::get_class_info()...
+                            };
                         },
                         signal_args);
 

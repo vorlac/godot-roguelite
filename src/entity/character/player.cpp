@@ -1,7 +1,6 @@
-#include "entity/character/player.hpp"
-
 #include "core/constants.hpp"
 #include "entity/character/character.hpp"
+#include "entity/character/player.hpp"
 #include "util/scene.hpp"
 
 namespace rl

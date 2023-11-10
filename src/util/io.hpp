@@ -1,21 +1,22 @@
 #pragma once
 
-#include "core/concepts.hpp"
-
-#include <fmt/compile.h>
-#include <fmt/core.h>
-#include <fmt/format-inl.h>
-#include <fmt/format.h>
 #include <functional>
 #include <memory>
-#include <spdlog/spdlog.h>
 #include <string>
 #include <string_view>
 #include <tuple>
 #include <type_traits>
 #include <utility>
 
+#include <fmt/compile.h>
+#include <fmt/core.h>
+#include <fmt/format-inl.h>
+#include <fmt/format.h>
+#include <spdlog/spdlog.h>
+
 #include <godot_cpp/core/error_macros.hpp>
+
+#include "core/concepts.hpp"
 
 namespace rl::inline utils
 {
@@ -79,8 +80,7 @@ namespace rl::inline utils
 
     struct log
     {
-        enum DetailLevel : uint_fast8_t
-        {
+        enum DetailLevel : uint_fast8_t {
             None,
             Error,
             Warning,

@@ -1,13 +1,13 @@
 #pragma once
 
+#include <godot_cpp/classes/rigid_body2d.hpp>
+#include <godot_cpp/variant/vector2.hpp>
+
 #include "core/attributes.hpp"
 #include "singletons/console.hpp"
 #include "util/bind.hpp"
 #include "util/conversions.hpp"
 #include "util/io.hpp"
-
-#include <godot_cpp/classes/rigid_body2d.hpp>
-#include <godot_cpp/variant/vector2.hpp>
 
 namespace rl
 {

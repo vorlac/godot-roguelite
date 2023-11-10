@@ -1,7 +1,5 @@
 #pragma once
 
-#include "core/assert.hpp"
-
 #include <concepts>
 #include <string>
 #include <string_view>
@@ -11,6 +9,8 @@
 #include <godot_cpp/variant/char_string.hpp>
 #include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/string_name.hpp>
+
+#include "core/assert.hpp"
 
 namespace rl::inline utils
 {

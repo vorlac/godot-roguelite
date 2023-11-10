@@ -1,10 +1,10 @@
 ---
 Language: Cpp
 AccessModifierOffset: -4
-AlignAfterOpenBracket: Align # BlockIndent
-AlignArrayOfStructures: None # Left
+AlignAfterOpenBracket: Align # [BlockIndent, Align]
+AlignArrayOfStructures: None # [None, Left, Right]
 AlignConsecutiveMacros: AcrossComments
-AlignConsecutiveAssignments: None
+AlignConsecutiveAssignments: None # [Consecutive, None]
 AlignConsecutiveBitFields: Consecutive
 AlignConsecutiveDeclarations: None
 AlignEscapedNewlines: Left
@@ -15,11 +15,12 @@ AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortEnumsOnASingleLine: false
 AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: false # InlineOnly # true
+AllowShortFunctionsOnASingleLine: false # [InlineOnly, true]
 AllowShortLambdasOnASingleLine: false
 AllowShortIfStatementsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
-AlwaysBreakAfterDefinitionReturnType: None
+# AllowShortCompoundRequirementOnASingleLine: true # <== clang-format v18+
+AlwaysBreakAfterDefinitionReturnType: false
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: true
 AlwaysBreakTemplateDeclarations: true
@@ -33,7 +34,7 @@ BraceWrapping:
   AfterCaseLabel: true
   AfterClass: true
   AfterControlStatement: Always
-  AfterEnum: true
+  AfterEnum: false
   AfterFunction: true
   AfterNamespace: true
   AfterObjCDeclaration: true
@@ -48,11 +49,11 @@ BraceWrapping:
   SplitEmptyFunction: true
   SplitEmptyRecord: true
   SplitEmptyNamespace: true
-BreakBeforeBinaryOperators: true # None
+BreakBeforeBinaryOperators: None # true
 BreakBeforeConceptDeclarations: true
 BreakBeforeInheritanceComma: true
 BreakInheritanceList: AfterComma
-BreakBeforeTernaryOperators: false # true
+BreakBeforeTernaryOperators: true # false
 BreakConstructorInitializersBeforeComma: true
 BreakConstructorInitializers: BeforeColon
 BreakAfterJavaFieldAnnotations: false
@@ -82,18 +83,36 @@ IfMacros:
   - KJ_IF_MAYBE
 IncludeBlocks: Regroup
 IncludeCategories:
-  - Regex: '(<godot.*>)'
-    Priority: 3
-  - Regex: '(<gdextension.*>)'
-    Priority: 3
-  - Regex: '(<.*>)'
+  - Regex: '(<[0-9a-z_-]*>)'
+    Priority: 0
+    SortPriority: 0
+    CaseSensitive: false
+  - Regex: '(<gdextension[/0-9a-z_-]*\.h[p]?[p]?>)'
     Priority: 2
-  - Regex: '(".*/.*")'
+    SortPriority: 3
+    CaseSensitive: false
+  - Regex: '(<godot[/0-9a-z_-]*\.h[p]?[p]?>)'
+    Priority: 2
+    SortPriority: 4
+    CaseSensitive: false
+  - Regex: '(<[0-9a-z_-]*\.h[p]?[p]?>)'
     Priority: 1
-  - Regex: '(".*")'
+    SortPriority: 1
+    CaseSensitive: false
+  - Regex: '(<.+[/0-9a-z_]*\.h[p]?[p]?>)'
     Priority: 1
-IncludeIsMainRegex: '(Test)?$'
-IncludeIsMainSourceRegex: '".*"?'
+    SortPriority: 2
+    CaseSensitive: false
+  - Regex: '(".*\.h[p]?[p]?")'
+    Priority: 3
+    SortPriority: 5
+    CaseSensitive: false
+  - Regex: '(".+[/0-9a-z_]*\.h[p]?[p]?")'
+    Priority: 3
+    SortPriority: 6
+    CaseSensitive: false
+IncludeIsMainRegex: '""'
+IncludeIsMainSourceRegex: '""'
 IndentAccessModifiers: false
 IndentCaseLabels: true
 IndentCaseBlocks: false
@@ -104,19 +123,12 @@ IndentRequires: true
 IndentWidth: 4
 IndentWrappedFunctionNames: false
 InsertTrailingCommas: None # [None, Wrapped] ==> trailing comma insertion cannot be used with bin packing
-# JavaScriptQuotes: Leave
-# JavaScriptWrapImports: true
 KeepEmptyLinesAtTheStartOfBlocks: false
 LambdaBodyIndentation: Signature
 MacroBlockBegin: ''
 MacroBlockEnd: ''
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: All
-# ObjCBinPackProtocolList: Auto
-# ObjCBlockIndentWidth: 4
-# ObjCBreakBeforeNestedBlockParam: true
-# ObjCSpaceAfterProperty: false
-# ObjCSpaceBeforeProtocolList: true
 PenaltyBreakAssignment: 50
 PenaltyBreakBeforeFirstCallParameter: 10
 PenaltyBreakComment: 50
@@ -135,10 +147,9 @@ ReflowComments: true
 RemoveBracesLLVM: true
 # RemoveParentheses: true ## clang v17 only
 RequiresClausePosition: OwnLine
-SeparateDefinitionBlocks: Always
+SeparateDefinitionBlocks: Always # Leave
 ShortNamespaceLines: 1
 SortIncludes: true
-SortJavaStaticImport: Before
 SortUsingDeclarations: true
 SpaceAfterCStyleCast: false
 SpaceAfterLogicalNot: false
@@ -174,12 +185,6 @@ SpacesInSquareBrackets: false
 SpaceBeforeSquareBrackets: false
 BitFieldColonSpacing: Both
 Standard: Latest
-StatementAttributeLikeMacros:
-  - Q_EMIT
-  - emit
-StatementMacros:
-  - Q_UNUSED
-  - QT_REQUIRE_VERSION
 TabWidth: 4
 UseCRLF: false
 UseTab: Never

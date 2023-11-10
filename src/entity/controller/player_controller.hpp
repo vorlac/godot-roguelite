@@ -9,7 +9,6 @@ namespace rl
         GDCLASS(PlayerController, CharacterController);
 
     public:
-    public:
         PlayerController() = default;
         ~PlayerController() = default;
 
@@ -19,6 +18,8 @@ namespace rl
         InputMode get_input_mode(godot::Input* const input);
 
     protected:
+        // void _notification(int notification);
+
         static void _bind_methods()
         {
         }

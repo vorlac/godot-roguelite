@@ -1,13 +1,12 @@
-#include "ui/main_dialog.hpp"
+#include <godot_cpp/classes/canvas_layer.hpp>
+#include <godot_cpp/classes/control.hpp>
 
 #include "core/assert.hpp"
 #include "core/constants.hpp"
 #include "singletons/console.hpp"
+#include "ui/main_dialog.hpp"
 #include "util/conversions.hpp"
 #include "util/engine.hpp"
-
-#include <godot_cpp/classes/canvas_layer.hpp>
-#include <godot_cpp/classes/control.hpp>
 
 namespace rl::inline ui
 {

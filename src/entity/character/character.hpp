@@ -1,14 +1,14 @@
 #pragma once
 
+#include <concepts>
+
+#include <godot_cpp/classes/character_body2d.hpp>
+
 #include "core/attributes.hpp"
 #include "core/constants.hpp"
 #include "entity/camera.hpp"
 #include "singletons/console.hpp"
 #include "util/bind.hpp"
-
-#include <concepts>
-
-#include <godot_cpp/classes/character_body2d.hpp>
 
 namespace godot
 {

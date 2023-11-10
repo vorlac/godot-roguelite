@@ -1,6 +1,6 @@
-#include "entity/camera.hpp"
-
 #include <godot_cpp/classes/camera2d.hpp>
+
+#include "entity/camera.hpp"
 
 namespace rl
 {

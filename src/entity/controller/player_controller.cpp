@@ -1,13 +1,13 @@
-#include "entity/controller/player_controller.hpp"
-
-#include "core/constants.hpp"
-#include "util/engine.hpp"
-#include "util/input.hpp"
-#include "util/io.hpp"
-
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/node2d.hpp>
 #include <godot_cpp/variant/variant.hpp>
+
+#include "core/constants.hpp"
+#include "entity/controller/player_controller.hpp"
+#include "singletons/console.hpp"
+#include "util/engine.hpp"
+#include "util/input.hpp"
+#include "util/io.hpp"
 
 namespace rl
 {
@@ -23,6 +23,27 @@ namespace rl
                                          input::action::move_up, input::action::move_down) };
         this->emit_signal(event::character_move, velocity, delta_time);
     }
+
+    // void PlayerController::_notification(int notification)
+    // {
+    //     switch (notification)
+    //     {
+    //         case NOTIFICATION_PREDELETE:
+    //             [[fallthrough]];
+    //         case NOTIFICATION_UNPARENTED:
+    //         {
+    //             console::get()->clear_context();
+    //             console::get()->stop_logging();
+    //             break;
+    //         }
+    //         default:
+    //             break;
+    //     }
+
+    //     auto console{ console::get() };
+    //     console->print("PlayerController: {}", notification);
+    //     CharacterController::_notification(notification);
+    // }
 
     PlayerController::InputMode PlayerController::get_input_mode(godot::Input* const input)
     {
@@ -57,8 +78,8 @@ namespace rl
                 [[fallthrough]];
             case InputMode::MouseAndKeyboard:
             {
-                godot::Vector2 rotation_dir{ this->get_global_mouse_position()
-                                             - this->get_global_position() };
+                godot::Vector2 rotation_dir{ this->get_global_mouse_position() -
+                                             this->get_global_position() };
 
                 m_rotation_angle = rotation_dir.angle() + godot::Math::deg_to_rad(90.0);
                 break;
@@ -73,8 +94,8 @@ namespace rl
                     godot::Vector2 target_rotation{ input->get_vector("rotate_left", "rotate_right",
                                                                       "rotate_up", "rotate_down") };
                     if (!target_rotation.is_zero_approx())
-                        m_rotation_angle = godot::Vector2(0, 0).angle_to_point(target_rotation)
-                                           + godot::Math::deg_to_rad(90.0);
+                        m_rotation_angle = godot::Vector2(0, 0).angle_to_point(target_rotation) +
+                                           godot::Math::deg_to_rad(90.0);
                 }
                 break;
             }

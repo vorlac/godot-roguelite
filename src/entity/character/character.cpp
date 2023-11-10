@@ -1,16 +1,3 @@
-#include "entity/character/character.hpp"
-
-#include "core/assert.hpp"
-#include "core/concepts.hpp"
-#include "core/constants.hpp"
-#include "entity/camera.hpp"
-#include "entity/controller/character_controller.hpp"
-#include "util/bind.hpp"
-#include "util/engine.hpp"
-#include "util/input.hpp"
-#include "util/io.hpp"
-#include "util/scene.hpp"
-
 #include <array>
 #include <tuple>
 #include <type_traits>
@@ -27,6 +14,18 @@
 #include <godot_cpp/variant/color.hpp>
 #include <godot_cpp/variant/typed_array.hpp>
 #include <godot_cpp/variant/vector2.hpp>
+
+#include "core/assert.hpp"
+#include "core/concepts.hpp"
+#include "core/constants.hpp"
+#include "entity/camera.hpp"
+#include "entity/character/character.hpp"
+#include "entity/controller/character_controller.hpp"
+#include "util/bind.hpp"
+#include "util/engine.hpp"
+#include "util/input.hpp"
+#include "util/io.hpp"
+#include "util/scene.hpp"
 
 namespace rl
 {
@@ -48,14 +47,14 @@ namespace rl
 
         if (m_character_controller != nullptr)
         {
-            signal<event::character_move>::connect<CharacterController>(m_character_controller)
-                <=> signal_callback(this, on_character_movement);
+            signal<event::character_move>::connect<CharacterController>(m_character_controller) <=>
+                signal_callback(this, on_character_movement);
 
-            signal<event::character_rotate>::connect<CharacterController>(m_character_controller)
-                <=> signal_callback(this, on_character_rotate);
+            signal<event::character_rotate>::connect<CharacterController>(m_character_controller) <=>
+                signal_callback(this, on_character_rotate);
 
-            signal<event::character_shoot>::connect<CharacterController>(m_character_controller)
-                <=> signal_callback(this, on_character_shoot);
+            signal<event::character_shoot>::connect<CharacterController>(m_character_controller) <=>
+                signal_callback(this, on_character_shoot);
         }
     }
 

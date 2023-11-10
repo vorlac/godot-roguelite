@@ -1,8 +1,5 @@
 #pragma once
 
-#include "core/assert.hpp"
-#include "util/conversions.hpp"
-
 #include <concepts>
 
 #include <godot_cpp/classes/dir_access.hpp>
@@ -12,6 +9,9 @@
 #include <godot_cpp/classes/resource_loader.hpp>
 #include <godot_cpp/classes/scene_tree.hpp>
 #include <godot_cpp/classes/window.hpp>
+
+#include "core/assert.hpp"
+#include "util/conversions.hpp"
 
 namespace rl
 {
@@ -74,8 +74,8 @@ namespace rl::inline utils
         namespace preload
         {
             template <typename TObj, typename TScene = godot::PackedScene>
-                requires std::derived_from<TScene, godot::Resource>
-                         && std::convertible_to<TObj, godot::Object>
+                requires std::derived_from<TScene, godot::Resource> &&
+                         std::convertible_to<TObj, godot::Object>
             class scene
             {
             public:

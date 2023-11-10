@@ -1,8 +1,7 @@
-#include "entity/projectile/projectile.hpp"
-
-#include "util/engine.hpp"
-
 #include <godot_cpp/variant/vector2.hpp>
+
+#include "entity/projectile/projectile.hpp"
+#include "util/engine.hpp"
 
 namespace rl
 {

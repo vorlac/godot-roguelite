@@ -12,8 +12,7 @@ namespace rl::inline utils
 {
     namespace diag
     {
-        enum Option : uint_fast8_t
-        {
+        enum Option : uint_fast8_t {
             RootProcess,
             RootPhysics,
             RootViewport,

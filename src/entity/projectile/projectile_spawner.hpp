@@ -1,14 +1,14 @@
 #pragma once
 
-#include "core/constants.hpp"
-#include "entity/projectile/projectile.hpp"
-#include "util/bind.hpp"
-#include "util/scene.hpp"
-
 #include <chrono>
 
 #include <godot_cpp/classes/node2d.hpp>
 #include <godot_cpp/variant/typed_array.hpp>
+
+#include "core/constants.hpp"
+#include "entity/projectile/projectile.hpp"
+#include "util/bind.hpp"
+#include "util/scene.hpp"
 
 namespace rl
 {

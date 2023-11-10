@@ -1,15 +1,15 @@
 #pragma once
 
-#include "core/concepts.hpp"
-#include "core/constants.hpp"
-#include "util/bind.hpp"
-
 #include <type_traits>
 
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/node2d.hpp>
 #include <godot_cpp/classes/object.hpp>
 #include <godot_cpp/variant/vector2.hpp>
+
+#include "core/concepts.hpp"
+#include "core/constants.hpp"
+#include "util/bind.hpp"
 
 namespace rl
 {
@@ -18,8 +18,7 @@ namespace rl
         GDCLASS(CharacterController, godot::Node2D);
 
     public:
-        enum class InputMode
-        {
+        enum class InputMode {
             MouseAndKeyboard,
             Controller,
             AI
@@ -37,6 +36,7 @@ namespace rl
 
     protected:
         static void _bind_methods();
+        // void _notification(int notification);
 
     protected:
         // the active input mode for character controls

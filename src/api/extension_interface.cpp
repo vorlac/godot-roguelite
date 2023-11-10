@@ -1,5 +1,11 @@
-#include "api/extension_interface.hpp"
+#include <type_traits>
 
+#include <gdextension_interface.h>
+#include <godot_cpp/classes/engine.hpp>
+#include <godot_cpp/core/memory.hpp>
+#include <godot_cpp/variant/string_name.hpp>
+
+#include "api/extension_interface.hpp"
 #include "entity/camera.hpp"
 #include "entity/character/character.hpp"
 #include "entity/character/enemy.hpp"
@@ -13,13 +19,6 @@
 #include "singletons/console.hpp"
 #include "ui/main_dialog.hpp"
 #include "util/engine.hpp"
-
-#include <type_traits>
-
-#include <gdextension_interface.h>
-#include <godot_cpp/classes/engine.hpp>
-#include <godot_cpp/core/memory.hpp>
-#include <godot_cpp/variant/string_name.hpp>
 
 namespace rl
 {
@@ -45,8 +44,8 @@ namespace rl
         godot::ClassDB::register_class<rl::Projectile>();
         godot::ClassDB::register_class<rl::ProjectileSpawner>();
 
-        godot::ClassDB::register_class<rl::CharacterController>();
-        godot::ClassDB::register_class<rl::PlayerController>();
+        godot::ClassDB::register_abstract_class<rl::CharacterController>();
+        godot::ClassDB::register_class<rl::PlayerController>(true);
         godot::ClassDB::register_class<rl::EnemyController>();
 
         godot::ClassDB::register_class<rl::Camera>();

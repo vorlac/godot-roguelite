@@ -1,5 +1,4 @@
 #include "entity/projectile/projectile_spawner.hpp"
-
 #include "util/bind.hpp"
 
 namespace rl

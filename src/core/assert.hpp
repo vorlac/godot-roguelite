@@ -36,11 +36,11 @@
   #define runtime_assert(condition) assertion(condition, "validation check failed")
 
 #else
-  //
-  // In release mode the macro does nothing ((void)0), including
-  // the execution of the condition so don't define the expression
-  // as anything that would be considered program logis.
-  //
+//
+// In release mode the macro does nothing ((void)0), including
+// the execution of the condition so don't define the expression
+// as anything that would be considered program logis.
+//
   #define assertion(condition, message) static_cast<void>(0)
   #define error_msg(message)            static_cast<void>(0)
   #define runtime_assert(condition)     static_cast<void>(0)
