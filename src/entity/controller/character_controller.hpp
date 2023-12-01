@@ -36,7 +36,6 @@ namespace rl
 
     protected:
         static void _bind_methods();
-        // void _notification(int notification);
 
     protected:
         // the active input mode for character controls

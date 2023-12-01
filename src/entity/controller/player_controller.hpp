@@ -18,8 +18,6 @@ namespace rl
         InputMode get_input_mode(godot::Input* const input);
 
     protected:
-        // void _notification(int notification);
-
         static void _bind_methods()
         {
         }

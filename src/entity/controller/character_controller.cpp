@@ -58,24 +58,4 @@ namespace rl
         signal_binding<CharacterController, event::position_changed>::add<godot::Object*,
                                                                           godot::Vector2>();
     }
-
-    // void CharacterController::_notification(int notification)
-    // {
-    //     switch (notification)
-    //     {
-    //         case NOTIFICATION_PREDELETE:
-    //             [[fallthrough]];
-    //         case Node::NOTIFICATION_UNPARENTED:
-    //         {
-    //             console::get()->clear_context();
-    //             console::get()->stop_logging();
-    //             break;
-    //         }
-    //         default:
-    //             break;
-    //     }
-
-    //     auto console{ console::get() };
-    //     console->print("CharacterController: {}", notification);
-    // }
 }

@@ -34,20 +34,6 @@ namespace rl
         [[property]] void set_acceleration(double acceleration);
         [[property]] void set_velocity(double velocity);
 
-        // [[signal_slot]]
-        // void on_body_enter(godot::Node* node) const
-        // {
-        //     console::get()->print("Projectile: {} {} {}", to<std::string>(this->get_name()),
-        //                           io::yellow("entering >>"), to<std::string>(node->get_name()));
-        // }
-
-        // [[signal_slot]]
-        // void on_body_exit(godot::Node* node) const
-        // {
-        //     console::get()->print("Projectile: {} {} {}", to<std::string>(this->get_name()),
-        //                           io::orange("exiting <<"), to<std::string>(node->get_name()));
-        // }
-
     protected:
         static void _bind_methods()
         {
