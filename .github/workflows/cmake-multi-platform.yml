@@ -1,41 +1,126 @@
-name: GDExtension CMake
-
-on: [push, pull_request]
+name: 🛠️ Build All
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
-  build-linux:
-    runs-on: self-hosted
+  build:
+    runs-on: ${{ matrix.runner }}
+    name: ${{ matrix.name }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - identifier: linux-debug
+            name: 🐧 Linux (Debug)
+            build_type: Debug
+            runner: ubuntu-20.04
+            target: template_debug
+            platform: linux
+            arch: x86_64
+          - identifier: linux-release
+            name: 🐧 Linux (Release)
+            build_type: Release
+            runner: ubuntu-20.04
+            target: template_release
+            platform: linux
+            arch: x86_64
+          - identifier: windows-debug
+            name: 🪟 Windows (Debug)
+            build_type: Debug
+            runner: ubuntu-20.04
+            target: template_debug
+            platform: windows
+            arch: x86_64
+          - identifier: windows-release
+            name: 🪟 Windows (Release)
+            build_type: Release
+            runner: ubuntu-20.04
+            target: template_release
+            platform: windows
+            arch: x86_64
+          - identifier: macos-debug
+            name: 🍎 MacOS (Debug)
+            build_type: Debug
+            runner: macos-latest
+            target: template_debug
+            platform: macos
+          - identifier: macos-release
+            name: 🍎 MacOS (Release)
+            build_type: Release
+            runner: macos-latest
+            target: template_release
+            platform: macos
+
     steps:
-      - uses: actions/checkout@v3
 
-        # linux / gcc build
-      - name: '[linux | gcc] => cmake - delete cache'
-        run: rm -rf ${{ github.workspace }}/.out/*
-      - name: '[linux | gcc] => cmake - configure'
-        run: >
-          cmake -B ${{ github.workspace }}/.out
-          -DCMAKE_CXX_COMPILER=g++
-          -DCMAKE_C_COMPILER=gcc
-          -DCMAKE_BUILD_TYPE=Debug
-          -S ${{ github.workspace }}
-          -G Ninja
-      - name: '[linux | gcc] => cmake - clean'
-        run: cmake --build ${{ github.workspace }}/.out --config Debug --target clean --parallel 48
-      - name: '[linux | gcc] => cmake - build'
-        run: cmake --build ${{ github.workspace }}/.out --config Debug --target roguelite --parallel 48
+      - name: Checkout project
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
-        # linux / clang build
-      - name: '[linux | clang] => cmake - delete cache'
-        run: rm -rf ${{ github.workspace }}/.out/*
-      - name: '[linux | clang] => cmake - configure'
-        run: >
-          cmake -B ${{ github.workspace }}/.out
-          -DCMAKE_CXX_COMPILER=clang++
-          -DCMAKE_C_COMPILER=clang
-          -DCMAKE_BUILD_TYPE=Debug
-          -S ${{ github.workspace }}
-          -G Ninja
-      - name: '[linux | clang] => cmake - clean'
-        run: cmake --build ${{ github.workspace }}/.out --config Debug --target clean --parallel 48
-      - name: '[linux | clang] => cmake - build'
-        run: cmake --build ${{ github.workspace }}/.out --config Debug --target roguelite --parallel 48
+      - name: Setup Windows Dependencies
+        if: startsWith(matrix.identifier, 'windows-')
+        uses: ./.github/actions/windows-deps
+
+      - name: Setup Base Dependencies
+        uses: ./.github/actions/base-deps
+
+      - name: Install Ninja (Windows/Linux)
+        if: startsWith(matrix.identifier, 'windows-') || startsWith(matrix.identifier, 'linux-')
+        shell: sh
+        run: |
+          sudo apt-get install ninja-build
+
+      - name: Install Ninja (MacOS)
+        if: startsWith(matrix.identifier, 'macos-')
+        shell: sh
+        run: |
+          brew install ninja          
+
+#      - name: Setup Build Cache
+#        uses: ./.github/actions/build-cache
+#        with:
+#          cache-name: ${{ matrix.identifier }}
+#        continue-on-error: true
+
+      - name: Build Orchestrator (Linux/MacOS)
+        if: startsWith(matrix.identifier, 'linux-') || startsWith(matrix.identifier, 'macos-')
+        shell: sh
+        run: |          
+          cmake -B ${{ github.workspace }}/.out -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{ github.workspace }} -G Ninja
+          cmake --build ${{ github.workspace }}/.out --target orchestrator -j 18
+          ls -l project/addons/*/bin/
+          ls -l ${{ github.workspace }}/.out
+
+      - name: Build Orchestrator (Windows)
+        if: startsWith(matrix.identifier, 'windows-')
+        shell: sh
+        run: |
+          cmake -B ${{ github.workspace }}/.out -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/toolchain-windows.cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{ github.workspace }} -G Ninja
+          cmake --build ${{ github.workspace }}/.out --target orchestrator -j 18
+          ls -l project/addons/*/bin/
+          ls -l ${{ github.workspace }}/.out
+
+#      - name: Strip Libraries (Windows/Linux)
+#        if: startsWith(matrix.identifier, 'windows-') || startsWith(matrix.identifier, 'linux-')
+#        shell: sh
+#        run: |
+#          ls -l project/addons/orchestrator/bin/
+#          strip project/addons/orchestrator/bin/liborchestrator.*
+#          ls -l project/addons/orchestrator/bin/
+
+      - name: Include Files
+        shell: sh
+        run: |
+          cp '${{ github.workspace }}/README.md' '${{ github.workspace }}/LICENSE' ${{ github.workspace }}/project/addons/orchestrator/          
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.event.repository.name }}
+          retention-days: 2
+          path: |
+            ${{ github.workspace }}/project/
