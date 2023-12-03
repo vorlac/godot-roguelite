@@ -8,13 +8,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+
       - name: "[linux | gcc] => cmake - configure"
         run: >
           cmake -B ${{ github.workspace }}/.out
-          -DCMAKE_CXX_COMPILER=g++
-          -DCMAKE_C_COMPILER=gcc
+          -DCMAKE_CXX_COMPILER=ccache
+          -DCMAKE_C_COMPILER=ccache
           -DCMAKE_BUILD_TYPE=Debug
           -S ${{ github.workspace }}
           -G Ninja
-      - name: "[linux | gcc] => cmake - build"
+      - name: "[linux] => cmake - build"
         run: cmake --build ${{ github.workspace }}/.out --config Debug --target roguelite --parallel 48
