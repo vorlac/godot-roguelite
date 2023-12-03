@@ -6,13 +6,13 @@ set(GDEXTENSION_LIB_PATH "${CMAKE_CURRENT_SOURCE_DIR}/project/bin")
 option(
   AUTOFORMAT_SRC_ON_CONFIGURE
     "If enabled, clang-format will be used to format all sources in src/ during configuration"
-        ON
+        OFF
 )
 
 option(
   USE_CCACHE_FOR_GDEXT_BUILD
     "If enabled, ccache will be used to when building the project lib"
-      ON
+      OFF
 )
 
 set(CMAKE_CXX_STANDARD 20)
