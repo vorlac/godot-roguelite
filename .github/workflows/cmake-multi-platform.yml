@@ -91,7 +91,7 @@ jobs:
         shell: sh
         run: |          
           cmake -B ${{ github.workspace }}/.out -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{ github.workspace }} -G Ninja
-          cmake --build ${{ github.workspace }}/.out --target orchestrator -j 18
+          cmake --build ${{ github.workspace }}/.out --target roguelite --parallel 0
           ls -l project/addons/*/bin/
           ls -l ${{ github.workspace }}/.out
 
@@ -100,7 +100,7 @@ jobs:
         shell: sh
         run: |
           cmake -B ${{ github.workspace }}/.out -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/toolchain-windows.cmake -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -S ${{ github.workspace }} -G Ninja
-          cmake --build ${{ github.workspace }}/.out --target orchestrator -j 18
+          cmake --build ${{ github.workspace }}/.out --target roguelite --parallel 0
           ls -l project/addons/*/bin/
           ls -l ${{ github.workspace }}/.out
 
