@@ -14,10 +14,12 @@ jobs:
       - name: "[linux | gcc] => cmake - configure"
         run: >
           cmake -B ${{ github.workspace }}/.out
-          -DCMAKE_CXX_COMPILER=ccache
-          -DCMAKE_C_COMPILER=ccache
+          -DCMAKE_CXX_COMPILER=g++
+          -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -DCMAKE_C_COMPILER=gcc
+          -DCMAKE_C_COMPILER_LAUNCHER=ccache
           -DCMAKE_BUILD_TYPE=Debug
           -S ${{ github.workspace }}
           -G Ninja
-      - name: "[linux] => cmake - build"
+      - name: "[linux | gcc] => cmake - build"
         run: cmake --build ${{ github.workspace }}/.out --config Debug --target roguelite --parallel 48
