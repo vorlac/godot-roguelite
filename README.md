@@ -27,22 +27,22 @@ The project's [main scene](./project/main.tscn) consists of a single `Main` node
 The overall node hierarchy:
 
 <div class="highlight highlight-html"> <pre>
-<a href="./src/main.hpp" title="title">Main</a>
-├── <a href="./src/ui/main_dialog.hpp" title="title">Main Canvas Layer (reference to Canvas Layer in MainDialog)</a>
-├── <a href="./src/ui/main_dialog.hpp" title="title">MainDialog</a>
-│   ├── <a href="./project/scenes/ui/main_dialog.tscn" title="title">RichTextLabel (In-Game Console)</a>
-│   └── <a href="./project/scenes/ui/main_dialog.tscn" title="title">MainSubViewport (Primary Game Viewport)</a>
-│       └── <a href="./project/scenes/ui/main_dialog.tscn" title="title">Canvas Layer</a>
-├── <a href="./src/entity/level.hpp" title="title">Level</a>
-│    ├── <a href="./src/entity/character/player.cpp" title="title">Player</a>
-│    │   ├── <a href="./project/scenes/characters/player.tscn" title="title">(Scene)</a>
-│    │   ├── <a href="./src/entity/controller/character_controller.cpp" title="title">CharacterController</a>
-│    │   ├── <a href="./src/entity/camera.cpp" title="title">Camera</a>
-│    │   └── <a href="./src/entity/character/character.hpp" title="title">FiringPoint (Marker2D)</a>
-│    └── <a href="./src/entity/projectile/projectile_spawner.hpp" title="title">Projectile Spawner</a>
-│        └── <a href="./src/entity/projectile/projectile.hpp" title="title">Projectile</a>
-<a href="./src/singletons/console.hpp" title="title">Console (Singleton)</a>
-└── <a href="./project/scenes/ui/main_dialog.tscn" title="title">RichTextLabel (Reference from MainDialog)</a>
+<a href="./src/main.hpp" title="Main">Main</a>
+├── <a href="./src/ui/main_dialog.hpp" title="main_dialog.hpp">Main Canvas Layer<a> (reference to <a href=https://github.com/vorlac/godot-roguelite/blob/main/project/scenes/ui/main_dialog.tscn#L100-L113 title="title">Canvas Layer</a> in MainDialog)
+├── <a href="./src/ui/main_dialog.hpp" title="main_dialog.hpp">MainDialog</a>
+│   ├── <a href="https://github.com/vorlac/godot-roguelite/blob/main/project/scenes/ui/main_dialog.tscn#L132-L159" title="main_dialog.tscn">RichTextLabel (In-Game Console)</a>
+│   └── <a href="https://github.com/vorlac/godot-roguelite/blob/main/project/scenes/ui/main_dialog.tscn#L100-L113" title="main_dialog.tscn">MainSubViewport (Primary Game Viewport)</a>
+│       └── <a href="https://github.com/vorlac/godot-roguelite/blob/main/project/scenes/ui/main_dialog.tscn#L100-L113" title="main_dialog.tscn">Canvas Layer</a>
+├── <a href="./src/entity/level.hpp" title="level.hpp">Level</a>
+│    ├── <a href="./src/entity/character/player.cpp" title="player.cpp">Player</a> (GDCLASS object inheritance example)
+│    │   ├── <a href="./project/scenes/characters/player.tscn" title="player.tscn">Godot Player Scene</a>
+│    │   ├── <a href="./src/entity/controller/character_controller.cpp" title="character_controller.cp">CharacterController</a>
+│    │   ├── <a href="./src/entity/camera.cpp" title="camera.cpp">Camera</a>
+│    │   └── <a href="https://github.com/vorlac/godot-roguelite/blob/main/src/entity/character/character.hpp#L85" title="character.hpp">FiringPoint (Marker2D reference from Godot Player Scene)</a>
+│    └── <a href="./src/entity/projectile/projectile_spawner.hpp" title="projectile_spawner.hpp">Projectile Spawner</a>
+│        └── <a href="./src/entity/projectile/projectile.hpp" title="projectile.hpp">Projectile</a>
+<a href="./src/singletons/console.hpp" title="console.hpp">Console (Singleton example)</a>
+└── <a href="https://github.com/vorlac/godot-roguelite/blob/main/project/scenes/ui/main_dialog.tscn#L132-L159" title="main_dialog.tscn">RichTextLabel (Reference from MainDialog)</a>
 </pre> </div>
 
 # Setup Guide
