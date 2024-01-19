@@ -71,6 +71,7 @@ The projects below are also worth checking out for some additional GDExtension e
 
 - https://github.com/paddy-exe/GDExtensionSummator
 - https://github.com/asmaloney/GDExtensionTemplate
+- https://github.com/godotengine/godot-cpp-template
 - https://github.com/godotengine/godot-cpp/tree/master/test/src
 
 # Licensing
