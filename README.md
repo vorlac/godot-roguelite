@@ -47,7 +47,19 @@ The overall node hierarchy:
 
 # Setup Guide
 
-See the [wiki](https://github.com/vorlac/godot-roguelite/wiki) for a detailed guide that will walk you through the steps required to get this project running and debugging on linux or windows.
+See the [wiki](https://github.com/vorlac/godot-roguelite/wiki) for a detailed guide that will walk you through the steps required to get this project running and debugging on linux or windows. Make sure to thank [PixelRain](https://github.com/Mangonels) in the [Godot discord](https://discord.com/channels/212250894228652034/342047011778068481) for his contributions to the wiki.
+
+# Using this project as a base for your project
+
+This repo is set up as a template (using the "use this template"->"create a new repository" button on the main landing page of this repo). If you use that option rather than just cloning this repo directly it will create a copy of the repo (not a clone or fork) in your github account with all history stripped. This project should be relatively plug and play when it comes to reusing the parts you want to keep and removing/replacing the parts you don't. If you create a repo from the template you also have the option of making the project private when it creates the repo in your github account. 
+
+Once the template project is created you _should_ be able to just swap out the code in `src/` and godot project files in `project/` with your own C++ source code and godot project files. If everything was replaced correctly/consistently, the cmake build should detect the changes in the `src/` directory (file additions/removals/renames) and know to reconfigure the project if/when changes are made.
+
+More information about using this repo as a base for your own project in the [templating](https://github.com/vorlac/godot-roguelite/wiki/Templating-%E2%80%90-Referencing-godot%E2%80%90roguelite-as-a-template-for-your-own-project) section of the wiki. 
+
+# Note about cloning
+
+If you just want to clone/try this project locally, it's important that you truly clone the repo and not just download it as a zip. The repo contains submodules that are required for the build to function properly, which will only be included if the repo is cloned (or templated). The zip download option won't correctly package the repos located in each extern/<submodule> directory which will lead to the buildscripts failing. 
 
 # Contributing
 
