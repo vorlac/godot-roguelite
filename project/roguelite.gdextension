@@ -2,7 +2,7 @@
 
 entry_symbol = "extension_library_init"
 compatibility_minimum = 4.2
-reloadable = false
+reloadable = true
 
 [libraries]
 
