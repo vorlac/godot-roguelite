@@ -43,6 +43,6 @@ namespace rl
         // the time point that keeps track of when the last projectile was spawned.
         clock_t::time_point m_prev_spawn_time{ clock_t::now() };
         // preloaded packed scene that will be instantiated per spawn
-        resource::preload::scene<Projectile> m_scene{ path::scene::Bullet };
+        resource::preload::packed_scene<Projectile> m_scene{ path::scene::Bullet };
     };
 }

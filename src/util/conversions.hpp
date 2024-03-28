@@ -14,6 +14,29 @@
 
 namespace rl::inline utils
 {
+    template <typename TStr>
+    struct GDStrConv
+    {
+        explicit constexpr GDStrConv(TStr&& s)
+            : m_str{ std::move(s) }
+        {
+        }
+
+        explicit operator godot::String()
+            requires std::same_as<std::string>
+        {
+            return godot::String(m_str.c_str());
+        }
+
+        explicit operator godot::String()
+            requires std::same_as<std::string_view>
+        {
+            return godot::String(m_str.data());
+        }
+
+        TStr m_str{};
+    };
+
     template <typename TOut, typename TIn>
         requires std::derived_from<std::remove_cvref_t<TIn>, godot::Object>
     constexpr inline TOut* gdcast(TIn* obj)

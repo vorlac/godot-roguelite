@@ -50,8 +50,7 @@ namespace rl
         std::atomic<bool> m_active{ false };
         godot::Node* m_background{ nullptr };
         ProjectileSpawner* m_projectile_spawner{ memnew(rl::ProjectileSpawner) };
-        resource::preload::scene<Player> player_scene{ path::scene::Player };
-        Player* m_player{ player_scene.instantiate(memnew(PlayerController)) };
+        Player* m_player{ nullptr };
         godot::RigidBody2D* m_physics_box{ nullptr };
     };
 }
