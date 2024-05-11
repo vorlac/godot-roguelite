@@ -27,7 +27,7 @@ namespace rl::inline utils
                 node->set_unique_name_in_owner(true);
             }
 
-			/** Sets the owner of a node and all it's children. */
+            /** Sets the owner of a node and all it's children. */
             template <typename TNodeA, typename TNodeB>
                 requires std::derived_from<TNodeB, godot::Node> &&
                          std::derived_from<TNodeA, godot::Node>
@@ -154,7 +154,7 @@ namespace rl::inline utils
                     return obj;
                 }
 
-				/** Save this resource to specified path. */
+                /** Save this resource to specified path. */
                 void save(godot::String& resource_save_path)
                 {
                     if (initialized)
