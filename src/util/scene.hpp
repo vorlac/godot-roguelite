@@ -27,14 +27,18 @@ namespace rl::inline utils
                 node->set_unique_name_in_owner(true);
             }
 
+			/** Sets the owner of a node and all it's children. */
             template <typename TNodeA, typename TNodeB>
                 requires std::derived_from<TNodeB, godot::Node> &&
                          std::derived_from<TNodeA, godot::Node>
             static inline void set_owner(TNodeA* node, TNodeB* owner)
             {
-                for (auto child : node->get_children())
+                runtime_assert(node != nullptr && owner != nullptr);
+                const int node_child_count = node->get_child_count();
+                for (int i = 0; i < node_child_count; ++i)
                 {
-                    child.owner = owner;
+                    auto child = node->get_child(i);
+                    child->set_owner(owner);
                     set_owner(child, owner);
                 }
             }
@@ -71,11 +75,14 @@ namespace rl::inline utils
 
         namespace packer
         {
+            /**
+             @return PackedScene from godot::Node parameter.
+             */
             template <typename TNode>
                 requires std::derived_from<TNode, godot::Node>
             static inline godot::PackedScene* pack(TNode* node)
             {
-                node::set_owner(node, node);
+                node::set_owner<TNode, TNode>(node, node);
                 godot::PackedScene* package = memnew(godot::PackedScene);
                 package->pack(node);
                 return package;
@@ -112,7 +119,7 @@ namespace rl::inline utils
                 using scene_t = TScene;
                 using object_t = TObj;
 
-                /*Pack as preload from path*/
+                /* Pack as preload from path. */
                 packed_scene(godot::String resource_load_path)
                 {
                     godot::ResourceLoader* resource_loader{ resource::loader::get() };
@@ -127,7 +134,7 @@ namespace rl::inline utils
                     }
                 }
 
-                /*Pack from existing instance*/
+                /* Pack from existing instance. */
                 packed_scene(godot::Node* node)
                 {
                     m_packed_resource = scene::packer::pack(node);
@@ -147,6 +154,7 @@ namespace rl::inline utils
                     return obj;
                 }
 
+				/** Save this resource to specified path. */
                 void save(godot::String& resource_save_path)
                 {
                     if (initialized)
