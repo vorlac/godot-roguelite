@@ -97,7 +97,7 @@ namespace rl
                     // handle different logic for command 1 in here
                     [[fallthrough]];
                 case 2:
-                    // handle different logic for command 1 in here
+                    // handle different logic for command 2 in here
                     [[fallthrough]];
                 default:
                     // do some type of work and return what should be emitted
