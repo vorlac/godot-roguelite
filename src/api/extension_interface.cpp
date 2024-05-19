@@ -17,6 +17,7 @@
 #include "entity/projectile/projectile_spawner.hpp"
 #include "main.hpp"
 #include "singletons/console.hpp"
+#include "test.hpp"
 #include "ui/main_dialog.hpp"
 #include "util/engine.hpp"
 
@@ -55,6 +56,7 @@ namespace rl
 
         godot::ClassDB::register_class<rl::Level>();
         godot::ClassDB::register_class<rl::MainDialog>();
+        godot::ClassDB::register_class<rl::Test>();
         godot::ClassDB::register_class<rl::Main>();
 
         godot::ClassDB::register_class<console>();

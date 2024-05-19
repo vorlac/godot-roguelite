@@ -40,6 +40,8 @@ namespace rl::inline constants
         constexpr inline auto character_shoot{ "character_shoot" };
         constexpr inline auto body_entered{ "body_entered" };
         constexpr inline auto body_exited{ "body_exited" };
+        constexpr inline auto chunk_generated{ "chunk_generated" };
+
     }
 
     enum class LayerID : uint32_t {

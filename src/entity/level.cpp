@@ -77,13 +77,13 @@ namespace rl
     [[signal_slot]]
     void Level::on_physics_box_entered(godot::Node* node) const
     {
-        console::get()->print("{} > {}", io::yellow("projectile"), to<std::string>(node->get_name()));
+        // console::get()->print("{} > {}", io::yellow("projectile"), to<std::string>(node->get_name()));
     }
 
     [[signal_slot]]
     void Level::on_physics_box_exited(godot::Node* node) const
     {
-        console::get()->print("{} < {}", io::red("projectile"), to<std::string>(node->get_name()));
+        // console::get()->print("{} < {}", io::red("projectile"), to<std::string>(node->get_name()));
     }
 
     [[signal_slot]]
@@ -114,9 +114,9 @@ namespace rl
                                               godot::Vector2 location) const
     {
         runtime_assert(node != nullptr);
-        auto console{ console::get() };
-        console->print("{} ({},{})", io::green(to<std::string>(node->get_class()) + " location: "),
-                       io::orange(location.x), io::orange(location.y));
+        // auto console{ console::get() };
+        // console->print("{} ({},{})", io::green(to<std::string>(node->get_class()) + " location: "),
+        //                io::orange(location.x), io::orange(location.y));
     }
 
     void Level::_bind_methods()

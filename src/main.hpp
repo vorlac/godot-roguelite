@@ -8,6 +8,8 @@
 
 namespace rl
 {
+    class Test;
+
     class Main : public godot::Node
     {
         GDCLASS(Main, godot::Node);
@@ -29,5 +31,6 @@ namespace rl
         godot::CanvasLayer* m_canvas_layer{ nullptr };
         MainDialog* m_main_dialog{ nullptr };
         Level* m_active_level{ nullptr };
+        Test* m_test{ nullptr };
     };
 }

@@ -35,8 +35,8 @@ namespace rl::inline ui
                 [[fallthrough]];
             case Node::NOTIFICATION_UNPARENTED:
             {
-                console::get()->clear_context();
-                console::get()->stop_logging();
+                // console::get()->clear_context();
+                // console::get()->stop_logging();
                 break;
             }
             case Control::NOTIFICATION_MOUSE_ENTER:
@@ -51,7 +51,7 @@ namespace rl::inline ui
             }
         }
 
-        auto console{ console::get() };
-        console->print("notification: {}", notification);
+        // auto console{ console::get() };
+        // console->print("notification: {}", notification);
     }
 }

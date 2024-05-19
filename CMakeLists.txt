@@ -126,7 +126,7 @@ target_compile_options(${PROJECT_NAME} PUBLIC
 
 # enable extension hot swapping
 target_compile_definitions(${PROJECT_NAME} PUBLIC 
-	HOT_RELOAD_ENABLED
+	# HOT_RELOAD_ENABLED
 )
 
 # include directories gdextension library

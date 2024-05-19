@@ -1,5 +1,6 @@
 #include "core/assert.hpp"
 #include "main.hpp"
+#include "test.hpp"
 #include "util/conversions.hpp"
 #include "util/engine.hpp"
 #include "util/input.hpp"
@@ -10,6 +11,9 @@ namespace rl
     {
         resource::preload::scene<Level> level{ path::scene::Level1 };
         resource::preload::scene<MainDialog> dialog{ path::ui::MainDialog };
+
+        m_test = memnew(Test);
+        this->add_child(m_test);
 
         m_active_level = level.instantiate();
         runtime_assert(m_active_level != nullptr);
