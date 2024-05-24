@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SGKinematicCollision2D" inherits="Reference" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		Collision data for [SGCharacterBody2D] collisions.
+	</brief_description>
+	<description>
+		Collision data for [SGCharacterBody2D] collisions.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="collider" type="Object" setter="" getter="get_collider">
+			The colliding body.
+			Can be null if the object was created with [method SGPhysics2DServer.collision_object_create].
+		</member>
+		<member name="collider_rid" type="RID" setter="" getter="get_collider_rid">
+			The RID of the colliding body.
+		</member>
+		<member name="normal" type="SGFixedVector2" setter="" getter="get_normal">
+			The collision normal vector.
+		</member>
+		<member name="remainder" type="SGFixedVector2" setter="" getter="get_remainder">
+			The remaining motion that would have happened if it weren't for the collision.
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

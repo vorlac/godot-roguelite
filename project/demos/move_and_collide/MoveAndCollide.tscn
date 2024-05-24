@@ -1,0 +1,106 @@
+[gd_scene load_steps=7 format=3 uid="uid://c7mjfc0nu8g16"]
+
+[ext_resource type="Script" path="res://demos/move_and_collide/MoveAndCollide.gd" id="1_tidnq"]
+[ext_resource type="Texture2D" uid="uid://cgbjhrh37tx7c" path="res://demos/move_and_collide/tank_blue.png" id="2_b6iah"]
+
+[sub_resource type="SGRectangleShape2D" id="1"]
+extents_x = 3276800
+extents_y = 3276800
+
+[sub_resource type="SGCircleShape2D" id="2"]
+radius = 3635322
+
+[sub_resource type="SGCapsuleShape2D" id="4"]
+radius = 1966084
+height = 3342978
+
+[sub_resource type="SGRectangleShape2D" id="3"]
+extents_x = 4259840
+extents_y = 4259840
+
+[node name="PhysicsTest2" type="Node2D"]
+position = Vector2(-1, 0)
+script = ExtResource("1_tidnq")
+
+[node name="StaticBody" type="SGStaticBody2D" parent="."]
+collision_mask = 2
+fixed_position_x = 44695548
+fixed_position_y = 15859712
+position = Vector2(682, 242)
+
+[node name="Rectangle" type="SGCollisionShape2D" parent="StaticBody"]
+shape = SubResource("1")
+fixed_position_x = -6356996
+fixed_position_y = -393216
+fixed_rotation = -52515
+position = Vector2(-97.0001, -6)
+rotation = -0.801315
+
+[node name="ColorRect" type="ColorRect" parent="StaticBody/Rectangle"]
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+
+[node name="Circle" type="SGCollisionShape2D" parent="StaticBody"]
+shape = SubResource("2")
+fixed_position_x = -19464196
+fixed_position_y = 5636096
+fixed_rotation = -51229
+position = Vector2(-297, 86)
+rotation = -0.781693
+
+[node name="Capsule" type="SGCollisionShape2D" parent="StaticBody"]
+shape = SubResource("4")
+fixed_position_x = 2031620
+fixed_position_y = 6422528
+fixed_rotation = 147456
+position = Vector2(31.0001, 98)
+rotation = 2.25
+
+[node name="SGCollisionPolygon2D" type="SGCollisionPolygon2D" parent="StaticBody"]
+fixed_polygon_pairs = [[-3080192, -2686976], [6291456, -917504], [1376256, 8257536]]
+fixed_position_x = -6881284
+fixed_position_y = 15335424
+position = Vector2(-105, 234)
+
+[node name="Character" type="SGCharacterBody2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+fixed_position_x = 33554432
+fixed_position_y = 23789570
+fixed_rotation = -102943
+position = Vector2(512, 363)
+rotation = -1.57079
+
+[node name="Sprite2D" type="Sprite2D" parent="Character"]
+rotation = -1.5708
+texture = ExtResource("2_b6iah")
+
+[node name="SGCollisionPolygon2D" type="SGCollisionPolygon2D" parent="Character"]
+fixed_polygon_pairs = [[786416, -1376264], [1245176, -655372], [1245190, 720884], [786446, 1376248], [-1179634, 1376268], [-1507318, 983056], [-1507340, -983024], [-1179664, -1376244]]
+
+[node name="SGRayCast2D" type="SGRayCast2D" parent="Character"]
+cast_to_x = 3276800
+cast_to_y = 0
+collide_with_areas = true
+
+[node name="Area" type="SGArea2D" parent="."]
+collision_mask = 2
+fixed_position_x = 26607616
+fixed_position_y = 33554432
+position = Vector2(406, 512)
+
+[node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="Area"]
+shape = SubResource("3")
+
+[node name="Spot" type="ColorRect" parent="."]
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
+color = Color(0.0313726, 1, 0, 1)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(507, 383)
+zoom = Vector2(1.333, 1.333)

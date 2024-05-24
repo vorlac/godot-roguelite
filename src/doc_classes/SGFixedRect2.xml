@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SGFixedRect2" inherits="Reference" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		2D axis-aligned bounding box using fixed-point math.
+	</brief_description>
+	<description>
+		2D axis-aligned bounding box using fixed-point math.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="expanded">
+			<return type="SGFixedRect2" />
+			<argument index="0" name="point" type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="has_point" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="point" type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="intersects" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="rect" type="SGFixedRect2" />
+			<description>
+			</description>
+		</method>
+		<method name="merge" qualifiers="const">
+			<return type="SGFixedRect2" />
+			<argument index="0" name="rect" type="SGFixedRect2" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="position" type="SGFixedVector2" setter="set_position" getter="get_position">
+		</member>
+		<member name="size" type="SGFixedVector2" setter="set_size" getter="get_size">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SGCollisionPolygon2D" inherits="SGFixedNode2D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		Defines a convex 2D collision polygon for SG Physics 2D.
+	</brief_description>
+	<description>
+		Provides a convex 2D collision polygon to an [SGCollisionObject2D] parent.
+		Non-convex polygons won't work, and will show a warning in the editor.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_rid" qualifiers="const">
+			<return type="RID" />
+			<description>
+				Returns the RID of the resource for use with [SGPhysics2DServer].
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="disabled" type="bool" setter="set_disabled" getter="get_disabled" default="false">
+		</member>
+		<member name="fixed_polygon" type="Array" setter="set_fixed_polygon" getter="get_fixed_polygon" default="[  ]">
+		</member>
+		<member name="fixed_polygon_pairs" type="Array" setter="_set_fixed_polygon_pairs" getter="_get_fixed_polygon_pairs" default="[  ]">
+		</member>
+		<member name="polygon" type="PoolVector2Array" setter="set_polygon" getter="get_polygon">
+		</member>
+		<member name="debug_color" type="Color" setter="set_debug_color" getter="get_debug_color">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

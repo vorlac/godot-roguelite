@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SGAreaCollision2D" inherits="Reference" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		Collision data for [SGArea2D] collisions.
+	</brief_description>
+	<description>
+		Collision data for [SGArea2D] collisions.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="collider" type="SGCollisionObject2D" setter="" getter="get_collider">
+			The overlapping body or area.
+			Can be null if the object was created with [method SGPhysics2DServer.collision_object_create].
+		</member>
+		<member name="collider_rid" type="RID" setter="" getter="get_collider_rid">
+			The RID of the overlapping body or area.
+		</member>
+		<member name="shape" type="SGFixedNode2D" setter="" getter="get_shape">
+			The overlapping shape, either a [SGCollisionShape2D] or [SGCollisionPolygon2D] node.
+			Can be null if the shape was created with [method SGPhysics2DServer.shape_create].
+		</member>
+		<member name="shape_rid" type="RID" setter="" getter="get_shape_rid">
+			The RID of the overlapping shape.
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

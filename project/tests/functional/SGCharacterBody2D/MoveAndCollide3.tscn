@@ -1,0 +1,63 @@
+[gd_scene load_steps=3 format=3 uid="uid://dwxl5ocul5oo2"]
+
+[ext_resource type="Script" path="res://tests/functional/SGCharacterBody2D/MoveAndCollide3.gd" id="1"]
+
+[sub_resource type="SGCircleShape2D" id="1"]
+radius = 79252512
+
+[node name="MoveAndCollide3" type="Node2D"]
+script = ExtResource("1")
+
+[node name="SGStaticBody2D" type="SGStaticBody2D" parent="."]
+fixed_position_x = 833093632
+fixed_position_y = 452984832
+fixed_scale_x = 1310720
+fixed_scale_y = 1310720
+position = Vector2(12712, 6912)
+scale = Vector2(20, 20)
+
+[node name="SGCollisionPolygon2D" type="SGCollisionPolygon2D" parent="SGStaticBody2D"]
+fixed_polygon_pairs = [[20971520, 4194304], [4194304, 12582912], [20971520, 20971520], [37748736, 12582912]]
+fixed_position_x = -20971520
+fixed_position_y = -12582912
+position = Vector2(-320, -192)
+
+[node name="SGCharacterBody2DRight" type="SGCharacterBody2D" parent="."]
+collision_layer = 0
+fixed_position_x = 439353344
+fixed_position_y = 538443776
+position = Vector2(6704, 8216)
+
+[node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="SGCharacterBody2DRight"]
+shape = SubResource("1")
+
+[node name="SGCharacterBody2DRight2" type="SGCharacterBody2D" parent="."]
+collision_layer = 0
+fixed_position_x = 439353344
+fixed_position_y = 362086400
+position = Vector2(6704, 5525)
+
+[node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="SGCharacterBody2DRight2"]
+shape = SubResource("1")
+
+[node name="SGCharacterBody2DLeft" type="SGCharacterBody2D" parent="."]
+collision_layer = 0
+fixed_position_x = 1194131456
+fixed_position_y = 538443776
+position = Vector2(18221, 8216)
+
+[node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="SGCharacterBody2DLeft"]
+shape = SubResource("1")
+
+[node name="SGCharacterBody2DLeft2" type="SGCharacterBody2D" parent="."]
+collision_layer = 0
+fixed_position_x = 1194131456
+fixed_position_y = 362086400
+position = Vector2(18221, 5525)
+
+[node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="SGCharacterBody2DLeft2"]
+shape = SubResource("1")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+zoom = Vector2(25, 25)

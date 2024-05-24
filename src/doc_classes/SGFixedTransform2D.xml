@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SGFixedTransform2D" inherits="Reference" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		2D fixed-point transformation matrix.
+	</brief_description>
+	<description>
+		A 2D transformation matrix using fixed-point math. It can represent translation, rotation and scaling.
+		It's the fixed-point equivalent to [Transform2D].
+		Unlike [Transform2D], SGFixedTransform2D is a reference-counted object rather than a primative. This means it is always passed by reference rather than value. If you want need a copy, call [code]transform.copy()[/code].
+		Since fixed-point math has much less precision than floating-point math (especially with numbers between 0.0 and 1.0), you should avoid repeated transformations to an SGFixedTransform2D, as it will introduce cumulative error. For example, if rotate an SGFixedTransform2D enough times, its scale will slowly decrease. It's better to keep position, rotation and scale as the component values, and only create an SGFixedTransform2D from them when needed.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="affine_inverse" qualifiers="const">
+			<return type="SGFixedTransform2D" />
+			<description>
+			</description>
+		</method>
+		<method name="basis_xform" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<argument index="0" name="vector" type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="basis_xform_inv" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<argument index="0" name="vector" type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="copy" qualifiers="const">
+			<return type="SGFixedTransform2D" />
+			<description>
+			</description>
+		</method>
+		<method name="get_rotation" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_scale" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="interpolate_with" qualifiers="const">
+			<return type="SGFixedTransform2D" />
+			<argument index="0" name="transform" type="SGFixedTransform2D" />
+			<argument index="1" name="arg1" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="inverse" qualifiers="const">
+			<return type="SGFixedTransform2D" />
+			<description>
+			</description>
+		</method>
+		<method name="is_equal_approx" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="transform" type="SGFixedTransform2D" />
+			<description>
+			</description>
+		</method>
+		<method name="mul" qualifiers="const">
+			<return type="SGFixedTransform2D" />
+			<argument index="0" name="transform" type="SGFixedTransform2D" />
+			<description>
+			</description>
+		</method>
+		<method name="orthonormalized" qualifiers="const">
+			<return type="SGFixedTransform2D" />
+			<description>
+			</description>
+		</method>
+		<method name="rotated" qualifiers="const">
+			<return type="SGFixedTransform2D" />
+			<argument index="0" name="radians" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="scaled" qualifiers="const">
+			<return type="SGFixedTransform2D" />
+			<argument index="0" name="scale" type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="translated" qualifiers="const">
+			<return type="SGFixedTransform2D" />
+			<argument index="0" name="offset" type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="xform" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<argument index="0" name="vector" type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="xform_inv" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<argument index="0" name="vector" type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="origin" type="SGFixedVector2" setter="set_origin" getter="get_origin">
+			The origin vector. It represents translation.
+		</member>
+		<member name="x" type="SGFixedVector2" setter="set_x" getter="get_x">
+			The X vector.
+		</member>
+		<member name="y" type="SGFixedVector2" setter="set_y" getter="get_y">
+			The Y vector.
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

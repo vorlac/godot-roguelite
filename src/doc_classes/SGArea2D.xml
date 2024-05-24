@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SGArea2D" inherits="SGCollisionObject2D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		2D area for detection of other areas and physics bodies.
+	</brief_description>
+	<description>
+		2D area that can detect overlapping [SGCollisionObject2D]s or other [SGArea2D]s.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_overlapping_area_collisions" qualifiers="const">
+			<return type="Array" />
+			<description>
+				Returns a list of [SGAreaCollision2D]s for the overlapping areas.
+			</description>
+		</method>
+		<method name="get_overlapping_area_count" qualifiers="const">
+			<return type="int" />
+			<description>
+				Returns the number of overlapping areas. If you only need the count, this method is somewhat faster than counting the elements in the array returned by [method get_overlapping_areas].
+			</description>
+		</method>
+		<method name="get_overlapping_areas" qualifiers="const">
+			<return type="Array" />
+			<description>
+				Returns a list of overlapping [SGArea2D]s or [RID]s.
+			</description>
+		</method>
+		<method name="get_overlapping_bodies" qualifiers="const">
+			<return type="Array" />
+			<description>
+				Returns a list of overlapping [SGStaticBody2D]s, [SGCharacterBody2D]s or [RID]s.
+			</description>
+		</method>
+		<method name="get_overlapping_body_collisions" qualifiers="const">
+			<return type="Array" />
+			<description>
+				Returns a list of [SGAreaCollision2D]s for the overlapping [SGStaticBody2D]s and [SGCharacterBody2D]s.
+			</description>
+		</method>
+		<method name="get_overlapping_body_count" qualifiers="const">
+			<return type="int" />
+			<description>
+				Returns the number of overlapping bodies. If you only need the count, this method is somewhat faster than counting the elements in the array returned by [method get_overlapping_bodies].
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="monitorable" type="bool" setter="set_monitorable" getter="get_monitorable" default="true">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

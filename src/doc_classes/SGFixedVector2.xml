@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SGFixedVector2" inherits="Reference" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		A fixed-point vector used for 2D math.
+	</brief_description>
+	<description>
+		A vector with 2 components ([code]x[/code] and [code]y[/code]) which are fixed-point numbers.
+		It's the fixed-point equivalent to [Vector2].
+		Unlike [Vector2], SGFixedVector2 is a reference-counted object rather than a primative. This means it is always passed by reference rather than value. If you want need a copy, call [code]vector.copy()[/code].
+		To prevent overflow, any SGFixedVector2 shouldn't have an [code]x[/code] or [code]y[/code] component outside the range -1966080000 to 1966080000 (which is -30000.0 to 30000.0 in floating-point numbers)!
+		Even though we can represent much bigger numbers, once you start performing any math on that vector, the physics engine will need to use intermediate numbers that are several times larger than the input you give it, which can lead to overflow - and things just not working.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="abs" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<description>
+				Returns a new vector with all components converted to their absolute value.
+			</description>
+		</method>
+		<method name="add" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<argument index="0" name="value" type="Variant" />
+			<description>
+				Returns a new vector that is the result of adding this vector to another SGFixedVector2 or fixed-point number.
+			</description>
+		</method>
+		<method name="angle" qualifiers="const">
+			<return type="int" />
+			<description>
+				Returns the angle (in radians) between this vector and the positive X axis as a fixed-point number.
+			</description>
+		</method>
+		<method name="angle_to" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="other_vector" type="SGFixedVector2" />
+			<description>
+				Returns the angle (in radians) between this vector and [code]other_vector[/code] as a fixed-point number.
+			</description>
+		</method>
+		<method name="angle_to_point" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="other_vector" type="SGFixedVector2" />
+			<description>
+				Returns the angle (in radioans) between the line connecting the two points and the positive X axis as a fixed-point number.
+			</description>
+		</method>
+		<method name="bounce" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<argument index="0" name="normal" type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="copy" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="cross" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="other_vector" type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="cubic_interpolate" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<argument index="0" name="other_vector" type="SGFixedVector2" />
+			<argument index="1" name="pre_a" type="SGFixedVector2" />
+			<argument index="2" name="post_b" type="SGFixedVector2" />
+			<argument index="3" name="weight" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="direction_to" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<argument index="0" name="other_vector" type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="distance_squared_to" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="other_vector" type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="distance_to" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="other_vector" type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="div" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<argument index="0" name="value" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="dot" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="other_vector" type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="from_float">
+			<return type="void" />
+			<argument index="0" name="float_vector" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="iadd">
+			<return type="void" />
+			<argument index="0" name="value" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="idiv">
+			<return type="void" />
+			<argument index="0" name="value" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="imul">
+			<return type="void" />
+			<argument index="0" name="value" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="is_equal_approx" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="other_vector" type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="is_normalized" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="isub">
+			<return type="void" />
+			<argument index="0" name="value" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="length" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="length_squared" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="linear_interpolate" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<argument index="0" name="other_vector" type="SGFixedVector2" />
+			<argument index="1" name="weight" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="mul" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<argument index="0" name="value" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="normalized" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="reflect" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<argument index="0" name="normal" type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="rotate">
+			<return type="void" />
+			<argument index="0" name="radians" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="rotated" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<argument index="0" name="radians" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="slide" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<argument index="0" name="normal" type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="sub" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<argument index="0" name="value" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="to_float" qualifiers="const">
+			<return type="Vector2" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="x" type="int" setter="set_x" getter="get_x" default="0">
+			The vector's X component as a fixed-point number.
+		</member>
+		<member name="y" type="int" setter="set_y" getter="get_y" default="0">
+			The vector's Y component as a fixed-point number.
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

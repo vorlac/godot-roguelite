@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3 uid="uid://7edk5isnojk3"]
+
+[ext_resource type="Script" path="res://tests/functional/SGCharacterBody2D/MoveAndCollideConcave.gd" id="1"]
+
+[sub_resource type="SGCapsuleShape2D" id="1"]
+radius = 1116037
+height = 7962624
+
+[node name="MoveAndCollideConcave" type="Node2D"]
+script = ExtResource("1")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+
+[node name="SGStaticBody2D" type="SGStaticBody2D" parent="."]
+
+[node name="SGCollisionPolygon2D" type="SGCollisionPolygon2D" parent="SGStaticBody2D"]
+
+[node name="SGStaticBody2D2" type="SGStaticBody2D" parent="."]
+fixed_position_x = 7274496
+fixed_position_y = 6881280
+position = Vector2(111, 105)
+
+[node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="SGStaticBody2D2"]
+shape = SubResource("1")
+fixed_rotation = 102941
+rotation = 1.57076
+
+[node name="SGCharacterBody2D" type="SGCharacterBody2D" parent="."]
+fixed_position_x = 13828096
+fixed_position_y = 3014656
+position = Vector2(211, 46)
+
+[node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="SGCharacterBody2D"]
+shape = SubResource("1")
+fixed_rotation = 102941
+rotation = 1.57076

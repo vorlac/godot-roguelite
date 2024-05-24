@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://tests/functional/SGArea2D/GetOverlappingPolygonCollisions.gd" type="Script" id=1]
+
+[sub_resource type="SGRectangleShape2D" id=1]
+extents_x = 6553600
+extents_y = 6553600
+
+[node name="GetOverlappingPolygonCollisions" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="DetectorArea1" type="SGArea2D" parent="."]
+position = Vector2( 381.637, 287.35 )
+fixed_position_x = 25010968
+fixed_position_y = 18831790
+collision_layer = 0
+monitorable = false
+
+[node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="DetectorArea1"]
+shape = SubResource( 1 )
+
+[node name="DetectorArea2" type="SGArea2D" parent="."]
+position = Vector2( 534.292, 385.004 )
+fixed_position_x = 35015352
+fixed_position_y = 25231654
+collision_layer = 0
+monitorable = false
+
+[node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="DetectorArea2"]
+shape = SubResource( 1 )
+
+[node name="CollidingArea" type="SGArea2D" parent="."]
+position = Vector2( 534.292, 249.187 )
+fixed_position_x = 35015356
+fixed_position_y = 16330691
+collision_mask = 0
+
+[node name="Shape1" type="SGCollisionPolygon2D" parent="CollidingArea"]
+fixed_polygon_pairs = [ [ -5311124, -1000979 ], [ -2360222, -3257549 ], [ 104648, -1834173 ], [ -450816, 1706907 ], [ -4755660, 1706907 ] ]
+
+[node name="Shape2" type="SGCollisionPolygon2D" parent="CollidingArea"]
+fixed_polygon_pairs = [ [ 764260, 1984639 ], [ 4027612, 977861 ], [ 5138540, 4970257 ], [ 1979340, 7296261 ], [ -381380, 4588375 ] ]
+
+[node name="CollidingBody" type="SGStaticBody2D" parent="."]
+position = Vector2( 534.292, 249.187 )
+fixed_position_x = 35015356
+fixed_position_y = 16330691
+collision_mask = 0
+
+[node name="Shape1" type="SGCollisionPolygon2D" parent="CollidingBody"]
+fixed_polygon_pairs = [ [ -5311124, -1000979 ], [ -2360222, -3257549 ], [ 104648, -1834173 ], [ -450816, 1706907 ], [ -4755660, 1706907 ] ]
+
+[node name="Shape2" type="SGCollisionPolygon2D" parent="CollidingBody"]
+fixed_polygon_pairs = [ [ 764260, 1984639 ], [ 4027612, 977861 ], [ 5138540, 4970257 ], [ 1979340, 7296261 ], [ -381380, 4588375 ] ]

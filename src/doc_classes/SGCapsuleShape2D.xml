@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SGCapsuleShape2D" inherits="SGShape2D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		Capsule shape resource for 2D collisions in SG Physics 2D.
+	</brief_description>
+	<description>
+		Capsule shape resource for 2D collisions in SG Physics 2D.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="height" type="int" setter="set_height" getter="get_height" default="655360">
+		</member>
+		<member name="radius" type="int" setter="set_radius" getter="get_radius" default="655360">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

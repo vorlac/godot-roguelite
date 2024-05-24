@@ -1,0 +1,95 @@
+[gd_scene load_steps=7 format=3 uid="uid://5efx2gio6788"]
+
+[ext_resource type="Script" path="res://demos/gravity/Player.gd" id="1_3yjt3"]
+
+[sub_resource type="SGRectangleShape2D" id="1"]
+extents_x = 10551296
+extents_y = 2555904
+
+[sub_resource type="SGRectangleShape2D" id="2"]
+extents_x = 1769472
+extents_y = 8716288
+
+[sub_resource type="SGRectangleShape2D" id="3"]
+extents_x = 3211264
+extents_y = 14483456
+
+[sub_resource type="SGRectangleShape2D" id="4"]
+extents_x = 33161216
+extents_y = 3538944
+
+[sub_resource type="SGCircleShape2D" id="5"]
+radius = 1310720
+
+[node name="Main" type="Node2D"]
+
+[node name="Floor" type="SGStaticBody2D" parent="."]
+
+[node name="SGCollisionShape2D1" type="SGCollisionShape2D" parent="Floor"]
+shape = SubResource("1")
+fixed_position_x = 10551296
+fixed_position_y = 27197440
+position = Vector2(161, 415)
+
+[node name="SGCollisionShape2D2" type="SGCollisionShape2D" parent="Floor"]
+shape = SubResource("1")
+fixed_position_x = 30146560
+fixed_position_y = 30605308
+fixed_rotation = 22302
+position = Vector2(460, 467)
+rotation = 0.340302
+
+[node name="SGCollisionShape2D3" type="SGCollisionShape2D" parent="Floor"]
+shape = SubResource("1")
+fixed_position_x = 49545216
+fixed_position_y = 34209792
+position = Vector2(756, 522)
+
+[node name="Wall" type="SGStaticBody2D" parent="."]
+
+[node name="SGCollisionShape2D1" type="SGCollisionShape2D" parent="Wall"]
+shape = SubResource("2")
+fixed_position_x = 1835008
+fixed_position_y = 17760256
+position = Vector2(28, 271)
+
+[node name="SGCollisionShape2D2" type="SGCollisionShape2D" parent="Wall"]
+shape = SubResource("3")
+fixed_position_x = 62717952
+fixed_position_y = 22282240
+position = Vector2(957, 340)
+
+[node name="Ceiling" type="SGStaticBody2D" parent="."]
+
+[node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="Ceiling"]
+shape = SubResource("4")
+fixed_position_x = 33161216
+fixed_position_y = 5832704
+position = Vector2(506, 89)
+
+[node name="Player" type="SGCharacterBody2D" parent="."]
+velocity = Object(SGFixedVector2,"x":0,"y":0,"script":null)
+
+up_direction = Object(SGFixedVector2,"x":0,"y":-65536,"script":null)
+
+fixed_position_x = 9699328
+fixed_position_y = 17170432
+position = Vector2(148, 262)
+script = ExtResource("1_3yjt3")
+
+[node name="ColorRect" type="ColorRect" parent="Player"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SGCollisionShape2D2" type="SGCollisionShape2D" parent="Player"]
+shape = SubResource("5")
+fixed_position_x = 1310720
+fixed_position_y = 1310720
+visible = false
+position = Vector2(20, 20)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Player"]
+
+[node name="DebugLabel" type="Label" parent="Player/CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 14.0

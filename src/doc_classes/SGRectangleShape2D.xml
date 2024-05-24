@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SGRectangleShape2D" inherits="SGShape2D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		Rectangle shape resource for 2D collisions in SG Physics 2D.
+	</brief_description>
+	<description>
+		Rectangle shape resource for 2D collisions in SG Physics 2D.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="extents" type="SGFixedVector2" setter="set_extents" getter="get_extents">
+		</member>
+		<member name="extents_x" type="int" setter="_set_extents_x" getter="_get_extents_x" default="655360">
+		</member>
+		<member name="extents_y" type="int" setter="_set_extents_y" getter="_get_extents_y" default="655360">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

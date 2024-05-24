@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SGRayCast2D" inherits="SGFixedNode2D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		Node for finding the closest object intersecting a line segment.
+	</brief_description>
+	<description>
+		An SGRayCast2D represents a line segment from its origin to its [code]cast_to[/code] point. It is used to find the closest object interesect this line segment.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_exception">
+			<return type="void" />
+			<argument index="0" name="object" type="Object" />
+			<description>
+			</description>
+		</method>
+		<method name="clear_exceptions">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="get_collider" qualifiers="const">
+			<return type="Object" />
+			<description>
+			</description>
+		</method>
+		<method name="get_collision_normal" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="get_collision_point" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<description>
+			</description>
+		</method>
+		<method name="get_exceptions" qualifiers="const">
+			<return type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="is_colliding" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_exception">
+			<return type="void" />
+			<argument index="0" name="object" type="Object" />
+			<description>
+			</description>
+		</method>
+		<method name="set_collision_mask_bit">
+			<return type="void" />
+			<argument index="0" name="bit" type="int" />
+			<argument index="1" name="value" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="set_exceptions">
+			<return type="void" />
+			<argument index="0" name="exceptions" type="Array" />
+			<description>
+			</description>
+		</method>
+		<method name="update_raycast_collision">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="cast_to" type="SGFixedVector2" setter="set_cast_to" getter="get_cast_to">
+		</member>
+		<member name="cast_to_x" type="int" setter="_set_cast_to_x" getter="_get_cast_to_x" default="0">
+		</member>
+		<member name="cast_to_y" type="int" setter="_set_cast_to_y" getter="_get_cast_to_y" default="3276800">
+		</member>
+		<member name="collide_with_areas" type="bool" setter="set_collide_with_areas" getter="get_collide_with_areas" default="false">
+		</member>
+		<member name="collide_with_bodies" type="bool" setter="set_collide_with_bodies" getter="get_collide_with_bodies" default="true">
+		</member>
+		<member name="collision_mask" type="int" setter="set_collision_mask" getter="get_collision_mask" default="1">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

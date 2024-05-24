@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.20)
 
-set(GDEXTENSION_LIB_NAME roguelite)
+set(GDEXTENSION_LIB_NAME sg_physics_2d)
 set(GDEXTENSION_LIB_PATH "${CMAKE_CURRENT_SOURCE_DIR}/project/bin")
 
 option(
@@ -26,16 +26,12 @@ list(APPEND CMAKE_MODULE_PATH
     "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-cpp/cmake/"
 )
 
-include(vcpkg-init)
-
 project("${GDEXTENSION_LIB_NAME}"
   LANGUAGES
     C CXX
   VERSION
     0.1.0
 )
-
-include(vcpkg-install-deps)
 
 # =======================================================================
 # Compiler identification
@@ -61,13 +57,6 @@ set(compiler_is_msvc "$<CXX_COMPILER_ID:MSVC>")
 # =======================================================================
 
 include(godot-dev-configuration)
-
-# =======================================================================
-# 3rd party library setup/configuration (leverages vcpkg)
-# =======================================================================
-
-find_package(fmt CONFIG REQUIRED)
-find_package(spdlog CONFIG REQUIRED)
 
 # =======================================================================
 # GDExtension dynamic library setup/configuration
@@ -125,8 +114,8 @@ target_compile_options(${PROJECT_NAME} PUBLIC
 )
 
 # enable extension hot swapping
-target_compile_definitions(${PROJECT_NAME} PUBLIC 
-	HOT_RELOAD_ENABLED
+target_compile_definitions(${PROJECT_NAME} PUBLIC
+    USE_GDEXTENSION
 )
 
 # include directories gdextension library
@@ -164,9 +153,6 @@ endif()
 # gdextension library dependency linkage
 target_link_libraries(${PROJECT_NAME}
     PUBLIC godot::cpp
-    PRIVATE fmt::fmt
-    PRIVATE fmt::fmt-header-only
-    PRIVATE spdlog::spdlog_header_only
 )
 
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)

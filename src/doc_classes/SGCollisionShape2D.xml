@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SGCollisionShape2D" inherits="SGFixedNode2D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		Defines a simple 2D collision shape for SG Physics 2D.
+	</brief_description>
+	<description>
+		Provides a simple 2D collision shape to an [SGCollisionObject2D] parent.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_rid" qualifiers="const">
+			<return type="RID" />
+			<description>
+				Returns the RID of the resource for use with [SGPhysics2DServer].
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="disabled" type="bool" setter="set_disabled" getter="get_disabled" default="false">
+		</member>
+		<member name="shape" type="SGShape2D" setter="set_shape" getter="get_shape">
+		</member>
+		<member name="debug_color" type="Color" setter="set_debug_color" getter="get_debug_color">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

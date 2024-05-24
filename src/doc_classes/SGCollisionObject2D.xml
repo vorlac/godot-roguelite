@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SGCollisionObject2D" inherits="SGFixedNode2D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		Base class for all physics nodes in SG Physics 2D.
+	</brief_description>
+	<description>
+		SGCollisionObject2D is the base class for all physics nodes in SG Physics 2D. It can hold any number of [SGCollisionShape2D]s or [SGCollisionPolygon2D]s.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_collision_layer_bit" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="arg0" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_collision_mask_bit" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="arg0" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_rid" qualifiers="const">
+			<return type="RID" />
+			<description>
+				Returns the RID of the resource for use with [SGPhysics2DServer].
+			</description>
+		</method>
+		<method name="set_collision_layer_bit">
+			<return type="void" />
+			<argument index="0" name="bit" type="int" />
+			<argument index="1" name="value" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="set_collision_mask_bit">
+			<return type="void" />
+			<argument index="0" name="bit" type="int" />
+			<argument index="1" name="value" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="sync_to_physics_engine" qualifiers="const">
+			<return type="void" />
+			<description>
+				Copies the position, rotation and scale of this node into the physics engine.
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="collision_layer" type="int" setter="set_collision_layer" getter="get_collision_layer" default="1">
+		</member>
+		<member name="collision_mask" type="int" setter="set_collision_mask" getter="get_collision_mask" default="1">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SGPhysics2DServer" inherits="Object" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		Server to access low-level objects from SG Physics 2D.
+	</brief_description>
+	<description>
+		SGPhysics2DServer can be used to create and manipulate low-level objects from SG Physics 2D without having to use nodes.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="area_get_overlapping_area_collisions" qualifiers="const">
+			<return type="Array" />
+			<argument index="0" name="area" type="RID" />
+			<description>
+				Returns a list of [SGAreaCollision2D]s for the overlapping areas.
+			</description>
+		</method>
+		<method name="area_get_overlapping_area_count" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="area" type="RID" />
+			<description>
+				Returns the number of overlapping areas. If you only need the count, this method is somewhat faster than counting the elements in the array returned by [method area_get_overlapping_areas].
+			</description>
+		</method>
+		<method name="area_get_overlapping_areas" qualifiers="const">
+			<return type="Array" />
+			<argument index="0" name="area" type="RID" />
+			<description>
+				Returns a list of overlapping [SGArea2D]s or [RID]s.
+			</description>
+		</method>
+		<method name="area_get_overlapping_bodies" qualifiers="const">
+			<return type="Array" />
+			<argument index="0" name="area" type="RID" />
+			<description>
+				Returns a list of overlapping [SGStaticBody2D]s, [SGCharacterBody2D]s or [RID]s.
+			</description>
+		</method>
+		<method name="area_get_overlapping_body_collisions" qualifiers="const">
+			<return type="Array" />
+			<argument index="0" name="area" type="RID" />
+			<description>
+				Returns a list of [SGAreaCollision2D]s for the overlapping bodies.
+			</description>
+		</method>
+		<method name="area_get_overlapping_body_count" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="area" type="RID" />
+			<description>
+				Returns the number of overlapping bodies. If you only need the count, this method is somewhat faster than counting the elements in the array returned by [method area_get_overlapping_bodies].
+			</description>
+		</method>
+		<method name="body_get_safe_margin" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="body" type="RID" />
+			<description>
+				Returns the extra margin used for separating the body before [method body_move_and_collide] or [method body_unstuck].
+			</description>
+		</method>
+		<method name="body_get_type" qualifiers="const">
+			<return type="int" enum="SGPhysics2DServer.BodyType" />
+			<argument index="0" name="body" type="RID" />
+			<description>
+				Returns the type of the collision body.
+			</description>
+		</method>
+		<method name="body_move_and_collide" qualifiers="const">
+			<return type="SGKinematicCollision2D" />
+			<argument index="0" name="body" type="RID" />
+			<argument index="1" name="linear_velocity" type="SGFixedVector2" />
+			<description>
+				Moves the body, stopping on any collision.
+			</description>
+		</method>
+		<method name="body_set_safe_margin">
+			<return type="void" />
+			<argument index="0" name="body" type="RID" />
+			<argument index="1" name="safe_margin" type="int" />
+			<description>
+				Sets the extra margin used for separating the body before [method body_move_and_collide] or [method body_unstuck].
+			</description>
+		</method>
+		<method name="body_unstuck" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="body" type="RID" />
+			<argument index="1" name="max_attempts" type="int" />
+			<description>
+				Attempts to get the body unstuck if it's currently overlapping another body.
+			</description>
+		</method>
+		<method name="circle_get_radius" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="shape" type="RID" />
+			<description>
+				Returns the radius of the circle shape.
+			</description>
+		</method>
+		<method name="circle_set_radius">
+			<return type="void" />
+			<argument index="0" name="shape" type="RID" />
+			<argument index="1" name="radius" type="int" />
+			<description>
+				Sets the radius of the circle shape.
+			</description>
+		</method>
+		<method name="collision_object_add_shape">
+			<return type="void" />
+			<argument index="0" name="object" type="RID" />
+			<argument index="1" name="shape" type="RID" />
+			<description>
+				Adds a shape to the collision object.
+			</description>
+		</method>
+		<method name="collision_object_create">
+			<return type="RID" />
+			<argument index="0" name="object_type" type="int" enum="SGPhysics2DServer.CollisionObjectType" />
+			<argument index="1" name="body_type" type="int" enum="SGPhysics2DServer.BodyType" default="-1" />
+			<description>
+				Creates a collision object.
+			</description>
+		</method>
+		<method name="collision_object_get_collision_layer" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="object" type="RID" />
+			<description>
+				Returns the collision layer of the collision object.
+			</description>
+		</method>
+		<method name="collision_object_get_collision_mask" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="object" type="RID" />
+			<description>
+				Sets the collision mask of the collision object.
+			</description>
+		</method>
+		<method name="collision_object_get_data" qualifiers="const">
+			<return type="Variant" />
+			<argument index="0" name="object" type="RID" />
+			<description>
+				Returns internal data used by the collision object.
+			</description>
+		</method>
+		<method name="collision_object_get_monitorable" qualifiers="const">
+			<return type="bool" />
+			<argument index="0" name="object" type="RID" />
+			<description>
+				Returns true if the collision object is monitorable; otherwise false.
+			</description>
+		</method>
+		<method name="collision_object_get_transform" qualifiers="const">
+			<return type="SGFixedTransform2D" />
+			<argument index="0" name="object" type="RID" />
+			<description>
+				Returns the transform of the collision object.
+			</description>
+		</method>
+		<method name="collision_object_get_type">
+			<return type="int" enum="SGPhysics2DServer.CollisionObjectType" />
+			<argument index="0" name="object" type="RID" />
+			<description>
+				Returns the type of the collision object.
+			</description>
+		</method>
+		<method name="collision_object_remove_shape">
+			<return type="void" />
+			<argument index="0" name="object" type="RID" />
+			<argument index="1" name="shape" type="RID" />
+			<description>
+				Removes a shape from the collision object.
+			</description>
+		</method>
+		<method name="collision_object_set_collision_layer">
+			<return type="void" />
+			<argument index="0" name="object" type="RID" />
+			<argument index="1" name="layer" type="int" />
+			<description>
+				Sets the collision layer of the collision object.
+			</description>
+		</method>
+		<method name="collision_object_set_collision_mask">
+			<return type="void" />
+			<argument index="0" name="object" type="RID" />
+			<argument index="1" name="mask" type="int" />
+			<description>
+				Sets the collision mask of the collision object.
+			</description>
+		</method>
+		<method name="collision_object_set_data">
+			<return type="void" />
+			<argument index="0" name="object" type="RID" />
+			<argument index="1" name="data" type="Variant" />
+			<description>
+				Sets internal data used by the collision object. This can be either a node or a string. The data is to sort the object to ensure deterministic results.
+			</description>
+		</method>
+		<method name="collision_object_set_monitorable">
+			<return type="void" />
+			<argument index="0" name="object" type="RID" />
+			<argument index="1" name="monitorable" type="bool" />
+			<description>
+				Sets the collision object as monitorable or not.
+			</description>
+		</method>
+		<method name="collision_object_set_transform">
+			<return type="void" />
+			<argument index="0" name="object" type="RID" />
+			<argument index="1" name="transform" type="SGFixedTransform2D" />
+			<description>
+				Returns the transform of the collision object.
+			</description>
+		</method>
+		<method name="free_rid">
+			<return type="void" />
+			<argument index="0" name="rid" type="RID" />
+			<description>
+				Destroys any of the objects created by the physics server.
+			</description>
+		</method>
+		<method name="get_default_world">
+			<return type="RID" />
+			<description>
+				Returns the RID of the default world.
+			</description>
+		</method>
+		<method name="polygon_get_points" qualifiers="const">
+			<return type="Array" />
+			<argument index="0" name="shape" type="RID" />
+			<description>
+				Returns the points from the polygon shape.
+			</description>
+		</method>
+		<method name="polygon_set_points">
+			<return type="void" />
+			<argument index="0" name="shape" type="RID" />
+			<argument index="1" name="points" type="Array" />
+			<description>
+				Sets the points of the polygon shape.
+			</description>
+		</method>
+		<method name="rectangle_get_extents" qualifiers="const">
+			<return type="SGFixedVector2" />
+			<argument index="0" name="shape" type="RID" />
+			<description>
+				Returns the extents of the rectangle shape.
+			</description>
+		</method>
+		<method name="rectangle_set_extents">
+			<return type="void" />
+			<argument index="0" name="shape" type="RID" />
+			<argument index="1" name="extents" type="SGFixedVector2" />
+			<description>
+				Sets the extents of the rectangle shape.
+			</description>
+		</method>
+		<method name="shape_create">
+			<return type="RID" />
+			<argument index="0" name="shape_type" type="int" enum="SGPhysics2DServer.ShapeType" />
+			<description>
+				Creates a shape.
+			</description>
+		</method>
+		<method name="shape_get_data" qualifiers="const">
+			<return type="Variant" />
+			<argument index="0" name="shape" type="RID" />
+			<description>
+				Returns the internal data used by the shape.
+			</description>
+		</method>
+		<method name="shape_get_transform" qualifiers="const">
+			<return type="SGFixedTransform2D" />
+			<argument index="0" name="shape" type="RID" />
+			<description>
+				Returns the shape's transform.
+			</description>
+		</method>
+		<method name="shape_get_type" qualifiers="const">
+			<return type="int" enum="SGPhysics2DServer.ShapeType" />
+			<argument index="0" name="shape" type="RID" />
+			<description>
+				Returns the type of the shape.
+			</description>
+		</method>
+		<method name="shape_set_data">
+			<return type="void" />
+			<argument index="0" name="shape" type="RID" />
+			<argument index="1" name="data" type="Variant" />
+			<description>
+				Sets the internal data used by the shape.
+			</description>
+		</method>
+		<method name="shape_set_transform">
+			<return type="void" />
+			<argument index="0" name="shape" type="RID" />
+			<argument index="1" name="transform" type="SGFixedTransform2D" />
+			<description>
+				Sets the shape's transform.
+			</description>
+		</method>
+		<method name="world_add_collision_object">
+			<return type="void" />
+			<argument index="0" name="world" type="RID" />
+			<argument index="1" name="object" type="RID" />
+			<description>
+				Adds a collision object to the world.
+			</description>
+		</method>
+		<method name="world_create">
+			<return type="RID" />
+			<description>
+				Creates a world.
+			</description>
+		</method>
+		<method name="world_remove_collision_object">
+			<return type="void" />
+			<argument index="0" name="world" type="RID" />
+			<argument index="1" name="object" type="RID" />
+			<description>
+				Removes a collision object from the world.
+			</description>
+		</method>
+	</methods>
+	<constants>
+		<constant name="SHAPE_UNKNOWN" value="-1" enum="ShapeType">
+			Unknown shape.
+		</constant>
+		<constant name="SHAPE_RECTANGLE" value="0" enum="ShapeType">
+			Rectangle shape.
+		</constant>
+		<constant name="SHAPE_CIRCLE" value="1" enum="ShapeType">
+			Circle shape.
+		</constant>
+		<constant name="SHAPE_POLYGON" value="2" enum="ShapeType">
+			Polygon shape.
+		</constant>
+		<constant name="SHAPE_CAPSULE" value="3" enum="ShapeType">
+			Capsule shape.
+		</constant>
+		<constant name="OBJECT_UNKNOWN" value="-1" enum="CollisionObjectType">
+			Unknown collision object.
+		</constant>
+		<constant name="OBJECT_AREA" value="1" enum="CollisionObjectType">
+			Area.
+		</constant>
+		<constant name="OBJECT_BODY" value="2" enum="CollisionObjectType">
+			Body.
+		</constant>
+		<constant name="OBJECT_BOTH" value="3" enum="CollisionObjectType">
+			Both area and body.
+		</constant>
+		<constant name="BODY_UNKNOWN" value="-1" enum="BodyType">
+			Unknown body.
+		</constant>
+		<constant name="BODY_STATIC" value="0" enum="BodyType">
+			Static body.
+		</constant>
+		<constant name="BODY_CHARACTER" value="1" enum="BodyType">
+			Character body.
+		</constant>
+	</constants>
+</class>

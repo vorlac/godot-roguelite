@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cpvyvownnl3c7"]
+
+[ext_resource type="PackedScene" uid="uid://bqy3ikt6vu4b5" path="res://addons/gut/gui/GutRunner.tscn" id="1_7kkhb"]
+
+[node name="Tests" type="Node2D"]
+
+[node name="GutRunner" parent="." instance=ExtResource("1_7kkhb")]
