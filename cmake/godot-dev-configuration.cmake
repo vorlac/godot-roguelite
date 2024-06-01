@@ -83,22 +83,22 @@ if(NOT EXISTS "${godot_debug_editor_executable}")
     if (WIN32)
         set(SCONS_COMMAND powershell -c)
     endif()
-    
-    set(SCONS_COMMAND 
+
+    set(SCONS_COMMAND
       ${SCONS_COMMAND}
-      ${SCONS_PROGRAM} 
-          target=editor 
-          use_static_cpp=yes 
-          dev_build=yes 
-          debug_symbols=yes 
-          optimize=none 
+      ${SCONS_PROGRAM}
+          target=editor
+          use_static_cpp=yes
+          dev_build=yes
+          debug_symbols=yes
+          optimize=none
           use_lto=no
     )
 
     set(GODOT_ENGINE_CLEAN_BUILD OFF)
     if (GODOT_ENGINE_CLEAN_BUILD MATCHES ON)
         message(STATUS "Invoking scons clean: ${SCONS_COMMAND} --clean")
-        
+
         execute_process(
             COMMAND "${SCONS_PROGRAM}" --clean
             WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-engine"

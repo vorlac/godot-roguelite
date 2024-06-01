@@ -1,21 +1,12 @@
 {
     "recommendations": [
         "ms-vscode.cpptools",
-        "twxs.cmake",
-        "josetr.cmake-language-support-vscode",
         "ms-vscode.cmake-tools",
-        "eamodio.gitlens",
         "alfish.godot-files",
-        "ms-python.python",
-        "ms-vscode-remote.remote-ssh",
-        "ms-vscode.remote-explorer",
         "yzhang.markdown-all-in-one",
-        "foxundermoon.shell-format",
         "calro.vscode-theme-one-dark-muted",
-        "jeff-hykin.better-cpp-syntax",
-        "ibm.output-colorizer",
         "xaver.clang-format",
-        "bierner.docs-view",
-        "donjayamanne.githistory"
+        "vadimcn.vscode-lldb",
+        "jeff-hykin.better-cpp-syntax",
     ]
 }

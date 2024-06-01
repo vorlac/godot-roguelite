@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.20)
 
-set(GDEXTENSION_LIB_NAME roguelite)
+set(GDEXTENSION_LIB_NAME wui)
 set(GDEXTENSION_LIB_PATH "${CMAKE_CURRENT_SOURCE_DIR}/project/bin")
 
 option(
@@ -125,8 +125,8 @@ target_compile_options(${PROJECT_NAME} PUBLIC
 )
 
 # enable extension hot swapping
-target_compile_definitions(${PROJECT_NAME} PUBLIC 
-	HOT_RELOAD_ENABLED
+target_compile_definitions(${PROJECT_NAME} PUBLIC
+	#HOT_RELOAD_ENABLED
 )
 
 # include directories gdextension library
