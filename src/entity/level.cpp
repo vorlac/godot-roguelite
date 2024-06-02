@@ -28,6 +28,10 @@ namespace rl
         godot::Node* box{ this->find_child(name::level::physics_box) };
         m_physics_box = gdcast<godot::RigidBody2D>(box);
 
+        resource::preload::packed_scene<Player> player_scene{ path::scene::Player };
+        m_player = player_scene.instantiate();
+        m_player->set_controller(memnew(PlayerController));
+
         this->add_child(m_player);
         this->add_child(m_projectile_spawner);
 

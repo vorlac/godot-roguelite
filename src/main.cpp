@@ -8,8 +8,8 @@ namespace rl
 {
     Main::Main()
     {
-        resource::preload::scene<Level> level{ path::scene::Level1 };
-        resource::preload::scene<MainDialog> dialog{ path::ui::MainDialog };
+        resource::preload::packed_scene<Level> level{ path::scene::Level1 };
+        resource::preload::packed_scene<MainDialog> dialog{ path::ui::MainDialog };
 
         m_active_level = level.instantiate();
         runtime_assert(m_active_level != nullptr);
