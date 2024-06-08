@@ -1,3 +1,8 @@
-[gd_scene format=3 uid="uid://be6f0odpenf2d"]
+[gd_scene load_steps=2 format=3 uid="uid://be6f0odpenf2d"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_c2d3a"]
 
 [node name="Main" type="Main"]
+script = ExtResource("1_c2d3a")
+
+[connection signal="custom_signal_example" from="." to="." method="_on_custom_signal_example"]

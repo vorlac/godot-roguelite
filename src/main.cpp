@@ -35,6 +35,19 @@ namespace rl
         this->apply_default_settings();
     }
 
+    void Main::_physics_process(double delta)
+    {
+        if (engine::editor_active())
+            return;
+
+        m_signal_timer += delta;
+        if (m_signal_timer > 1.0)
+        {
+            this->emit_signal(event::signal_example, delta);
+            m_signal_timer -= 1.0;
+        }
+    }
+
     void Main::apply_default_settings()
     {
         engine::set_fps(60);
