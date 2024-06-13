@@ -6,6 +6,8 @@
 #include "entity/level.hpp"
 #include "ui/main_dialog.hpp"
 
+#include <cuda/atomic>
+
 namespace rl
 {
     class Main : public godot::Node
@@ -24,6 +26,7 @@ namespace rl
 
         static void _bind_methods()
         {
+            cuda::atomic<bool> test = true;
             signal_binding<Main, event::signal_example>::add<double>();
         }
 

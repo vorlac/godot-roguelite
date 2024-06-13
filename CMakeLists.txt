@@ -66,6 +66,7 @@ include(godot-dev-configuration)
 # 3rd party library setup/configuration (leverages vcpkg)
 # =======================================================================
 
+find_package(cuda REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 
@@ -95,6 +96,7 @@ target_compile_options(${PROJECT_NAME} PUBLIC
         /EHsc
         /utf-8
         /Zc:preprocessor
+
         $<$<CONFIG:Debug>:
             /MDd
         >
@@ -125,13 +127,14 @@ target_compile_options(${PROJECT_NAME} PUBLIC
 )
 
 # enable extension hot swapping
-target_compile_definitions(${PROJECT_NAME} PUBLIC 
+target_compile_definitions(${PROJECT_NAME} PUBLIC
 	HOT_RELOAD_ENABLED
 )
 
 # include directories gdextension library
 target_include_directories(${PROJECT_NAME} PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
+    ${CUDA_INCLUDE_DIRS}
 )
 
 if (NOT APPLE)
