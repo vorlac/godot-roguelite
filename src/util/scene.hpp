@@ -119,17 +119,21 @@ namespace rl::inline utils
                 using scene_t = TScene;
                 using object_t = TObj;
 
-                /* Pack as preload from path. */
-                packed_scene(godot::String resource_load_path)
+                /** Load and pack from path. */
+                packed_scene(const godot::String& load_resource_path,
+                             const godot::String& load_type_hint = godot::String(),
+                             godot::ResourceLoader::CacheMode load_cache_mode =
+                                 godot::ResourceLoader::CacheMode::CACHE_MODE_REUSE)
                 {
-                    godot::ResourceLoader* resource_loader{ resource::loader::get() };
+                    godot::ResourceLoader* resource_loader{ loader::get() };
 
-                    bool file_access_success{ resource_loader->exists(resource_load_path) };
-                    runtime_assert(file_access_success);
+                    bool resource_exists{ resource_loader->exists(load_resource_path) };
+                    runtime_assert(resource_exists);
 
-                    if (file_access_success)
+                    if (resource_exists)
                     {
-                        m_packed_resource = resource_loader->load(resource_load_path);
+                        m_packed_resource = resource_loader->load(load_resource_path,
+                                                                  load_type_hint, load_cache_mode);
                         initialized = m_packed_resource.is_valid();
                     }
                 }
