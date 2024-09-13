@@ -1,4 +1,4 @@
-# Godot 4.2 GDExtension C++ Prototype
+# Godot 4.3 GDExtension C++ Prototype
 
 This project is a rough prototype focusing on understanding how to implementa majority of a game's core logic/scripting in C++ using GDExtension. Everything is done in the code aside from UI/dialog/menu design, and scene file generation.
 
@@ -55,7 +55,7 @@ This repo is set up as a template (using the "use this template"->"create a new 
 
 Once the template project is created you _should_ be able to just swap out the code in `src/` and godot project files in `project/` with your own C++ source code and godot project files. If everything was replaced correctly/consistently, the cmake build should detect the changes in the `src/` directory (file additions/removals/renames) and know to reconfigure the project if/when changes are made.
 
-More information about using this repo as a base for your own project in the [templating](https://github.com/vorlac/godot-roguelite/wiki/Templating-%E2%80%90-Referencing-godot%E2%80%90roguelite-as-a-template-for-your-own-project) section of the wiki. 
+More information about using this repo as a base for your own project in the [templating](https://github.com/vorlac/godot-roguelite/wiki/Templating-%E2%80%90-godot%E2%80%90roguelite-as-a-template-for-your-own-project) section of the wiki. 
 
 # Note about cloning
 
