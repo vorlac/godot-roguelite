@@ -1,8 +1,7 @@
-﻿# BREEF SUMMARY:
-
-# This is the main CMake script which (summed up) configures a CMake build project on how to build our .dll
-# The gdextension .dll build can be run from Visual Studio Community (it's CMake magic!) as long as you have 
-# installed the CMake tools add-on, and the project is in the same directory as CMakeLists.txt
+﻿# This is the main CMake script which (summed up) configures a CMake build project on how to build our .dll
+# The gdextension .dll build can be run from Visual Studio Community, VSCode, CLion, etc as long as you have 
+# installed the appropriate CMake add-ons to enable IDE/editor integration with CMake, and the project is 
+# in the same directory as CMakeLists.txt
 
 # This script can also easily handle adding 3rd party libraries to our gdextension project.
 # An official explanation on how it's intended to function is here:
@@ -53,7 +52,11 @@ list(APPEND CMAKE_MODULE_PATH
 #     is a submodule (repository within the main one, defined in 
 #     .gitmodules) It is a program used by CMake further on in this 
 #     script to easily add 3rd party libraries to our own main .dll
-#     (it priorizes static linking!)
+#     (it can priorize dynamic or static linking for the dependency 
+#     as well as the C runtime based on what the VCPKG_TARGET_TRIPLET
+#     variable is set to. For this project static linkage is configured
+#     for the library Windows (but the C runtime is dynamically linked)
+#     and Linux & MacOS favor dynamic linkage)
 # =======================================================================
 include(vcpkg-init)
 # Tip: "vcpkg-init" is actually a .cmake script located in the cmake/ directory.
@@ -69,8 +72,9 @@ project("${GDEXTENSION_LIB_NAME}"
 # Tip: the "project" specifications tell CMake valuable project info for compilation: 
 #      project name (same as lib name), languages and version.
 
-include(vcpkg-install-deps) #Includes cmake/vcpkg-install-deps.cmake and runs it here
-# Tip: the "vcpkg-install-deps" .cmake script just makes sure that the previously asserted vcpkg install has all of it's dependencies available
+include(vcpkg-install-deps)
+# Tip: Includes cmake/vcpkg-install-deps.cmake and runs it here.
+#      the "vcpkg-install-deps" .cmake script just makes sure that the previously asserted vcpkg install has all of it's dependencies available
 
 # =======================================================================
 # Compiler identification
@@ -96,7 +100,8 @@ set(compiler_is_msvc "$<CXX_COMPILER_ID:MSVC>")
 #     gather data from cmake (i.e. VSCode and Visual Studio 2022)
 # =======================================================================
 
-include(godot-dev-configuration) #Includes cmake/godot-dev-configuration.cmake and runs it
+include(godot-dev-configuration) 
+# Tip: Includes cmake/godot-dev-configuration.cmake and runs it
 
 # =======================================================================
 # 3rd party library setup/configuration (leverages vcpkg)
@@ -118,13 +123,15 @@ file(GLOB_RECURSE gdext_sources
        "${CMAKE_CURRENT_SOURCE_DIR}/src/*.[hc]pp"
 )
 
-# Use gdext_sources in order to build a library by PROJECT_NAME:
+# Use gdext_sources in order to build a shared library that will be named whatever 
+# the PROJECT_NAME variable is set to (which will be the same name you set for the 
+# GDEXTENSION_LIB_NAME variable at the top of this file):
 add_library(${PROJECT_NAME}
     SHARED
       ${gdext_sources}
 )
 # Tip1: The "add_library()" command is used to specify a library target for this cmake project to build
-#       The SHARED keyword tells CMake to create a shared library. The gdext_sources file directories are passed to add_library() 
+#       The SHARED keyword tells CMake to create a shared/dynamic library. The gdext_sources file directories are passed to add_library() 
 #       command to specify the source files for the library.
 # Tip2: The .dll isn't built here yet, it's only being pointed at. The build will occur when running cmake --build in the same
 #       directory as this CMakeLists.txt file, or if the build command is run from visual studio.
@@ -205,12 +212,13 @@ endif()
 # =======================================================================
 
 # gdextension library dependency linkage
-# 	godot::cpp: Found by CMake thanks to godot-dev-configuration "add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-cpp)" statement.
-# 			  	the subdirectory addition runs godot-cpp's own CMakeLists.txt which declares "add_library(godot::cpp ALIAS ${PROJECT_NAME})"
-#   			CMake automatically exports all targets that are created in the godot-cpp CMakeLists.txt file. This means that the godot::cpp 
-#               library is accessible and linkable from here.
+#     godot::cpp: Found by CMake thanks to godot-dev-configuration "add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/extern/godot-cpp)" statement.
+#     the subdirectory addition runs godot-cpp's own CMakeLists.txt which declares "add_library(godot::cpp ALIAS ${PROJECT_NAME})"
+#     CMake automatically exports all targets that are created in the godot-cpp CMakeLists.txt file. This means that the godot::cpp 
+#     library is accessible and linkable from here.
 #
-#				The other libraries are found thanks to their definition earlier in "find_package"
+#     The other libraries are found thanks to their definition earlier in "find_package", which 
+#     is defined by the vcpkg package manager for each dependency added to the project.
 target_link_libraries(${PROJECT_NAME}
     PUBLIC godot::cpp
     PRIVATE fmt::fmt
@@ -219,7 +227,7 @@ target_link_libraries(${PROJECT_NAME}
 )
 # Tip1: PUBLIC: our .dll depends on the library. PRIVATE: the library is expendable.
 # Tip2: godot::cpp, fmt::fmt etc... each library name is declared by each of it's
-# 	    respective projects's own CMakeLists.txt, which is reached thanks to vcpkg
+#       respective projects's own CMakeLists.txt, which is reached thanks to vcpkg
 
 # Define system architecture for the build:
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
@@ -235,30 +243,31 @@ string(TOLOWER
 )
 
 set_target_properties(${PROJECT_NAME}
-	PROPERTIES
-		# This option tells CMake to generate position-independent code (PIC). 
-		# PIC code can be loaded and executed at any address in memory. 
-		# This is necessary for libraries that will be shared between multiple processes.
-        CMAKE_EXPORT_COMPILE_COMMANDS ON
-		# This option tells CMake to export the compile commands for the target. 
-		# This can be useful for debugging and profiling purposes.
-        CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE ON
-		# This option tells CMake to enable interprocedural optimization for the target. 
-		# This can improve the performance of the target by optimizing code across multiple functions.
-		ARCHIVE_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}"
-		# This option tells CMake to place the static library archive for the target in the specified directory.
-		LIBRARY_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}"
-		# This option tells CMake to place the shared library for the target in the specified directory.
-		RUNTIME_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}"
-		# This option tells CMake to place the runtime library for the target in the specified directory.
-        CMAKE_PDB_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}"
-		# This option tells CMake to place the program database (PDB) file for the target in the specified directory. 
-		# The PDB file contains debugging information for the target.
-        CMAKE_COMPILE_PDB_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}"
-		# This option tells CMake to place the compile-time PDB file for the target in the specified directory.
-		# The compile-time PDB file contains debugging information that can be used to debug the target while it is being built.
-		OUTPUT_NAME "${gde_lib_name}"
-		# This option tells CMake to set the output name for the target to the specified value.
+  PROPERTIES
+    # This option tells CMake to generate position-independent code (PIC). 
+    # PIC code can be loaded and executed at any address in memory. 
+    # This is necessary when building shared/dynamic libraries.
+    POSITION_INDEPENDENT_CODE ON
+    # This option tells CMake to export the compile commands for the target. 
+    # This can be useful for debugging and profiling purposes.	
+    CMAKE_EXPORT_COMPILE_COMMANDS ON
+    # This option tells CMake to enable interprocedural optimization for the target. 
+    # This can improve the performance of the target by optimizing code across multiple functions.
+    CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE ON
+    # This option tells CMake to place the static library archive for the target in the specified directory.
+    ARCHIVE_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}"
+    # This option tells CMake to place the shared library for the target in the specified directory.
+    LIBRARY_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}"
+    # This option tells CMake to place the runtime library for the target in the specified directory.
+    RUNTIME_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}"
+    # This option tells CMake to place the program database (PDB) file for the target in the specified directory. 
+    # The PDB file contains debugging information for the target.
+    CMAKE_PDB_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}"
+    # This option tells CMake to place the compile-time PDB file for the target in the specified directory.
+    # The compile-time PDB file contains debugging information that can be used to debug the target while it is being built.
+    CMAKE_COMPILE_PDB_OUTPUT_DIRECTORY "${GDEXTENSION_LIB_PATH}"
+    # This option tells CMake to set the output name for the target to the specified value.
+    OUTPUT_NAME "${gde_lib_name}"
 )
 
 # =======================================================================
