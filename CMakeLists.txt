@@ -137,7 +137,7 @@ add_library(${PROJECT_NAME}
 #       directory as this CMakeLists.txt file, or if the build command is run from visual studio.
 
 # Import compiler warnings from godot-cpp's own cmake folder:
-include(GodotCompilerWarnings)
+include(common_compiler_flags)
 
 # Set compiler options for the gdextension library based on the compiler being used:
 target_compile_options(${PROJECT_NAME} PUBLIC
