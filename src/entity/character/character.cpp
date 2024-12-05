@@ -84,7 +84,7 @@ namespace rl
     [[signal_slot]]
     void Character::on_character_rotate(double rotation_angle, double delta_time)
     {
-        double smoothed_angle = godot::Math::lerp_angle(this->get_rotation(), rotation_angle,
+        double smoothed_angle = godot::Math::lerp_angle(static_cast<double>(this->get_rotation()), rotation_angle,
                                                         m_rotation_speed * delta_time);
         this->set_rotation(smoothed_angle);
     }
