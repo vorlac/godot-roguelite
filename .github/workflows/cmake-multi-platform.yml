@@ -9,6 +9,8 @@ jobs:
       - uses: actions/checkout@v3
 
         # linux / gcc build
+      - name: '[linux | submodule sync]'
+        run: cd ${{ github.workspace }} && git submodule sync --recursive 
       - name: '[linux | gcc] => cmake - delete cache'
         run: rm -rf ${{ github.workspace }}/.out/*
       - name: '[linux | gcc] => cmake - configure'
