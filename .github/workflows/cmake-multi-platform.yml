@@ -10,7 +10,7 @@ jobs:
 
         # linux / gcc build
       - name: '[linux | submodule sync]'
-        run: cd ${{ github.workspace }} && git submodule sync --recursive 
+        run: cd ${{ github.workspace }} && git submodule deinit --all force && git submodule udpdate --init --recursive 
       - name: '[linux | gcc] => cmake - delete cache'
         run: rm -rf ${{ github.workspace }}/.out/*
       - name: '[linux | gcc] => cmake - configure'
