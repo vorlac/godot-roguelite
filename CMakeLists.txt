@@ -137,7 +137,7 @@ add_library(${PROJECT_NAME}
 #       directory as this CMakeLists.txt file, or if the build command is run from visual studio.
 
 # Import compiler warnings from godot-cpp's own cmake folder:
-include(GodotCompilerWarnings)
+include(common_compiler_flags)
 
 # Set compiler options for the gdextension library based on the compiler being used:
 target_compile_options(${PROJECT_NAME} PUBLIC
@@ -145,13 +145,6 @@ target_compile_options(${PROJECT_NAME} PUBLIC
         /EHsc
         /utf-8
         /Zc:preprocessor
-        $<$<CONFIG:Debug>:
-            /MDd # System dynamic linking of C++ runtime libraries (use MT for static linking)
-        >
-        $<$<CONFIG:Release>:
-            /MD # System dynamic linking of C++ runtime libraries (use MT for static linking)
-            /O2 # Compiler will optimize code for speed
-        >
     >
     $<$<NOT:${compiler_is_msvc}>:
         -g
@@ -175,8 +168,8 @@ target_compile_options(${PROJECT_NAME} PUBLIC
 )
 
 # Enable extension hot swapping:
-target_compile_definitions(${PROJECT_NAME} PUBLIC 
-	HOT_RELOAD_ENABLED
+target_compile_definitions(${PROJECT_NAME} PUBLIC
+    HOT_RELOAD_ENABLED
 )
 
 # Define the directories containing inclusion headers (CMake needs to know this after running add_library):

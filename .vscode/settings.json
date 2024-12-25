@@ -28,7 +28,7 @@
     "cmake.parallelJobs": 0,
     "cmake.parseBuildDiagnostics": true,
     "cmake.useCMakePresets": "always",
-    "debug.autoExpandLazyVariables": true,
+    "debug.autoExpandLazyVariables": "on",
     "debug.console.closeOnEnd": true,
     "debug.console.fontFamily": "Fira Code Retina, Consolas, 'Courier New', monospace",
     "debug.console.fontSize": 12,
