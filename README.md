@@ -73,6 +73,8 @@ The projects below are also worth checking out for some additional GDExtension e
 - https://github.com/asmaloney/GDExtensionTemplate
 - https://github.com/godotengine/godot-cpp-template
 - https://github.com/godotengine/godot-cpp/tree/master/test/src
+- https://github.com/ytnuf/gdextension_example
+- https://github.com/yehuthi/godot_cpp_cmake_template
 
 # Licensing
 
