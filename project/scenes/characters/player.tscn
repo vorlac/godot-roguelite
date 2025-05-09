@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://nuqlrvw8di7s"]
 
-[ext_resource type="Texture2D" path="res://assets/art/topdown/shooter/soldier_1/soldier1_machine.png" id="1_rbbbp"]
+[ext_resource type="Texture2D" uid="uid://d4koyc2tuk4mc" path="res://assets/art/topdown/shooter/soldier_1/soldier1_machine.png" id="1_rbbbp"]
 
 [sub_resource type="Gradient" id="Gradient_l415w"]
 offsets = PackedFloat32Array(0, 0.773179)

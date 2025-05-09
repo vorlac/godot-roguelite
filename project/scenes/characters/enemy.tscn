@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://drwc32sap2ko6"]
 
-[ext_resource type="Texture2D" uid="uid://cjlu0wl3qj8dh" path="res://assets/art/topdown/shooter/robot_1/robot1_gun.png" id="1_oue85"]
+[ext_resource type="Texture2D" uid="uid://l1noga1ib7sw" path="res://assets/art/topdown/shooter/robot_1/robot1_gun.png" id="1_oue85"]
 
 [node name="Enemy" type="Enemy"]
 scale = Vector2(2, 2)
